@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmMain
+Partial Class frmScreenEntry
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -44,6 +44,7 @@ Partial Class frmMain
         Me.txtEmployeeScanId.Font = New System.Drawing.Font("Verdana", 20.0!)
         Me.txtEmployeeScanId.Location = New System.Drawing.Point(50, 97)
         Me.txtEmployeeScanId.Name = "txtEmployeeScanId"
+        Me.txtEmployeeScanId.ShortcutsEnabled = False
         Me.txtEmployeeScanId.Size = New System.Drawing.Size(380, 40)
         Me.txtEmployeeScanId.TabIndex = 0
         Me.txtEmployeeScanId.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -93,7 +94,7 @@ Partial Class frmMain
         Me.btnSave.Location = New System.Drawing.Point(118, 352)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Scheme = PinkieControls.ButtonXP.Schemes.Blue
-        Me.btnSave.Size = New System.Drawing.Size(100, 32)
+        Me.btnSave.Size = New System.Drawing.Size(100, 35)
         Me.btnSave.TabIndex = 2
         Me.btnSave.TabStop = False
         Me.btnSave.Text = "Save"
@@ -109,7 +110,7 @@ Partial Class frmMain
         Me.btnClose.Location = New System.Drawing.Point(330, 352)
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Scheme = PinkieControls.ButtonXP.Schemes.Blue
-        Me.btnClose.Size = New System.Drawing.Size(100, 32)
+        Me.btnClose.Size = New System.Drawing.Size(100, 35)
         Me.btnClose.TabIndex = 4
         Me.btnClose.TabStop = False
         Me.btnClose.Text = "Close"
@@ -119,13 +120,13 @@ Partial Class frmMain
         Me.btnClear.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnClear.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
         Me.btnClear.DefaultScheme = False
-        Me.btnClear.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnClear.DialogResult = System.Windows.Forms.DialogResult.None
         Me.btnClear.Font = New System.Drawing.Font("Verdana", 9.0!)
         Me.btnClear.Hint = ""
         Me.btnClear.Location = New System.Drawing.Point(224, 352)
         Me.btnClear.Name = "btnClear"
         Me.btnClear.Scheme = PinkieControls.ButtonXP.Schemes.Blue
-        Me.btnClear.Size = New System.Drawing.Size(100, 32)
+        Me.btnClear.Size = New System.Drawing.Size(100, 35)
         Me.btnClear.TabIndex = 3
         Me.btnClear.TabStop = False
         Me.btnClear.Text = "Clear"
@@ -218,11 +219,12 @@ Partial Class frmMain
         Me.lblEmployeeId.Text = " ID No"
         Me.lblEmployeeId.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'frmMain
+        'frmScreenEntry
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(480, 396)
+        Me.Controls.Add(Me.txtEmployeeScanId)
         Me.Controls.Add(Me.txtEmployeeId)
         Me.Controls.Add(Me.lblEmployeeId)
         Me.Controls.Add(Me.txtDate)
@@ -236,14 +238,13 @@ Partial Class frmMain
         Me.Controls.Add(Me.lblEmployeeScanId)
         Me.Controls.Add(Me.txtRemarks)
         Me.Controls.Add(Me.lblClinicClearance)
-        Me.Controls.Add(Me.txtEmployeeScanId)
+        Me.DoubleBuffered = True
         Me.Font = New System.Drawing.Font("Verdana", 8.5!)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
-        Me.KeyPreview = True
-        Me.Name = "frmMain"
+        Me.Name = "frmScreenEntry"
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Screening"
+        Me.Text = "Data Entry"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

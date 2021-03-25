@@ -40,10 +40,10 @@ Public Class frmScreenList
     Private Sub frmScreenList_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
         If e.KeyCode.Equals(Keys.F2) Then
             btnAdd.PerformClick()
-        ElseIf e.KeyCode.Equals(Keys.F4) Then
-            btnDelete.PerformClick()
         ElseIf e.KeyCode.Equals(Keys.F3) Then
             btnEdit.PerformClick()
+        ElseIf e.KeyCode.Equals(Keys.F4) Then
+            btnDelete.PerformClick()
         ElseIf e.KeyCode.Equals(Keys.F5) Then
             RefreshValues()
         End If
@@ -159,7 +159,7 @@ Public Class frmScreenList
     Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
         Try
             If dgvList.Rows.Count > 0 Then
-                If MessageBox.Show("Delete this row?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = Windows.Forms.DialogResult.Yes Then
+                If MessageBox.Show("Delete this record?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = Windows.Forms.DialogResult.Yes Then
                     Dim _param(0) As SqlParameter
                     _param(0) = New SqlParameter("@ScreenId", SqlDbType.Int)
                     _param(0).Value = dgvList.CurrentRow.Cells("ColScreenId").Value
@@ -195,32 +195,36 @@ Public Class frmScreenList
 
 #Region "Sub"
     Private Sub SetPage(Optional ByVal _startDate As Date = Nothing, Optional ByVal _endDate As Date = Nothing)
-        totalCount = 0
+        Try
+            totalCount = 0
 
-        If Not _startDate = Nothing AndAlso Not _endDate = Nothing Then
-            BindPage(pageSize, pageIndex, totalCount, dtpFrom.Value.Date, dtpTo.Value.Date)
-            isFiltered = True
-        Else
-            BindPage(pageSize, pageIndex, totalCount)
-        End If
+            If Not _startDate = Nothing AndAlso Not _endDate = Nothing Then
+                BindPage(pageSize, pageIndex, totalCount, dtpFrom.Value.Date, dtpTo.Value.Date)
+                isFiltered = True
+            Else
+                BindPage(pageSize, pageIndex, totalCount)
+            End If
 
-        If totalCount Mod pageSize = 0 Then
-            pageCount = totalCount / pageSize
-        Else
-            pageCount = Math.Truncate(totalCount / pageSize) + 1
-        End If
+            If totalCount Mod pageSize = 0 Then
+                pageCount = totalCount / pageSize
+            Else
+                pageCount = Math.Truncate(totalCount / pageSize) + 1
+            End If
 
-        'current and total pages
-        txtPageNumber.Text = pageIndex + 1
-        txtTotalPageNumber.Text = "of " & CInt(pageCount) & " Page(s)"
+            'current and total pages
+            txtPageNumber.Text = pageIndex + 1
+            txtTotalPageNumber.Text = "of " & CInt(pageCount) & " Page(s)"
 
-        'enables pager
-        txtPageNumber.Enabled = True
-        txtTotalPageNumber.Enabled = True
-        BindingNavigatorMoveFirstItem.Enabled = True
-        BindingNavigatorMovePreviousItem.Enabled = True
-        BindingNavigatorMoveNextItem.Enabled = True
-        BindingNavigatorMoveLastItem.Enabled = True
+            'enables pager
+            txtPageNumber.Enabled = True
+            txtTotalPageNumber.Enabled = True
+            BindingNavigatorMoveFirstItem.Enabled = True
+            BindingNavigatorMovePreviousItem.Enabled = True
+            BindingNavigatorMoveNextItem.Enabled = True
+            BindingNavigatorMoveLastItem.Enabled = True
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, main.SetExcpTitle(ex), MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     Private Sub BindPage(ByVal _pageSize As Integer, ByVal _pageIndex As Integer, ByVal _totalCount As Integer, Optional ByVal _startDate As Date = Nothing, Optional ByVal _endDate As Date = Nothing)
@@ -259,7 +263,7 @@ Public Class frmScreenList
             dgvList.AutoGenerateColumns = False
             dgvList.DataSource = table
         Catch ex As Exception
-            MessageBox.Show(ex.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show(ex.Message, main.SetExcpTitle(ex), MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
@@ -294,7 +298,7 @@ Public Class frmScreenList
         End Try
     End Sub
 
-    Public Sub RefreshValues(Optional _fromOtherForm As Boolean = False)
+    Public Sub RefreshValues()
         If dgvList IsNot Nothing AndAlso dgvList.CurrentRow IsNot Nothing Then Me.Invoke(New Action(AddressOf GetScrollingIndex))
         pageSize = 100
         SetPage()

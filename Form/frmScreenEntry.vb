@@ -12,13 +12,6 @@ Public Class frmScreenEntry
     Private dbMethodJeonsoft As New SqlDbMethod(connection.JeonsoftConnection)
     Private main As New Main
 
-    Private screenId As Integer = 0
-    Private employeeId As Integer = 0
-    Private arrSplitted() As String
-
-    Private indexScroll As Integer = 0
-    Private indexPosition As Integer = 0
-
     Private dsLeaveFiling As New dsLeaveFiling
     Private dsJeonsoft As New dsJeonsoft
 
@@ -29,7 +22,12 @@ Public Class frmScreenEntry
 
     Private WithEvents dateBinding As Binding
 
-    Dim keyIsDown As Boolean
+    Private screenId As Integer = 0
+    Private employeeId As Integer = 0
+    Private arrSplitted() As String
+
+    Private indexScroll As Integer = 0
+    Private indexPosition As Integer = 0
 
     Public Sub New(Optional ByVal _screenId As Integer = 0)
 
@@ -72,15 +70,17 @@ Public Class frmScreenEntry
 
     Private Sub txtEmployeeScanId_KeyDown(sender As Object, e As KeyEventArgs) Handles txtEmployeeScanId.KeyDown
         If e.KeyCode.Equals(Keys.Enter) Then
-            If String.IsNullOrEmpty(txtEmployeeScanId.Text.Trim) = True Then
-                MessageBox.Show("Please tap your ID.", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            If String.IsNullOrEmpty(txtEmployeeScanId.Text.Trim) Then
+                txtEmployeeScanId.Select()
+                MessageBox.Show("Please scan your ID.", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 Return
             End If
 
             arrSplitted = Split(txtEmployeeScanId.Text.Trim, " ", 2)
 
             If Not arrSplitted.Length = 2 Then
-                MessageBox.Show("Please tap your ID.", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                txtEmployeeScanId.Select()
+                MessageBox.Show("Please scan your ID.", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 Return
             End If
 
@@ -91,7 +91,8 @@ Public Class frmScreenEntry
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         Try
             If String.IsNullOrEmpty(txtEmployeeScanId.Text.Trim) AndAlso String.IsNullOrEmpty(txtEmployeeId.Text.Trim) Then
-                MessageBox.Show("Please tap your ID.", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                txtEmployeeScanId.Select()
+                MessageBox.Show("Please scan your ID.", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 Return
             End If
 
@@ -132,16 +133,8 @@ Public Class frmScreenEntry
                 Me.adpScreening.Update(Me.myDataset.Screening)
                 Me.myDataset.AcceptChanges()
 
-                txtEmployeeScanId.Enabled = True
-                txtEmployeeScanId.Focus()
-                screenId = 0
-                txtEmployeeId.Text = String.Empty
-                txtEmployeeName.Text = String.Empty
-                txtDate.Text = String.Empty
-                txtRemarks.Text = String.Empty
-                txtRemarks.Enabled = False
-
                 frmScreenList.RefreshValues()
+                ResetForm()
             End If
         Catch ex As Exception
             MessageBox.Show(ex.Message, main.SetExcpTitle(ex), MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -164,14 +157,7 @@ Public Class frmScreenEntry
         End If
     End Sub
 
-    'Private Sub txtRemarks_KeyDown(sender As Object, e As KeyEventArgs) Handles txtRemarks.KeyDown
-    '    If e.KeyCode.Equals(Keys.F10) Then
-    '        e.Handled = True
-    '        btnSave.PerformClick()
-    '    End If
-    'End Sub
-
-#Region "Subs"
+#Region "Sub"
     Private Sub ValidateUser(ByVal _employeeId As String, ByVal _employeeName As String)
         Try
             Dim _countUser As Integer = 0
@@ -202,7 +188,7 @@ Public Class frmScreenEntry
                 txtRemarks.Enabled = True
                 txtRemarks.Focus()
             Else
-                MessageBox.Show("Employee ID not found.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show("Employee record not found.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 btnClear.PerformClick()
             End If
         Catch ex As Exception
@@ -211,8 +197,9 @@ Public Class frmScreenEntry
     End Sub
 
     Private Sub ResetForm()
+        screenId = 0
         txtEmployeeScanId.Enabled = True
-        txtEmployeeScanId.Text = String.Empty
+        txtEmployeeScanId.Clear()
         txtEmployeeId.Text = String.Empty
         txtEmployeeName.Text = String.Empty
         txtDate.Text = String.Empty

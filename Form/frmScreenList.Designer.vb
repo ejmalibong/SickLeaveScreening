@@ -27,9 +27,8 @@ Partial Class frmScreenList
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.pnlTop = New System.Windows.Forms.Panel()
+        Me.btnResetDate = New PinkieControls.ButtonXP()
         Me.lblStartFrom = New System.Windows.Forms.Label()
-        Me.btnReset = New System.Windows.Forms.Button()
-        Me.btnSearchDate = New System.Windows.Forms.Button()
         Me.dtpFrom = New System.Windows.Forms.DateTimePicker()
         Me.dtpTo = New System.Windows.Forms.DateTimePicker()
         Me.lblStartTo = New System.Windows.Forms.Label()
@@ -57,6 +56,7 @@ Partial Class frmScreenList
         Me.ColEmployeeName = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ColRemarks = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ColModifiedDate = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.btnSearchDate = New PinkieControls.ButtonXP()
         Me.pnlTop.SuspendLayout()
         CType(Me.bindingNavigator, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.bindingNavigator.SuspendLayout()
@@ -67,9 +67,8 @@ Partial Class frmScreenList
         'pnlTop
         '
         Me.pnlTop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlTop.Controls.Add(Me.btnResetDate)
         Me.pnlTop.Controls.Add(Me.lblStartFrom)
-        Me.pnlTop.Controls.Add(Me.btnReset)
-        Me.pnlTop.Controls.Add(Me.btnSearchDate)
         Me.pnlTop.Controls.Add(Me.dtpFrom)
         Me.pnlTop.Controls.Add(Me.dtpTo)
         Me.pnlTop.Controls.Add(Me.lblStartTo)
@@ -80,6 +79,23 @@ Partial Class frmScreenList
         Me.pnlTop.Size = New System.Drawing.Size(1039, 36)
         Me.pnlTop.TabIndex = 0
         '
+        'btnResetDate
+        '
+        Me.btnResetDate.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnResetDate.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.btnResetDate.DefaultScheme = False
+        Me.btnResetDate.DialogResult = System.Windows.Forms.DialogResult.None
+        Me.btnResetDate.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.btnResetDate.Hint = "Refresh List"
+        Me.btnResetDate.Image = Global.SickLeaveScreening.My.Resources.Resources.Undo_16_x_16
+        Me.btnResetDate.Location = New System.Drawing.Point(440, 4)
+        Me.btnResetDate.Name = "btnResetDate"
+        Me.btnResetDate.Scheme = PinkieControls.ButtonXP.Schemes.Blue
+        Me.btnResetDate.Size = New System.Drawing.Size(85, 26)
+        Me.btnResetDate.TabIndex = 162
+        Me.btnResetDate.TabStop = False
+        Me.btnResetDate.Text = "Reset"
+        '
         'lblStartFrom
         '
         Me.lblStartFrom.AutoSize = True
@@ -89,26 +105,6 @@ Partial Class frmScreenList
         Me.lblStartFrom.Size = New System.Drawing.Size(38, 14)
         Me.lblStartFrom.TabIndex = 24
         Me.lblStartFrom.Text = "From"
-        '
-        'btnReset
-        '
-        Me.btnReset.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.btnReset.Location = New System.Drawing.Point(436, 4)
-        Me.btnReset.Name = "btnReset"
-        Me.btnReset.Size = New System.Drawing.Size(85, 26)
-        Me.btnReset.TabIndex = 23
-        Me.btnReset.Text = "Reset"
-        Me.btnReset.UseVisualStyleBackColor = True
-        '
-        'btnSearchDate
-        '
-        Me.btnSearchDate.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.btnSearchDate.Location = New System.Drawing.Point(348, 4)
-        Me.btnSearchDate.Name = "btnSearchDate"
-        Me.btnSearchDate.Size = New System.Drawing.Size(85, 26)
-        Me.btnSearchDate.TabIndex = 22
-        Me.btnSearchDate.Text = "Search"
-        Me.btnSearchDate.UseVisualStyleBackColor = True
         '
         'dtpFrom
         '
@@ -258,7 +254,7 @@ Partial Class frmScreenList
         'btnRefresh
         '
         Me.btnRefresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnRefresh.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.btnRefresh.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
         Me.btnRefresh.DefaultScheme = False
         Me.btnRefresh.DialogResult = System.Windows.Forms.DialogResult.None
         Me.btnRefresh.Font = New System.Drawing.Font("Verdana", 9.0!)
@@ -275,7 +271,7 @@ Partial Class frmScreenList
         'btnClose
         '
         Me.btnClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnClose.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.btnClose.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
         Me.btnClose.DefaultScheme = False
         Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnClose.Font = New System.Drawing.Font("Verdana", 9.0!)
@@ -285,44 +281,47 @@ Partial Class frmScreenList
         Me.btnClose.Scheme = PinkieControls.ButtonXP.Schemes.Blue
         Me.btnClose.Size = New System.Drawing.Size(110, 36)
         Me.btnClose.TabIndex = 159
+        Me.btnClose.TabStop = False
         Me.btnClose.Text = "Close"
         '
         'btnDelete
         '
         Me.btnDelete.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnDelete.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.btnDelete.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
         Me.btnDelete.DefaultScheme = False
         Me.btnDelete.DialogResult = System.Windows.Forms.DialogResult.None
         Me.btnDelete.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.btnDelete.Hint = ""
+        Me.btnDelete.Hint = "Delete Record"
         Me.btnDelete.Image = Global.SickLeaveScreening.My.Resources.Resources.Delete_16_x_16
         Me.btnDelete.Location = New System.Drawing.Point(808, 4)
         Me.btnDelete.Name = "btnDelete"
         Me.btnDelete.Scheme = PinkieControls.ButtonXP.Schemes.Blue
         Me.btnDelete.Size = New System.Drawing.Size(110, 36)
         Me.btnDelete.TabIndex = 158
+        Me.btnDelete.TabStop = False
         Me.btnDelete.Text = "Delete (F4)"
         '
         'btnEdit
         '
         Me.btnEdit.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnEdit.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.btnEdit.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
         Me.btnEdit.DefaultScheme = False
         Me.btnEdit.DialogResult = System.Windows.Forms.DialogResult.None
         Me.btnEdit.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.btnEdit.Hint = ""
+        Me.btnEdit.Hint = "Modify Record"
         Me.btnEdit.Image = Global.SickLeaveScreening.My.Resources.Resources.Modify_16_x_16
         Me.btnEdit.Location = New System.Drawing.Point(694, 4)
         Me.btnEdit.Name = "btnEdit"
         Me.btnEdit.Scheme = PinkieControls.ButtonXP.Schemes.Blue
         Me.btnEdit.Size = New System.Drawing.Size(110, 36)
         Me.btnEdit.TabIndex = 157
+        Me.btnEdit.TabStop = False
         Me.btnEdit.Text = "Edit [F3]"
         '
         'btnAdd
         '
         Me.btnAdd.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnAdd.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.btnAdd.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
         Me.btnAdd.DefaultScheme = False
         Me.btnAdd.DialogResult = System.Windows.Forms.DialogResult.None
         Me.btnAdd.Font = New System.Drawing.Font("Verdana", 9.0!)
@@ -333,6 +332,7 @@ Partial Class frmScreenList
         Me.btnAdd.Scheme = PinkieControls.ButtonXP.Schemes.Blue
         Me.btnAdd.Size = New System.Drawing.Size(110, 36)
         Me.btnAdd.TabIndex = 156
+        Me.btnAdd.TabStop = False
         Me.btnAdd.Text = "Add (F2)"
         '
         'dgvList
@@ -414,11 +414,29 @@ Partial Class frmScreenList
         Me.ColModifiedDate.ReadOnly = True
         Me.ColModifiedDate.Width = 140
         '
+        'btnSearchDate
+        '
+        Me.btnSearchDate.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnSearchDate.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.btnSearchDate.DefaultScheme = False
+        Me.btnSearchDate.DialogResult = System.Windows.Forms.DialogResult.None
+        Me.btnSearchDate.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.btnSearchDate.Hint = "Refresh List"
+        Me.btnSearchDate.Image = Global.SickLeaveScreening.My.Resources.Resources.Zoom_16_x_16
+        Me.btnSearchDate.Location = New System.Drawing.Point(350, 5)
+        Me.btnSearchDate.Name = "btnSearchDate"
+        Me.btnSearchDate.Scheme = PinkieControls.ButtonXP.Schemes.Blue
+        Me.btnSearchDate.Size = New System.Drawing.Size(85, 26)
+        Me.btnSearchDate.TabIndex = 161
+        Me.btnSearchDate.TabStop = False
+        Me.btnSearchDate.Text = "Search"
+        '
         'frmScreenList
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(1039, 661)
+        Me.Controls.Add(Me.btnSearchDate)
         Me.Controls.Add(Me.dgvList)
         Me.Controls.Add(Me.pnlBottom)
         Me.Controls.Add(Me.pnlTop)
@@ -456,8 +474,6 @@ Partial Class frmScreenList
     Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents btnGo As System.Windows.Forms.ToolStripButton
     Friend WithEvents lblStartFrom As System.Windows.Forms.Label
-    Friend WithEvents btnReset As System.Windows.Forms.Button
-    Friend WithEvents btnSearchDate As System.Windows.Forms.Button
     Friend WithEvents dtpFrom As System.Windows.Forms.DateTimePicker
     Friend WithEvents dtpTo As System.Windows.Forms.DateTimePicker
     Friend WithEvents lblStartTo As System.Windows.Forms.Label
@@ -472,4 +488,6 @@ Partial Class frmScreenList
     Friend WithEvents ColEmployeeName As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents ColRemarks As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents ColModifiedDate As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents btnSearchDate As PinkieControls.ButtonXP
+    Friend WithEvents btnResetDate As PinkieControls.ButtonXP
 End Class

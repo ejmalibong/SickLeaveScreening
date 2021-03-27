@@ -12,10 +12,10 @@ Public Class frmScreenList
     Private dbMethodJeonsoft As New SqlDbMethod(connection.JeonsoftConnection)
     Private main As New Main
 
-    Private pageSize As Integer 'display the number of records per page
-    Private pageIndex As Integer 'page sequence number
-    Private totalCount As Integer 'total records
-    Private pageCount As Integer 'total pages
+    Private pageSize As Integer
+    Private pageIndex As Integer
+    Private totalCount As Integer
+    Private pageCount As Integer
 
     Private table As New DataTable
     Private isFiltered As Boolean = False
@@ -26,7 +26,7 @@ Public Class frmScreenList
         Me.ActiveControl = dgvList
         pageSize = 100
         pageIndex = 0
-        SetPage()
+        BindPage()
         Application.EnableVisualStyles()
         main.EnableDoubleBuffered(dgvList)
 
@@ -56,9 +56,9 @@ Public Class frmScreenList
     Private Sub BindingNavigatorMoveFirstItem_Click(sender As Object, e As EventArgs) Handles BindingNavigatorMoveFirstItem.Click
         pageIndex = 0
         If isFiltered = True Then
-            SetPage(dtpFrom.Value.Date, dtpTo.Value.Date)
+            BindPage(dtpFrom.Value.Date, dtpTo.Value.Date)
         Else
-            SetPage()
+            BindPage()
         End If
     End Sub
 
@@ -67,11 +67,10 @@ Public Class frmScreenList
         If pageIndex < 0 Then
             pageIndex = 0
         End If
-
         If isFiltered = True Then
-            SetPage(dtpFrom.Value.Date, dtpTo.Value.Date)
+            BindPage(dtpFrom.Value.Date, dtpTo.Value.Date)
         Else
-            SetPage()
+            BindPage()
         End If
     End Sub
 
@@ -80,21 +79,19 @@ Public Class frmScreenList
         If pageIndex > pageCount - 1 Then
             pageIndex = pageCount - 1
         End If
-
         If isFiltered = True Then
-            SetPage(dtpFrom.Value.Date, dtpTo.Value.Date)
+            BindPage(dtpFrom.Value.Date, dtpTo.Value.Date)
         Else
-            SetPage()
+            BindPage()
         End If
     End Sub
 
     Private Sub BindingNavigatorMoveLastItem_Click(sender As Object, e As EventArgs) Handles BindingNavigatorMoveLastItem.Click
         pageIndex = pageCount - 1
-
         If isFiltered = True Then
-            SetPage(dtpFrom.Value.Date, dtpTo.Value.Date)
+            BindPage(dtpFrom.Value.Date, dtpTo.Value.Date)
         Else
-            SetPage()
+            BindPage()
         End If
     End Sub
 
@@ -120,14 +117,14 @@ Public Class frmScreenList
 
     Private Sub btnSearchDate_Click(sender As Object, e As EventArgs) Handles btnSearchDate.Click
         Try
-            SetPage(dtpFrom.Value.Date, dtpTo.Value.Date)
+            BindPage(dtpFrom.Value.Date, dtpTo.Value.Date)
             isFiltered = True
         Catch ex As Exception
             MessageBox.Show(ex.Message, main.SetExcpTitle(ex), MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
-    Private Sub btnResetDate_Click(sender As Object, e As EventArgs) Handles btnReset.Click
+    Private Sub btnResetDate_Click(sender As Object, e As EventArgs) Handles btnResetDate.Click
         dtpFrom.Value = Date.Now
         dtpTo.Value = Date.Now
         isFiltered = False
@@ -146,11 +143,12 @@ Public Class frmScreenList
 
     Private Sub btnEdit_Click(sender As Object, e As EventArgs) Handles btnEdit.Click
         Try
-            Dim _screenId As Integer = dgvList.CurrentRow.Cells("ColScreenId").Value
-
-            Using frmScreenEntry As New frmScreenEntry(_screenId)
-                frmScreenEntry.ShowDialog(Me)
-            End Using
+            If dgvList.Rows.Count > 0 Then
+                Dim _screenId As Integer = dgvList.CurrentRow.Cells("ColScreenId").Value
+                Using frmScreenEntry As New frmScreenEntry(_screenId)
+                    frmScreenEntry.ShowDialog(Me)
+                End Using
+            End If
         Catch ex As Exception
             MessageBox.Show(ex.Message, main.SetExcpTitle(ex), MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
@@ -194,16 +192,44 @@ Public Class frmScreenList
     End Sub
 
 #Region "Sub"
-    Private Sub SetPage(Optional ByVal _startDate As Date = Nothing, Optional ByVal _endDate As Date = Nothing)
+    Private Sub BindPage(Optional ByVal _startDate As Date = Nothing, Optional ByVal _endDate As Date = Nothing)
         Try
             totalCount = 0
 
             If Not _startDate = Nothing AndAlso Not _endDate = Nothing Then
-                BindPage(pageSize, pageIndex, totalCount, dtpFrom.Value.Date, dtpTo.Value.Date)
+                Dim _param(4) As SqlParameter
+                _param(0) = New SqlParameter("@PageSize", SqlDbType.Int)
+                _param(0).Value = pageSize
+                _param(1) = New SqlParameter("@PageIndex", SqlDbType.Int)
+                _param(1).Value = pageIndex
+                _param(2) = New SqlParameter("@TotalCount", SqlDbType.Int)
+                _param(2).Direction = ParameterDirection.Output
+                _param(3) = New SqlParameter("@StartDate", SqlDbType.Date)
+                _param(3).Value = dtpFrom.Value.Date
+                _param(4) = New SqlParameter("@EndDate", SqlDbType.Date)
+                _param(4).Value = dtpTo.Value.Date
+
+                table = dbMethodLocal.FillDataTableSp("RdScreeningPage", _param)
+                totalCount = Convert.ToInt32(_param(2).Value)
+
                 isFiltered = True
             Else
-                BindPage(pageSize, pageIndex, totalCount)
+                Dim _param(2) As SqlParameter
+                _param(0) = New SqlParameter("@PageSize", SqlDbType.Int)
+                _param(0).Value = pageSize
+                _param(1) = New SqlParameter("@PageIndex", SqlDbType.Int)
+                _param(1).Value = pageIndex
+                _param(2) = New SqlParameter("@TotalCount", SqlDbType.Int)
+                _param(2).Direction = ParameterDirection.Output
+
+                table = dbMethodLocal.FillDataTableSp("RdScreeningPage", _param)
+                totalCount = Convert.ToInt32(_param(2).Value)
+
+                isFiltered = False
             End If
+
+            dgvList.AutoGenerateColumns = False
+            dgvList.DataSource = table
 
             If totalCount Mod pageSize = 0 Then
                 pageCount = totalCount / pageSize
@@ -222,46 +248,6 @@ Public Class frmScreenList
             BindingNavigatorMovePreviousItem.Enabled = True
             BindingNavigatorMoveNextItem.Enabled = True
             BindingNavigatorMoveLastItem.Enabled = True
-        Catch ex As Exception
-            MessageBox.Show(ex.Message, main.SetExcpTitle(ex), MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-    End Sub
-
-    Private Sub BindPage(ByVal _pageSize As Integer, ByVal _pageIndex As Integer, ByVal _totalCount As Integer, Optional ByVal _startDate As Date = Nothing, Optional ByVal _endDate As Date = Nothing)
-        Try
-            totalCount = 0
-
-            If Not _startDate = Nothing AndAlso Not _endDate = Nothing Then
-                Dim _param(4) As SqlParameter
-                _param(0) = New SqlParameter("@PageSize", SqlDbType.Int)
-                _param(0).Value = _pageSize
-                _param(1) = New SqlParameter("@PageIndex", SqlDbType.Int)
-                _param(1).Value = _pageIndex
-                _param(2) = New SqlParameter("@TotalCount", SqlDbType.Int)
-                _param(2).Direction = ParameterDirection.Output
-                _param(3) = New SqlParameter("@StartDate", SqlDbType.Date)
-                _param(3).Value = dtpFrom.Value.Date
-                _param(4) = New SqlParameter("@EndDate", SqlDbType.Date)
-                _param(4).Value = dtpTo.Value.Date
-
-                table = dbMethodLocal.FillDataTableSp("RdScreeningPage", _param)
-                totalCount = Convert.ToInt32(_param(2).Value)
-            Else
-
-                Dim _param(2) As SqlParameter
-                _param(0) = New SqlParameter("@PageSize", SqlDbType.Int)
-                _param(0).Value = _pageSize
-                _param(1) = New SqlParameter("@PageIndex", SqlDbType.Int)
-                _param(1).Value = _pageIndex
-                _param(2) = New SqlParameter("@TotalCount", SqlDbType.Int)
-                _param(2).Direction = ParameterDirection.Output
-
-                table = dbMethodLocal.FillDataTableSp("RdScreeningPage", _param)
-                totalCount = Convert.ToInt32(_param(2).Value)
-            End If
-
-            dgvList.AutoGenerateColumns = False
-            dgvList.DataSource = table
         Catch ex As Exception
             MessageBox.Show(ex.Message, main.SetExcpTitle(ex), MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
@@ -289,9 +275,9 @@ Public Class frmScreenList
 
             pageIndex = CInt(txtPageNumber.Text) - 1
             If isFiltered = True Then
-                SetPage(dtpFrom.Value.Date, dtpTo.Value.Date)
+                BindPage(dtpFrom.Value.Date, dtpTo.Value.Date)
             Else
-                SetPage()
+                BindPage()
             End If
         Catch ex As Exception
             MessageBox.Show(ex.Message, main.SetExcpTitle(ex), MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -301,7 +287,7 @@ Public Class frmScreenList
     Public Sub RefreshValues()
         If dgvList IsNot Nothing AndAlso dgvList.CurrentRow IsNot Nothing Then Me.Invoke(New Action(AddressOf GetScrollingIndex))
         pageSize = 100
-        SetPage()
+        BindPage()
         If dgvList IsNot Nothing AndAlso dgvList.CurrentRow IsNot Nothing Then Me.Invoke(New Action(AddressOf SetScrollingIndex))
     End Sub
 

@@ -117,6 +117,10 @@ Public Class frmScreenList
 
     Private Sub btnSearchDate_Click(sender As Object, e As EventArgs) Handles btnSearchDate.Click
         Try
+            If dtpFrom.Value.Date > dtpTo.Value.Date Then
+                MessageBox.Show("Invalid date range.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
+            End If
             BindPage(dtpFrom.Value.Date, dtpTo.Value.Date)
             isFiltered = True
         Catch ex As Exception

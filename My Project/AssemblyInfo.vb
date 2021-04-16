@@ -8,10 +8,10 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("SickLeaveScreening")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("SickLeaveScreening")> 
+<Assembly: AssemblyTitle("Health Screening")> 
+<Assembly: AssemblyDescription("Health Screening Application")> 
+<Assembly: AssemblyCompany("NBC Philippines Car Technology Corporation")> 
+<Assembly: AssemblyProduct("Health Screening")> 
 <Assembly: AssemblyCopyright("Copyright ©  2021")> 
 <Assembly: AssemblyTrademark("")> 
 

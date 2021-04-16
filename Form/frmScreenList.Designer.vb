@@ -26,12 +26,17 @@ Partial Class frmScreenList
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmScreenList))
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.pnlTop = New System.Windows.Forms.Panel()
-        Me.btnResetDate = New PinkieControls.ButtonXP()
-        Me.lblStartFrom = New System.Windows.Forms.Label()
-        Me.dtpFrom = New System.Windows.Forms.DateTimePicker()
-        Me.dtpTo = New System.Windows.Forms.DateTimePicker()
-        Me.lblStartTo = New System.Windows.Forms.Label()
+        Me.btnSearch = New PinkieControls.ButtonXP()
+        Me.lblSearchCriteria = New System.Windows.Forms.Label()
+        Me.btnReset = New PinkieControls.ButtonXP()
+        Me.cmbSearchCriteria = New System.Windows.Forms.ComboBox()
+        Me.pnlScreenDate = New System.Windows.Forms.Panel()
+        Me.dtpScreenDateTo = New System.Windows.Forms.DateTimePicker()
+        Me.lblScreenDateTo = New System.Windows.Forms.Label()
+        Me.lblScreenDateFrom = New System.Windows.Forms.Label()
+        Me.dtpScreenDateFrom = New System.Windows.Forms.DateTimePicker()
         Me.bindingNavigator = New System.Windows.Forms.BindingNavigator(Me.components)
         Me.txtTotalPageNumber = New System.Windows.Forms.ToolStripLabel()
         Me.BindingNavigatorMoveFirstItem = New System.Windows.Forms.ToolStripButton()
@@ -41,100 +46,171 @@ Partial Class frmScreenList
         Me.BindingNavigatorSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.BindingNavigatorMoveNextItem = New System.Windows.Forms.ToolStripButton()
         Me.BindingNavigatorMoveLastItem = New System.Windows.Forms.ToolStripButton()
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.tssGo = New System.Windows.Forms.ToolStripSeparator()
         Me.btnGo = New System.Windows.Forms.ToolStripButton()
         Me.pnlBottom = New System.Windows.Forms.Panel()
+        Me.btnLogout = New PinkieControls.ButtonXP()
+        Me.lblUser = New System.Windows.Forms.Label()
+        Me.btnReport = New PinkieControls.ButtonXP()
         Me.btnRefresh = New PinkieControls.ButtonXP()
         Me.btnClose = New PinkieControls.ButtonXP()
         Me.btnDelete = New PinkieControls.ButtonXP()
         Me.btnEdit = New PinkieControls.ButtonXP()
         Me.btnAdd = New PinkieControls.ButtonXP()
+        Me.txtEmpName = New System.Windows.Forms.Label()
         Me.dgvList = New System.Windows.Forms.DataGridView()
         Me.ColScreenId = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ColScreenDate = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.ColEmployeeCode = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ColEmployeeName = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.ColRemarks = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.ColModifiedDate = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.btnSearchDate = New PinkieControls.ButtonXP()
+        Me.ColReason = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.ColDiagnosis = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.ColLeaveTypeId = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.ColLeaveTypeName = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.ColsFitToWork = New System.Windows.Forms.DataGridViewCheckBoxColumn()
+        Me.ColScreenByName = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.pnlEmployeeName = New System.Windows.Forms.Panel()
+        Me.txtEmployeeName = New System.Windows.Forms.TextBox()
+        Me.pnlAbsentDate = New System.Windows.Forms.Panel()
+        Me.dtpAbsentTo = New System.Windows.Forms.DateTimePicker()
+        Me.lblAbsentTo = New System.Windows.Forms.Label()
+        Me.lblAbsentFrom = New System.Windows.Forms.Label()
+        Me.dtpAbsentFrom = New System.Windows.Forms.DateTimePicker()
+        Me.pnlReason = New System.Windows.Forms.Panel()
+        Me.txtReason = New System.Windows.Forms.TextBox()
+        Me.pnlDiagnosis = New System.Windows.Forms.Panel()
+        Me.txtDiagnosis = New System.Windows.Forms.TextBox()
         Me.pnlTop.SuspendLayout()
+        Me.pnlScreenDate.SuspendLayout()
         CType(Me.bindingNavigator, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.bindingNavigator.SuspendLayout()
         Me.pnlBottom.SuspendLayout()
         CType(Me.dgvList, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlEmployeeName.SuspendLayout()
+        Me.pnlAbsentDate.SuspendLayout()
+        Me.pnlReason.SuspendLayout()
+        Me.pnlDiagnosis.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlTop
         '
         Me.pnlTop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlTop.Controls.Add(Me.btnResetDate)
-        Me.pnlTop.Controls.Add(Me.lblStartFrom)
-        Me.pnlTop.Controls.Add(Me.dtpFrom)
-        Me.pnlTop.Controls.Add(Me.dtpTo)
-        Me.pnlTop.Controls.Add(Me.lblStartTo)
+        Me.pnlTop.Controls.Add(Me.btnSearch)
+        Me.pnlTop.Controls.Add(Me.lblSearchCriteria)
+        Me.pnlTop.Controls.Add(Me.btnReset)
+        Me.pnlTop.Controls.Add(Me.cmbSearchCriteria)
+        Me.pnlTop.Controls.Add(Me.pnlScreenDate)
         Me.pnlTop.Controls.Add(Me.bindingNavigator)
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(1039, 36)
+        Me.pnlTop.Size = New System.Drawing.Size(1284, 36)
         Me.pnlTop.TabIndex = 0
         '
-        'btnResetDate
+        'btnSearch
         '
-        Me.btnResetDate.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnResetDate.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
-        Me.btnResetDate.DefaultScheme = False
-        Me.btnResetDate.DialogResult = System.Windows.Forms.DialogResult.None
-        Me.btnResetDate.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.btnResetDate.Hint = "Refresh List"
-        Me.btnResetDate.Image = Global.SickLeaveScreening.My.Resources.Resources.Undo_16_x_16
-        Me.btnResetDate.Location = New System.Drawing.Point(440, 4)
-        Me.btnResetDate.Name = "btnResetDate"
-        Me.btnResetDate.Scheme = PinkieControls.ButtonXP.Schemes.Blue
-        Me.btnResetDate.Size = New System.Drawing.Size(85, 26)
-        Me.btnResetDate.TabIndex = 162
-        Me.btnResetDate.TabStop = False
-        Me.btnResetDate.Text = "Reset"
+        Me.btnSearch.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.btnSearch.DefaultScheme = False
+        Me.btnSearch.DialogResult = System.Windows.Forms.DialogResult.None
+        Me.btnSearch.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.btnSearch.Hint = "Search"
+        Me.btnSearch.Image = Global.SickLeaveScreening.My.Resources.Resources.Find_16_x_16
+        Me.btnSearch.Location = New System.Drawing.Point(602, 4)
+        Me.btnSearch.Name = "btnSearch"
+        Me.btnSearch.Scheme = PinkieControls.ButtonXP.Schemes.Blue
+        Me.btnSearch.Size = New System.Drawing.Size(85, 26)
+        Me.btnSearch.TabIndex = 161
+        Me.btnSearch.TabStop = False
+        Me.btnSearch.Text = "Search"
         '
-        'lblStartFrom
+        'lblSearchCriteria
         '
-        Me.lblStartFrom.AutoSize = True
-        Me.lblStartFrom.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.lblStartFrom.Location = New System.Drawing.Point(6, 10)
-        Me.lblStartFrom.Name = "lblStartFrom"
-        Me.lblStartFrom.Size = New System.Drawing.Size(38, 14)
-        Me.lblStartFrom.TabIndex = 24
-        Me.lblStartFrom.Text = "From"
+        Me.lblSearchCriteria.BackColor = System.Drawing.SystemColors.Control
+        Me.lblSearchCriteria.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblSearchCriteria.ForeColor = System.Drawing.Color.Black
+        Me.lblSearchCriteria.Location = New System.Drawing.Point(4, 5)
+        Me.lblSearchCriteria.Name = "lblSearchCriteria"
+        Me.lblSearchCriteria.Size = New System.Drawing.Size(65, 24)
+        Me.lblSearchCriteria.TabIndex = 525
+        Me.lblSearchCriteria.Text = "Criteria"
+        Me.lblSearchCriteria.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'dtpFrom
+        'btnReset
         '
-        Me.dtpFrom.CustomFormat = "MMM dd, yyyy"
-        Me.dtpFrom.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.dtpFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.dtpFrom.Location = New System.Drawing.Point(50, 6)
-        Me.dtpFrom.Name = "dtpFrom"
-        Me.dtpFrom.Size = New System.Drawing.Size(130, 22)
-        Me.dtpFrom.TabIndex = 20
+        Me.btnReset.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.btnReset.DefaultScheme = False
+        Me.btnReset.DialogResult = System.Windows.Forms.DialogResult.None
+        Me.btnReset.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.btnReset.Hint = "Remove search filter"
+        Me.btnReset.Image = Global.SickLeaveScreening.My.Resources.Resources.Undo_16_x_16
+        Me.btnReset.Location = New System.Drawing.Point(689, 4)
+        Me.btnReset.Name = "btnReset"
+        Me.btnReset.Scheme = PinkieControls.ButtonXP.Schemes.Blue
+        Me.btnReset.Size = New System.Drawing.Size(85, 26)
+        Me.btnReset.TabIndex = 162
+        Me.btnReset.TabStop = False
+        Me.btnReset.Text = "Reset"
         '
-        'dtpTo
+        'cmbSearchCriteria
         '
-        Me.dtpTo.CustomFormat = "MMM dd, yyyy"
-        Me.dtpTo.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.dtpTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.dtpTo.Location = New System.Drawing.Point(213, 6)
-        Me.dtpTo.Name = "dtpTo"
-        Me.dtpTo.Size = New System.Drawing.Size(130, 22)
-        Me.dtpTo.TabIndex = 21
+        Me.cmbSearchCriteria.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbSearchCriteria.Font = New System.Drawing.Font("Verdana", 9.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cmbSearchCriteria.FormattingEnabled = True
+        Me.cmbSearchCriteria.Location = New System.Drawing.Point(68, 5)
+        Me.cmbSearchCriteria.Name = "cmbSearchCriteria"
+        Me.cmbSearchCriteria.Size = New System.Drawing.Size(185, 24)
+        Me.cmbSearchCriteria.TabIndex = 526
         '
-        'lblStartTo
+        'pnlScreenDate
         '
-        Me.lblStartTo.AutoSize = True
-        Me.lblStartTo.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.lblStartTo.Location = New System.Drawing.Point(186, 10)
-        Me.lblStartTo.Name = "lblStartTo"
-        Me.lblStartTo.Size = New System.Drawing.Size(21, 14)
-        Me.lblStartTo.TabIndex = 25
-        Me.lblStartTo.Text = "To"
+        Me.pnlScreenDate.BackColor = System.Drawing.Color.White
+        Me.pnlScreenDate.Controls.Add(Me.dtpScreenDateTo)
+        Me.pnlScreenDate.Controls.Add(Me.lblScreenDateTo)
+        Me.pnlScreenDate.Controls.Add(Me.lblScreenDateFrom)
+        Me.pnlScreenDate.Controls.Add(Me.dtpScreenDateFrom)
+        Me.pnlScreenDate.Location = New System.Drawing.Point(254, 1)
+        Me.pnlScreenDate.Name = "pnlScreenDate"
+        Me.pnlScreenDate.Size = New System.Drawing.Size(348, 32)
+        Me.pnlScreenDate.TabIndex = 163
+        '
+        'dtpScreenDateTo
+        '
+        Me.dtpScreenDateTo.CustomFormat = "MMM dd, yyyy"
+        Me.dtpScreenDateTo.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.dtpScreenDateTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.dtpScreenDateTo.Location = New System.Drawing.Point(213, 5)
+        Me.dtpScreenDateTo.Name = "dtpScreenDateTo"
+        Me.dtpScreenDateTo.Size = New System.Drawing.Size(130, 22)
+        Me.dtpScreenDateTo.TabIndex = 21
+        '
+        'lblScreenDateTo
+        '
+        Me.lblScreenDateTo.AutoSize = True
+        Me.lblScreenDateTo.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.lblScreenDateTo.Location = New System.Drawing.Point(186, 9)
+        Me.lblScreenDateTo.Name = "lblScreenDateTo"
+        Me.lblScreenDateTo.Size = New System.Drawing.Size(21, 14)
+        Me.lblScreenDateTo.TabIndex = 25
+        Me.lblScreenDateTo.Text = "To"
+        '
+        'lblScreenDateFrom
+        '
+        Me.lblScreenDateFrom.AutoSize = True
+        Me.lblScreenDateFrom.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.lblScreenDateFrom.Location = New System.Drawing.Point(6, 9)
+        Me.lblScreenDateFrom.Name = "lblScreenDateFrom"
+        Me.lblScreenDateFrom.Size = New System.Drawing.Size(38, 14)
+        Me.lblScreenDateFrom.TabIndex = 24
+        Me.lblScreenDateFrom.Text = "From"
+        '
+        'dtpScreenDateFrom
+        '
+        Me.dtpScreenDateFrom.CustomFormat = "MMM dd, yyyy"
+        Me.dtpScreenDateFrom.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.dtpScreenDateFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.dtpScreenDateFrom.Location = New System.Drawing.Point(50, 5)
+        Me.dtpScreenDateFrom.Name = "dtpScreenDateFrom"
+        Me.dtpScreenDateFrom.Size = New System.Drawing.Size(130, 22)
+        Me.dtpScreenDateFrom.TabIndex = 20
         '
         'bindingNavigator
         '
@@ -146,8 +222,8 @@ Partial Class frmScreenList
         Me.bindingNavigator.DeleteItem = Nothing
         Me.bindingNavigator.Dock = System.Windows.Forms.DockStyle.None
         Me.bindingNavigator.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.bindingNavigator.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BindingNavigatorMoveFirstItem, Me.BindingNavigatorMovePreviousItem, Me.BindingNavigatorSeparator, Me.txtPageNumber, Me.txtTotalPageNumber, Me.BindingNavigatorSeparator1, Me.BindingNavigatorMoveNextItem, Me.BindingNavigatorMoveLastItem, Me.ToolStripSeparator1, Me.btnGo})
-        Me.bindingNavigator.Location = New System.Drawing.Point(837, 4)
+        Me.bindingNavigator.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BindingNavigatorMoveFirstItem, Me.BindingNavigatorMovePreviousItem, Me.BindingNavigatorSeparator, Me.txtPageNumber, Me.txtTotalPageNumber, Me.BindingNavigatorSeparator1, Me.BindingNavigatorMoveNextItem, Me.BindingNavigatorMoveLastItem, Me.tssGo, Me.btnGo})
+        Me.bindingNavigator.Location = New System.Drawing.Point(1077, 4)
         Me.bindingNavigator.MoveFirstItem = Me.BindingNavigatorMoveFirstItem
         Me.bindingNavigator.MoveLastItem = Me.BindingNavigatorMoveLastItem
         Me.bindingNavigator.MoveNextItem = Me.BindingNavigatorMoveNextItem
@@ -164,7 +240,7 @@ Partial Class frmScreenList
         Me.txtTotalPageNumber.Name = "txtTotalPageNumber"
         Me.txtTotalPageNumber.Size = New System.Drawing.Size(21, 22)
         Me.txtTotalPageNumber.Text = "of "
-        Me.txtTotalPageNumber.ToolTipText = "Total number of items"
+        Me.txtTotalPageNumber.ToolTipText = "Total page number"
         '
         'BindingNavigatorMoveFirstItem
         '
@@ -197,7 +273,7 @@ Partial Class frmScreenList
         Me.txtPageNumber.Size = New System.Drawing.Size(30, 23)
         Me.txtPageNumber.Text = "0"
         Me.txtPageNumber.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.txtPageNumber.ToolTipText = "Current position"
+        Me.txtPageNumber.ToolTipText = "Current page"
         '
         'BindingNavigatorSeparator1
         '
@@ -222,10 +298,10 @@ Partial Class frmScreenList
         Me.BindingNavigatorMoveLastItem.Size = New System.Drawing.Size(23, 22)
         Me.BindingNavigatorMoveLastItem.Text = "Move last"
         '
-        'ToolStripSeparator1
+        'tssGo
         '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
+        Me.tssGo.Name = "tssGo"
+        Me.tssGo.Size = New System.Drawing.Size(6, 25)
         '
         'btnGo
         '
@@ -236,30 +312,77 @@ Partial Class frmScreenList
         Me.btnGo.Name = "btnGo"
         Me.btnGo.Size = New System.Drawing.Size(35, 22)
         Me.btnGo.Text = "Go"
+        Me.btnGo.ToolTipText = "Go to page number specified"
         '
         'pnlBottom
         '
         Me.pnlBottom.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlBottom.Controls.Add(Me.btnLogout)
+        Me.pnlBottom.Controls.Add(Me.lblUser)
+        Me.pnlBottom.Controls.Add(Me.btnReport)
         Me.pnlBottom.Controls.Add(Me.btnRefresh)
         Me.pnlBottom.Controls.Add(Me.btnClose)
         Me.pnlBottom.Controls.Add(Me.btnDelete)
         Me.pnlBottom.Controls.Add(Me.btnEdit)
         Me.pnlBottom.Controls.Add(Me.btnAdd)
+        Me.pnlBottom.Controls.Add(Me.txtEmpName)
         Me.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.pnlBottom.Location = New System.Drawing.Point(0, 615)
         Me.pnlBottom.Name = "pnlBottom"
-        Me.pnlBottom.Size = New System.Drawing.Size(1039, 46)
+        Me.pnlBottom.Size = New System.Drawing.Size(1284, 46)
         Me.pnlBottom.TabIndex = 1
+        '
+        'btnLogout
+        '
+        Me.btnLogout.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.btnLogout.DefaultScheme = False
+        Me.btnLogout.DialogResult = System.Windows.Forms.DialogResult.None
+        Me.btnLogout.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.btnLogout.Hint = "Log out your account"
+        Me.btnLogout.Location = New System.Drawing.Point(664, 14)
+        Me.btnLogout.Name = "btnLogout"
+        Me.btnLogout.Scheme = PinkieControls.ButtonXP.Schemes.Blue
+        Me.btnLogout.Size = New System.Drawing.Size(92, 26)
+        Me.btnLogout.TabIndex = 521
+        Me.btnLogout.TabStop = False
+        Me.btnLogout.Text = "Log Out"
+        '
+        'lblUser
+        '
+        Me.lblUser.BackColor = System.Drawing.SystemColors.Control
+        Me.lblUser.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblUser.ForeColor = System.Drawing.Color.Black
+        Me.lblUser.Location = New System.Drawing.Point(284, 15)
+        Me.lblUser.Name = "lblUser"
+        Me.lblUser.Size = New System.Drawing.Size(100, 24)
+        Me.lblUser.TabIndex = 315
+        Me.lblUser.Text = " Logged in as"
+        Me.lblUser.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'btnReport
+        '
+        Me.btnReport.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.btnReport.DefaultScheme = False
+        Me.btnReport.DialogResult = System.Windows.Forms.DialogResult.None
+        Me.btnReport.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.btnReport.Hint = "Report"
+        Me.btnReport.Image = Global.SickLeaveScreening.My.Resources.Resources.Report_16_x_16
+        Me.btnReport.Location = New System.Drawing.Point(138, 4)
+        Me.btnReport.Name = "btnReport"
+        Me.btnReport.Scheme = PinkieControls.ButtonXP.Schemes.Blue
+        Me.btnReport.Size = New System.Drawing.Size(130, 36)
+        Me.btnReport.TabIndex = 161
+        Me.btnReport.TabStop = False
+        Me.btnReport.Text = "    Report"
         '
         'btnRefresh
         '
-        Me.btnRefresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnRefresh.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
         Me.btnRefresh.DefaultScheme = False
         Me.btnRefresh.DialogResult = System.Windows.Forms.DialogResult.None
         Me.btnRefresh.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.btnRefresh.Hint = "Refresh List"
-        Me.btnRefresh.Image = Global.SickLeaveScreening.My.Resources.Resources.Sync_16_x_16
+        Me.btnRefresh.Hint = "Refresh"
+        Me.btnRefresh.Image = Global.SickLeaveScreening.My.Resources.Resources.Refresh_16_x_16
         Me.btnRefresh.Location = New System.Drawing.Point(4, 4)
         Me.btnRefresh.Name = "btnRefresh"
         Me.btnRefresh.Scheme = PinkieControls.ButtonXP.Schemes.Blue
@@ -275,8 +398,8 @@ Partial Class frmScreenList
         Me.btnClose.DefaultScheme = False
         Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnClose.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.btnClose.Hint = ""
-        Me.btnClose.Location = New System.Drawing.Point(922, 4)
+        Me.btnClose.Hint = "Exit application"
+        Me.btnClose.Location = New System.Drawing.Point(1167, 4)
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Scheme = PinkieControls.ButtonXP.Schemes.Blue
         Me.btnClose.Size = New System.Drawing.Size(110, 36)
@@ -291,9 +414,9 @@ Partial Class frmScreenList
         Me.btnDelete.DefaultScheme = False
         Me.btnDelete.DialogResult = System.Windows.Forms.DialogResult.None
         Me.btnDelete.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.btnDelete.Hint = "Delete Record"
-        Me.btnDelete.Image = Global.SickLeaveScreening.My.Resources.Resources.Delete_16_x_16
-        Me.btnDelete.Location = New System.Drawing.Point(808, 4)
+        Me.btnDelete.Hint = "Delete record"
+        Me.btnDelete.Image = Global.SickLeaveScreening.My.Resources.Resources.Erase_16_x_16
+        Me.btnDelete.Location = New System.Drawing.Point(1053, 4)
         Me.btnDelete.Name = "btnDelete"
         Me.btnDelete.Scheme = PinkieControls.ButtonXP.Schemes.Blue
         Me.btnDelete.Size = New System.Drawing.Size(110, 36)
@@ -308,9 +431,9 @@ Partial Class frmScreenList
         Me.btnEdit.DefaultScheme = False
         Me.btnEdit.DialogResult = System.Windows.Forms.DialogResult.None
         Me.btnEdit.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.btnEdit.Hint = "Modify Record"
+        Me.btnEdit.Hint = "Modify record"
         Me.btnEdit.Image = Global.SickLeaveScreening.My.Resources.Resources.Modify_16_x_16
-        Me.btnEdit.Location = New System.Drawing.Point(694, 4)
+        Me.btnEdit.Location = New System.Drawing.Point(939, 4)
         Me.btnEdit.Name = "btnEdit"
         Me.btnEdit.Scheme = PinkieControls.ButtonXP.Schemes.Blue
         Me.btnEdit.Size = New System.Drawing.Size(110, 36)
@@ -325,9 +448,9 @@ Partial Class frmScreenList
         Me.btnAdd.DefaultScheme = False
         Me.btnAdd.DialogResult = System.Windows.Forms.DialogResult.None
         Me.btnAdd.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.btnAdd.Hint = "Add New Entry"
+        Me.btnAdd.Hint = "Add new record"
         Me.btnAdd.Image = Global.SickLeaveScreening.My.Resources.Resources.Create_16_x_16
-        Me.btnAdd.Location = New System.Drawing.Point(580, 4)
+        Me.btnAdd.Location = New System.Drawing.Point(825, 4)
         Me.btnAdd.Name = "btnAdd"
         Me.btnAdd.Scheme = PinkieControls.ButtonXP.Schemes.Blue
         Me.btnAdd.Size = New System.Drawing.Size(110, 36)
@@ -335,13 +458,29 @@ Partial Class frmScreenList
         Me.btnAdd.TabStop = False
         Me.btnAdd.Text = "Add (F2)"
         '
+        'txtEmpName
+        '
+        Me.txtEmpName.BackColor = System.Drawing.SystemColors.GradientActiveCaption
+        Me.txtEmpName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtEmpName.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.txtEmpName.ForeColor = System.Drawing.Color.Black
+        Me.txtEmpName.Location = New System.Drawing.Point(383, 15)
+        Me.txtEmpName.Name = "txtEmpName"
+        Me.txtEmpName.Size = New System.Drawing.Size(280, 24)
+        Me.txtEmpName.TabIndex = 520
+        Me.txtEmpName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.txtEmpName.UseCompatibleTextRendering = True
+        '
         'dgvList
         '
         Me.dgvList.AllowUserToAddRows = False
         Me.dgvList.AllowUserToDeleteRows = False
-        Me.dgvList.AllowUserToResizeColumns = False
         Me.dgvList.AllowUserToResizeRows = False
+        Me.dgvList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.dgvList.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.dgvList.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
         DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
         DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
         DataGridViewCellStyle1.Font = New System.Drawing.Font("Verdana", 8.5!)
@@ -351,18 +490,18 @@ Partial Class frmScreenList
         Me.dgvList.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvList.ColumnHeadersHeight = 25
         Me.dgvList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
-        Me.dgvList.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ColScreenId, Me.ColScreenDate, Me.ColEmployeeCode, Me.ColEmployeeName, Me.ColRemarks, Me.ColModifiedDate})
-        Me.dgvList.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dgvList.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ColScreenId, Me.ColScreenDate, Me.ColEmployeeName, Me.ColReason, Me.ColDiagnosis, Me.ColLeaveTypeId, Me.ColLeaveTypeName, Me.ColsFitToWork, Me.ColScreenByName})
         Me.dgvList.Location = New System.Drawing.Point(0, 36)
         Me.dgvList.MultiSelect = False
         Me.dgvList.Name = "dgvList"
         Me.dgvList.ReadOnly = True
+        Me.dgvList.RowHeadersVisible = False
         Me.dgvList.RowHeadersWidth = 40
         Me.dgvList.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgvList.RowTemplate.DefaultCellStyle.Font = New System.Drawing.Font("Verdana", 8.5!)
         Me.dgvList.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.dgvList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvList.Size = New System.Drawing.Size(1039, 579)
+        Me.dgvList.Size = New System.Drawing.Size(1284, 579)
         Me.dgvList.TabIndex = 2
         '
         'ColScreenId
@@ -381,15 +520,6 @@ Partial Class frmScreenList
         Me.ColScreenDate.ReadOnly = True
         Me.ColScreenDate.Width = 140
         '
-        'ColEmployeeCode
-        '
-        Me.ColEmployeeCode.DataPropertyName = "EmployeeCode"
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.ColEmployeeCode.DefaultCellStyle = DataGridViewCellStyle2
-        Me.ColEmployeeCode.HeaderText = "Employee ID"
-        Me.ColEmployeeCode.Name = "ColEmployeeCode"
-        Me.ColEmployeeCode.ReadOnly = True
-        '
         'ColEmployeeName
         '
         Me.ColEmployeeName.DataPropertyName = "EmployeeName"
@@ -398,64 +528,201 @@ Partial Class frmScreenList
         Me.ColEmployeeName.ReadOnly = True
         Me.ColEmployeeName.Width = 275
         '
-        'ColRemarks
+        'ColReason
         '
-        Me.ColRemarks.DataPropertyName = "Remarks"
-        Me.ColRemarks.HeaderText = "Remarks"
-        Me.ColRemarks.Name = "ColRemarks"
-        Me.ColRemarks.ReadOnly = True
-        Me.ColRemarks.Width = 325
+        Me.ColReason.DataPropertyName = "Reason"
+        Me.ColReason.HeaderText = "Reason / Chief Complaint"
+        Me.ColReason.Name = "ColReason"
+        Me.ColReason.ReadOnly = True
+        Me.ColReason.Width = 250
         '
-        'ColModifiedDate
+        'ColDiagnosis
         '
-        Me.ColModifiedDate.DataPropertyName = "ModifiedDate"
-        Me.ColModifiedDate.HeaderText = "Modified Date"
-        Me.ColModifiedDate.Name = "ColModifiedDate"
-        Me.ColModifiedDate.ReadOnly = True
-        Me.ColModifiedDate.Width = 140
+        Me.ColDiagnosis.DataPropertyName = "Diagnosis"
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        Me.ColDiagnosis.DefaultCellStyle = DataGridViewCellStyle2
+        Me.ColDiagnosis.HeaderText = "Diagnosis"
+        Me.ColDiagnosis.Name = "ColDiagnosis"
+        Me.ColDiagnosis.ReadOnly = True
+        Me.ColDiagnosis.Width = 215
         '
-        'btnSearchDate
+        'ColLeaveTypeId
         '
-        Me.btnSearchDate.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnSearchDate.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.btnSearchDate.DefaultScheme = False
-        Me.btnSearchDate.DialogResult = System.Windows.Forms.DialogResult.None
-        Me.btnSearchDate.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.btnSearchDate.Hint = "Refresh List"
-        Me.btnSearchDate.Image = Global.SickLeaveScreening.My.Resources.Resources.Zoom_16_x_16
-        Me.btnSearchDate.Location = New System.Drawing.Point(350, 5)
-        Me.btnSearchDate.Name = "btnSearchDate"
-        Me.btnSearchDate.Scheme = PinkieControls.ButtonXP.Schemes.Blue
-        Me.btnSearchDate.Size = New System.Drawing.Size(85, 26)
-        Me.btnSearchDate.TabIndex = 161
-        Me.btnSearchDate.TabStop = False
-        Me.btnSearchDate.Text = "Search"
+        Me.ColLeaveTypeId.DataPropertyName = "LeaveTypeId"
+        Me.ColLeaveTypeId.HeaderText = "LeaveTypeId"
+        Me.ColLeaveTypeId.Name = "ColLeaveTypeId"
+        Me.ColLeaveTypeId.ReadOnly = True
+        Me.ColLeaveTypeId.Visible = False
+        '
+        'ColLeaveTypeName
+        '
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.ColLeaveTypeName.DefaultCellStyle = DataGridViewCellStyle3
+        Me.ColLeaveTypeName.HeaderText = "Leave Type"
+        Me.ColLeaveTypeName.Name = "ColLeaveTypeName"
+        Me.ColLeaveTypeName.ReadOnly = True
+        Me.ColLeaveTypeName.Width = 90
+        '
+        'ColsFitToWork
+        '
+        Me.ColsFitToWork.DataPropertyName = "IsFitToWork"
+        Me.ColsFitToWork.HeaderText = "Fit To Work"
+        Me.ColsFitToWork.Name = "ColsFitToWork"
+        Me.ColsFitToWork.ReadOnly = True
+        Me.ColsFitToWork.Width = 90
+        '
+        'ColScreenByName
+        '
+        Me.ColScreenByName.DataPropertyName = "ScreenByName"
+        Me.ColScreenByName.HeaderText = "Encoded By"
+        Me.ColScreenByName.Name = "ColScreenByName"
+        Me.ColScreenByName.ReadOnly = True
+        Me.ColScreenByName.Width = 200
+        '
+        'pnlEmployeeName
+        '
+        Me.pnlEmployeeName.BackColor = System.Drawing.Color.White
+        Me.pnlEmployeeName.Controls.Add(Me.txtEmployeeName)
+        Me.pnlEmployeeName.Location = New System.Drawing.Point(255, 2)
+        Me.pnlEmployeeName.Name = "pnlEmployeeName"
+        Me.pnlEmployeeName.Size = New System.Drawing.Size(348, 32)
+        Me.pnlEmployeeName.TabIndex = 165
+        Me.pnlEmployeeName.Visible = False
+        '
+        'txtEmployeeName
+        '
+        Me.txtEmployeeName.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.txtEmployeeName.Location = New System.Drawing.Point(8, 5)
+        Me.txtEmployeeName.Name = "txtEmployeeName"
+        Me.txtEmployeeName.Size = New System.Drawing.Size(333, 22)
+        Me.txtEmployeeName.TabIndex = 0
+        '
+        'pnlAbsentDate
+        '
+        Me.pnlAbsentDate.BackColor = System.Drawing.Color.White
+        Me.pnlAbsentDate.Controls.Add(Me.dtpAbsentTo)
+        Me.pnlAbsentDate.Controls.Add(Me.lblAbsentTo)
+        Me.pnlAbsentDate.Controls.Add(Me.lblAbsentFrom)
+        Me.pnlAbsentDate.Controls.Add(Me.dtpAbsentFrom)
+        Me.pnlAbsentDate.Location = New System.Drawing.Point(255, 2)
+        Me.pnlAbsentDate.Name = "pnlAbsentDate"
+        Me.pnlAbsentDate.Size = New System.Drawing.Size(348, 32)
+        Me.pnlAbsentDate.TabIndex = 164
+        '
+        'dtpAbsentTo
+        '
+        Me.dtpAbsentTo.CustomFormat = "MMM dd, yyyy"
+        Me.dtpAbsentTo.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.dtpAbsentTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.dtpAbsentTo.Location = New System.Drawing.Point(213, 5)
+        Me.dtpAbsentTo.Name = "dtpAbsentTo"
+        Me.dtpAbsentTo.Size = New System.Drawing.Size(130, 22)
+        Me.dtpAbsentTo.TabIndex = 21
+        '
+        'lblAbsentTo
+        '
+        Me.lblAbsentTo.AutoSize = True
+        Me.lblAbsentTo.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.lblAbsentTo.Location = New System.Drawing.Point(186, 9)
+        Me.lblAbsentTo.Name = "lblAbsentTo"
+        Me.lblAbsentTo.Size = New System.Drawing.Size(21, 14)
+        Me.lblAbsentTo.TabIndex = 25
+        Me.lblAbsentTo.Text = "To"
+        '
+        'lblAbsentFrom
+        '
+        Me.lblAbsentFrom.AutoSize = True
+        Me.lblAbsentFrom.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.lblAbsentFrom.Location = New System.Drawing.Point(6, 9)
+        Me.lblAbsentFrom.Name = "lblAbsentFrom"
+        Me.lblAbsentFrom.Size = New System.Drawing.Size(38, 14)
+        Me.lblAbsentFrom.TabIndex = 24
+        Me.lblAbsentFrom.Text = "From"
+        '
+        'dtpAbsentFrom
+        '
+        Me.dtpAbsentFrom.CustomFormat = "MMM dd, yyyy"
+        Me.dtpAbsentFrom.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.dtpAbsentFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.dtpAbsentFrom.Location = New System.Drawing.Point(50, 5)
+        Me.dtpAbsentFrom.Name = "dtpAbsentFrom"
+        Me.dtpAbsentFrom.Size = New System.Drawing.Size(130, 22)
+        Me.dtpAbsentFrom.TabIndex = 20
+        '
+        'pnlReason
+        '
+        Me.pnlReason.BackColor = System.Drawing.Color.White
+        Me.pnlReason.Controls.Add(Me.txtReason)
+        Me.pnlReason.Location = New System.Drawing.Point(255, 2)
+        Me.pnlReason.Name = "pnlReason"
+        Me.pnlReason.Size = New System.Drawing.Size(348, 32)
+        Me.pnlReason.TabIndex = 166
+        Me.pnlReason.Visible = False
+        '
+        'txtReason
+        '
+        Me.txtReason.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.txtReason.Location = New System.Drawing.Point(8, 5)
+        Me.txtReason.Name = "txtReason"
+        Me.txtReason.Size = New System.Drawing.Size(333, 22)
+        Me.txtReason.TabIndex = 0
+        '
+        'pnlDiagnosis
+        '
+        Me.pnlDiagnosis.BackColor = System.Drawing.Color.White
+        Me.pnlDiagnosis.Controls.Add(Me.txtDiagnosis)
+        Me.pnlDiagnosis.Location = New System.Drawing.Point(255, 2)
+        Me.pnlDiagnosis.Name = "pnlDiagnosis"
+        Me.pnlDiagnosis.Size = New System.Drawing.Size(348, 32)
+        Me.pnlDiagnosis.TabIndex = 167
+        Me.pnlDiagnosis.Visible = False
+        '
+        'txtDiagnosis
+        '
+        Me.txtDiagnosis.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.txtDiagnosis.Location = New System.Drawing.Point(8, 5)
+        Me.txtDiagnosis.Name = "txtDiagnosis"
+        Me.txtDiagnosis.Size = New System.Drawing.Size(333, 22)
+        Me.txtDiagnosis.TabIndex = 0
         '
         'frmScreenList
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(1039, 661)
-        Me.Controls.Add(Me.btnSearchDate)
+        Me.ClientSize = New System.Drawing.Size(1284, 661)
+        Me.Controls.Add(Me.pnlDiagnosis)
+        Me.Controls.Add(Me.pnlReason)
+        Me.Controls.Add(Me.pnlAbsentDate)
+        Me.Controls.Add(Me.pnlEmployeeName)
         Me.Controls.Add(Me.dgvList)
         Me.Controls.Add(Me.pnlBottom)
         Me.Controls.Add(Me.pnlTop)
         Me.DoubleBuffered = True
         Me.Font = New System.Drawing.Font("Verdana", 8.5!)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.KeyPreview = True
         Me.MaximizeBox = False
+        Me.MinimumSize = New System.Drawing.Size(1300, 700)
         Me.Name = "frmScreenList"
-        Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Health Screening List"
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
+        Me.pnlScreenDate.ResumeLayout(False)
+        Me.pnlScreenDate.PerformLayout()
         CType(Me.bindingNavigator, System.ComponentModel.ISupportInitialize).EndInit()
         Me.bindingNavigator.ResumeLayout(False)
         Me.bindingNavigator.PerformLayout()
         Me.pnlBottom.ResumeLayout(False)
         CType(Me.dgvList, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlEmployeeName.ResumeLayout(False)
+        Me.pnlEmployeeName.PerformLayout()
+        Me.pnlAbsentDate.ResumeLayout(False)
+        Me.pnlAbsentDate.PerformLayout()
+        Me.pnlReason.ResumeLayout(False)
+        Me.pnlReason.PerformLayout()
+        Me.pnlDiagnosis.ResumeLayout(False)
+        Me.pnlDiagnosis.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -471,23 +738,44 @@ Partial Class frmScreenList
     Friend WithEvents BindingNavigatorSeparator1 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents BindingNavigatorMoveNextItem As System.Windows.Forms.ToolStripButton
     Friend WithEvents BindingNavigatorMoveLastItem As System.Windows.Forms.ToolStripButton
-    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents tssGo As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents btnGo As System.Windows.Forms.ToolStripButton
-    Friend WithEvents lblStartFrom As System.Windows.Forms.Label
-    Friend WithEvents dtpFrom As System.Windows.Forms.DateTimePicker
-    Friend WithEvents dtpTo As System.Windows.Forms.DateTimePicker
-    Friend WithEvents lblStartTo As System.Windows.Forms.Label
     Friend WithEvents btnClose As PinkieControls.ButtonXP
     Friend WithEvents btnDelete As PinkieControls.ButtonXP
     Friend WithEvents btnEdit As PinkieControls.ButtonXP
     Friend WithEvents btnAdd As PinkieControls.ButtonXP
     Friend WithEvents btnRefresh As PinkieControls.ButtonXP
+    Friend WithEvents btnSearch As PinkieControls.ButtonXP
+    Friend WithEvents btnReport As PinkieControls.ButtonXP
+    Friend WithEvents pnlScreenDate As System.Windows.Forms.Panel
+    Friend WithEvents lblScreenDateTo As System.Windows.Forms.Label
+    Friend WithEvents dtpScreenDateTo As System.Windows.Forms.DateTimePicker
+    Friend WithEvents dtpScreenDateFrom As System.Windows.Forms.DateTimePicker
+    Friend WithEvents lblScreenDateFrom As System.Windows.Forms.Label
+    Friend WithEvents btnReset As PinkieControls.ButtonXP
+    Friend WithEvents lblSearchCriteria As System.Windows.Forms.Label
+    Friend WithEvents cmbSearchCriteria As System.Windows.Forms.ComboBox
+    Friend WithEvents pnlEmployeeName As System.Windows.Forms.Panel
+    Friend WithEvents txtEmployeeName As System.Windows.Forms.TextBox
+    Friend WithEvents pnlAbsentDate As System.Windows.Forms.Panel
+    Friend WithEvents dtpAbsentTo As System.Windows.Forms.DateTimePicker
+    Friend WithEvents lblAbsentTo As System.Windows.Forms.Label
+    Friend WithEvents lblAbsentFrom As System.Windows.Forms.Label
+    Friend WithEvents dtpAbsentFrom As System.Windows.Forms.DateTimePicker
+    Friend WithEvents pnlReason As System.Windows.Forms.Panel
+    Friend WithEvents txtReason As System.Windows.Forms.TextBox
+    Friend WithEvents lblUser As System.Windows.Forms.Label
+    Friend WithEvents txtEmpName As System.Windows.Forms.Label
+    Friend WithEvents btnLogout As PinkieControls.ButtonXP
     Friend WithEvents ColScreenId As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents ColScreenDate As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents ColEmployeeCode As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents ColEmployeeName As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents ColRemarks As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents ColModifiedDate As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents btnSearchDate As PinkieControls.ButtonXP
-    Friend WithEvents btnResetDate As PinkieControls.ButtonXP
+    Friend WithEvents ColReason As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents ColDiagnosis As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents ColLeaveTypeId As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents ColLeaveTypeName As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents ColsFitToWork As System.Windows.Forms.DataGridViewCheckBoxColumn
+    Friend WithEvents ColScreenByName As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents pnlDiagnosis As System.Windows.Forms.Panel
+    Friend WithEvents txtDiagnosis As System.Windows.Forms.TextBox
 End Class

@@ -22,145 +22,91 @@ Partial Class frmScreenEntry
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.btnSave = New PinkieControls.ButtonXP()
-        Me.btnClose = New PinkieControls.ButtonXP()
-        Me.btnClear = New PinkieControls.ButtonXP()
         Me.txtEmployeeScanId = New System.Windows.Forms.TextBox()
-        Me.txtEmployeeId = New System.Windows.Forms.Label()
-        Me.lblEmployeeId = New System.Windows.Forms.Label()
+        Me.txtEmployeeCode = New System.Windows.Forms.Label()
+        Me.lblEmployeeCode = New System.Windows.Forms.Label()
         Me.txtDate = New System.Windows.Forms.Label()
-        Me.txtEmployeeName = New System.Windows.Forms.Label()
         Me.lblDate = New System.Windows.Forms.Label()
         Me.lblEmployeeName = New System.Windows.Forms.Label()
-        Me.lblRemarks = New System.Windows.Forms.Label()
+        Me.lblReason = New System.Windows.Forms.Label()
         Me.lblEmployeeScanId = New System.Windows.Forms.Label()
-        Me.txtRemarks = New System.Windows.Forms.TextBox()
+        Me.txtReason = New System.Windows.Forms.TextBox()
+        Me.lblAbsentFrom = New System.Windows.Forms.Label()
+        Me.lblAbsentTo = New System.Windows.Forms.Label()
+        Me.txtAbsentFrom = New System.Windows.Forms.MaskedTextBox()
+        Me.txtAbsentTo = New System.Windows.Forms.MaskedTextBox()
+        Me.lblNotFtw = New System.Windows.Forms.Label()
+        Me.chkNotFtw = New System.Windows.Forms.CheckBox()
+        Me.chkSetToVl = New System.Windows.Forms.CheckBox()
+        Me.lblSetToVl = New System.Windows.Forms.Label()
+        Me.btnDelete = New PinkieControls.ButtonXP()
+        Me.btnClear = New PinkieControls.ButtonXP()
+        Me.btnClose = New PinkieControls.ButtonXP()
+        Me.btnSave = New PinkieControls.ButtonXP()
+        Me.lblDiagnosis = New System.Windows.Forms.Label()
+        Me.txtDiagnosis = New System.Windows.Forms.TextBox()
+        Me.txtEmployeeName = New System.Windows.Forms.TextBox()
         Me.lblClinicClearance = New System.Windows.Forms.Label()
         Me.SuspendLayout()
-        '
-        'btnSave
-        '
-        Me.btnSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnSave.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.btnSave.DefaultScheme = False
-        Me.btnSave.DialogResult = System.Windows.Forms.DialogResult.None
-        Me.btnSave.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.btnSave.Hint = ""
-        Me.btnSave.Image = Global.SickLeaveScreening.My.Resources.Resources.Save_16_x_16
-        Me.btnSave.Location = New System.Drawing.Point(102, 342)
-        Me.btnSave.Name = "btnSave"
-        Me.btnSave.Scheme = PinkieControls.ButtonXP.Schemes.Blue
-        Me.btnSave.Size = New System.Drawing.Size(110, 36)
-        Me.btnSave.TabIndex = 2
-        Me.btnSave.TabStop = False
-        Me.btnSave.Text = "Save (F10)"
-        '
-        'btnClose
-        '
-        Me.btnClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnClose.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.btnClose.DefaultScheme = False
-        Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.None
-        Me.btnClose.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.btnClose.Hint = ""
-        Me.btnClose.Location = New System.Drawing.Point(325, 342)
-        Me.btnClose.Name = "btnClose"
-        Me.btnClose.Scheme = PinkieControls.ButtonXP.Schemes.Blue
-        Me.btnClose.Size = New System.Drawing.Size(105, 36)
-        Me.btnClose.TabIndex = 4
-        Me.btnClose.TabStop = False
-        Me.btnClose.Text = "Close"
-        '
-        'btnClear
-        '
-        Me.btnClear.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnClear.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.btnClear.DefaultScheme = False
-        Me.btnClear.DialogResult = System.Windows.Forms.DialogResult.None
-        Me.btnClear.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.btnClear.Hint = ""
-        Me.btnClear.Location = New System.Drawing.Point(216, 342)
-        Me.btnClear.Name = "btnClear"
-        Me.btnClear.Scheme = PinkieControls.ButtonXP.Schemes.Blue
-        Me.btnClear.Size = New System.Drawing.Size(105, 36)
-        Me.btnClear.TabIndex = 3
-        Me.btnClear.TabStop = False
-        Me.btnClear.Text = "Clear (ESC)"
         '
         'txtEmployeeScanId
         '
         Me.txtEmployeeScanId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtEmployeeScanId.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
         Me.txtEmployeeScanId.Font = New System.Drawing.Font("Verdana", 30.0!)
-        Me.txtEmployeeScanId.Location = New System.Drawing.Point(50, 87)
-        Me.txtEmployeeScanId.Multiline = True
+        Me.txtEmployeeScanId.Location = New System.Drawing.Point(11, 87)
         Me.txtEmployeeScanId.Name = "txtEmployeeScanId"
         Me.txtEmployeeScanId.ShortcutsEnabled = False
-        Me.txtEmployeeScanId.Size = New System.Drawing.Size(380, 56)
-        Me.txtEmployeeScanId.TabIndex = 526
+        Me.txtEmployeeScanId.Size = New System.Drawing.Size(439, 56)
+        Me.txtEmployeeScanId.TabIndex = 0
         Me.txtEmployeeScanId.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
-        'txtEmployeeId
+        'txtEmployeeCode
         '
-        Me.txtEmployeeId.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtEmployeeId.BackColor = System.Drawing.SystemColors.GradientActiveCaption
-        Me.txtEmployeeId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtEmployeeId.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.txtEmployeeId.ForeColor = System.Drawing.Color.Black
-        Me.txtEmployeeId.Location = New System.Drawing.Point(111, 145)
-        Me.txtEmployeeId.Name = "txtEmployeeId"
-        Me.txtEmployeeId.Size = New System.Drawing.Size(319, 24)
-        Me.txtEmployeeId.TabIndex = 525
-        Me.txtEmployeeId.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.txtEmployeeId.UseCompatibleTextRendering = True
+        Me.txtEmployeeCode.BackColor = System.Drawing.SystemColors.GradientActiveCaption
+        Me.txtEmployeeCode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtEmployeeCode.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.txtEmployeeCode.ForeColor = System.Drawing.Color.Black
+        Me.txtEmployeeCode.Location = New System.Drawing.Point(110, 145)
+        Me.txtEmployeeCode.Name = "txtEmployeeCode"
+        Me.txtEmployeeCode.Size = New System.Drawing.Size(340, 24)
+        Me.txtEmployeeCode.TabIndex = 525
+        Me.txtEmployeeCode.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.txtEmployeeCode.UseCompatibleTextRendering = True
         '
-        'lblEmployeeId
+        'lblEmployeeCode
         '
-        Me.lblEmployeeId.BackColor = System.Drawing.SystemColors.Control
-        Me.lblEmployeeId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblEmployeeId.ForeColor = System.Drawing.Color.Black
-        Me.lblEmployeeId.Location = New System.Drawing.Point(50, 145)
-        Me.lblEmployeeId.Name = "lblEmployeeId"
-        Me.lblEmployeeId.Size = New System.Drawing.Size(68, 24)
-        Me.lblEmployeeId.TabIndex = 524
-        Me.lblEmployeeId.Text = " ID No"
-        Me.lblEmployeeId.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblEmployeeCode.BackColor = System.Drawing.SystemColors.Control
+        Me.lblEmployeeCode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblEmployeeCode.ForeColor = System.Drawing.Color.Black
+        Me.lblEmployeeCode.Location = New System.Drawing.Point(11, 145)
+        Me.lblEmployeeCode.Name = "lblEmployeeCode"
+        Me.lblEmployeeCode.Size = New System.Drawing.Size(100, 24)
+        Me.lblEmployeeCode.TabIndex = 524
+        Me.lblEmployeeCode.Text = " ID Number"
+        Me.lblEmployeeCode.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'txtDate
         '
-        Me.txtDate.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtDate.BackColor = System.Drawing.SystemColors.GradientActiveCaption
         Me.txtDate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtDate.Font = New System.Drawing.Font("Verdana", 9.0!)
         Me.txtDate.ForeColor = System.Drawing.Color.Black
-        Me.txtDate.Location = New System.Drawing.Point(111, 197)
+        Me.txtDate.Location = New System.Drawing.Point(110, 197)
         Me.txtDate.Name = "txtDate"
-        Me.txtDate.Size = New System.Drawing.Size(319, 24)
+        Me.txtDate.Size = New System.Drawing.Size(340, 24)
         Me.txtDate.TabIndex = 523
         Me.txtDate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.txtDate.UseCompatibleTextRendering = True
-        '
-        'txtEmployeeName
-        '
-        Me.txtEmployeeName.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtEmployeeName.BackColor = System.Drawing.SystemColors.GradientActiveCaption
-        Me.txtEmployeeName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtEmployeeName.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.txtEmployeeName.ForeColor = System.Drawing.Color.Black
-        Me.txtEmployeeName.Location = New System.Drawing.Point(111, 171)
-        Me.txtEmployeeName.Name = "txtEmployeeName"
-        Me.txtEmployeeName.Size = New System.Drawing.Size(319, 24)
-        Me.txtEmployeeName.TabIndex = 522
-        Me.txtEmployeeName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.txtEmployeeName.UseCompatibleTextRendering = True
         '
         'lblDate
         '
         Me.lblDate.BackColor = System.Drawing.SystemColors.Control
         Me.lblDate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblDate.ForeColor = System.Drawing.Color.Black
-        Me.lblDate.Location = New System.Drawing.Point(50, 197)
+        Me.lblDate.Location = New System.Drawing.Point(11, 197)
         Me.lblDate.Name = "lblDate"
-        Me.lblDate.Size = New System.Drawing.Size(68, 24)
+        Me.lblDate.Size = New System.Drawing.Size(100, 24)
         Me.lblDate.TabIndex = 521
         Me.lblDate.Text = " Date"
         Me.lblDate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -170,76 +116,280 @@ Partial Class frmScreenEntry
         Me.lblEmployeeName.BackColor = System.Drawing.SystemColors.Control
         Me.lblEmployeeName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblEmployeeName.ForeColor = System.Drawing.Color.Black
-        Me.lblEmployeeName.Location = New System.Drawing.Point(50, 171)
+        Me.lblEmployeeName.Location = New System.Drawing.Point(11, 171)
         Me.lblEmployeeName.Name = "lblEmployeeName"
-        Me.lblEmployeeName.Size = New System.Drawing.Size(68, 24)
+        Me.lblEmployeeName.Size = New System.Drawing.Size(100, 24)
         Me.lblEmployeeName.TabIndex = 520
         Me.lblEmployeeName.Text = " Name"
         Me.lblEmployeeName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'lblRemarks
+        'lblReason
         '
-        Me.lblRemarks.BackColor = System.Drawing.SystemColors.Control
-        Me.lblRemarks.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblRemarks.ForeColor = System.Drawing.Color.Black
-        Me.lblRemarks.Location = New System.Drawing.Point(50, 223)
-        Me.lblRemarks.Name = "lblRemarks"
-        Me.lblRemarks.Size = New System.Drawing.Size(380, 24)
-        Me.lblRemarks.TabIndex = 519
-        Me.lblRemarks.Text = " Remarks"
-        Me.lblRemarks.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblReason.BackColor = System.Drawing.SystemColors.Control
+        Me.lblReason.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblReason.ForeColor = System.Drawing.Color.Black
+        Me.lblReason.Location = New System.Drawing.Point(11, 249)
+        Me.lblReason.Name = "lblReason"
+        Me.lblReason.Size = New System.Drawing.Size(439, 24)
+        Me.lblReason.TabIndex = 519
+        Me.lblReason.Text = " Reason / Chief Complaint"
+        Me.lblReason.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblEmployeeScanId
         '
         Me.lblEmployeeScanId.BackColor = System.Drawing.SystemColors.Control
         Me.lblEmployeeScanId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblEmployeeScanId.ForeColor = System.Drawing.Color.Black
-        Me.lblEmployeeScanId.Location = New System.Drawing.Point(50, 64)
+        Me.lblEmployeeScanId.Location = New System.Drawing.Point(11, 64)
         Me.lblEmployeeScanId.Name = "lblEmployeeScanId"
-        Me.lblEmployeeScanId.Size = New System.Drawing.Size(380, 24)
+        Me.lblEmployeeScanId.Size = New System.Drawing.Size(439, 24)
         Me.lblEmployeeScanId.TabIndex = 518
         Me.lblEmployeeScanId.Text = " Employee ID"
         Me.lblEmployeeScanId.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'txtRemarks
+        'txtReason
         '
-        Me.txtRemarks.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtRemarks.Font = New System.Drawing.Font("Verdana", 10.0!)
-        Me.txtRemarks.Location = New System.Drawing.Point(50, 246)
-        Me.txtRemarks.Multiline = True
-        Me.txtRemarks.Name = "txtRemarks"
-        Me.txtRemarks.Size = New System.Drawing.Size(380, 85)
-        Me.txtRemarks.TabIndex = 517
+        Me.txtReason.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtReason.Font = New System.Drawing.Font("Verdana", 10.0!)
+        Me.txtReason.Location = New System.Drawing.Point(11, 272)
+        Me.txtReason.Multiline = True
+        Me.txtReason.Name = "txtReason"
+        Me.txtReason.Size = New System.Drawing.Size(439, 50)
+        Me.txtReason.TabIndex = 4
+        '
+        'lblAbsentFrom
+        '
+        Me.lblAbsentFrom.BackColor = System.Drawing.SystemColors.Control
+        Me.lblAbsentFrom.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblAbsentFrom.ForeColor = System.Drawing.Color.Black
+        Me.lblAbsentFrom.Location = New System.Drawing.Point(11, 223)
+        Me.lblAbsentFrom.Name = "lblAbsentFrom"
+        Me.lblAbsentFrom.Size = New System.Drawing.Size(100, 24)
+        Me.lblAbsentFrom.TabIndex = 528
+        Me.lblAbsentFrom.Text = " Absent From"
+        Me.lblAbsentFrom.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'lblAbsentTo
+        '
+        Me.lblAbsentTo.BackColor = System.Drawing.SystemColors.Control
+        Me.lblAbsentTo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblAbsentTo.ForeColor = System.Drawing.Color.Black
+        Me.lblAbsentTo.Location = New System.Drawing.Point(249, 223)
+        Me.lblAbsentTo.Name = "lblAbsentTo"
+        Me.lblAbsentTo.Size = New System.Drawing.Size(66, 24)
+        Me.lblAbsentTo.TabIndex = 530
+        Me.lblAbsentTo.Text = " To"
+        Me.lblAbsentTo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'txtAbsentFrom
+        '
+        Me.txtAbsentFrom.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtAbsentFrom.Font = New System.Drawing.Font("Verdana", 10.0!)
+        Me.txtAbsentFrom.Location = New System.Drawing.Point(110, 223)
+        Me.txtAbsentFrom.Mask = "00/00/0000"
+        Me.txtAbsentFrom.Name = "txtAbsentFrom"
+        Me.txtAbsentFrom.PromptChar = Global.Microsoft.VisualBasic.ChrW(45)
+        Me.txtAbsentFrom.Size = New System.Drawing.Size(136, 24)
+        Me.txtAbsentFrom.TabIndex = 2
+        Me.txtAbsentFrom.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.txtAbsentFrom.ValidatingType = GetType(Date)
+        '
+        'txtAbsentTo
+        '
+        Me.txtAbsentTo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtAbsentTo.Font = New System.Drawing.Font("Verdana", 10.0!)
+        Me.txtAbsentTo.Location = New System.Drawing.Point(314, 223)
+        Me.txtAbsentTo.Mask = "00/00/0000"
+        Me.txtAbsentTo.Name = "txtAbsentTo"
+        Me.txtAbsentTo.PromptChar = Global.Microsoft.VisualBasic.ChrW(45)
+        Me.txtAbsentTo.RejectInputOnFirstFailure = True
+        Me.txtAbsentTo.Size = New System.Drawing.Size(136, 24)
+        Me.txtAbsentTo.TabIndex = 3
+        Me.txtAbsentTo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.txtAbsentTo.ValidatingType = GetType(Date)
+        '
+        'lblNotFtw
+        '
+        Me.lblNotFtw.BackColor = System.Drawing.SystemColors.Control
+        Me.lblNotFtw.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblNotFtw.ForeColor = System.Drawing.Color.Black
+        Me.lblNotFtw.Location = New System.Drawing.Point(11, 399)
+        Me.lblNotFtw.Name = "lblNotFtw"
+        Me.lblNotFtw.Size = New System.Drawing.Size(252, 24)
+        Me.lblNotFtw.TabIndex = 531
+        Me.lblNotFtw.Text = "      Not Fit To Work                      (F11)"
+        Me.lblNotFtw.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'chkNotFtw
+        '
+        Me.chkNotFtw.AutoSize = True
+        Me.chkNotFtw.BackColor = System.Drawing.SystemColors.Control
+        Me.chkNotFtw.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.chkNotFtw.Font = New System.Drawing.Font("Verdana", 8.5!)
+        Me.chkNotFtw.Location = New System.Drawing.Point(16, 404)
+        Me.chkNotFtw.Name = "chkNotFtw"
+        Me.chkNotFtw.Size = New System.Drawing.Size(15, 14)
+        Me.chkNotFtw.TabIndex = 6
+        Me.chkNotFtw.UseVisualStyleBackColor = False
+        '
+        'chkSetToVl
+        '
+        Me.chkSetToVl.AutoSize = True
+        Me.chkSetToVl.BackColor = System.Drawing.SystemColors.Control
+        Me.chkSetToVl.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.chkSetToVl.Font = New System.Drawing.Font("Verdana", 8.5!)
+        Me.chkSetToVl.Location = New System.Drawing.Point(16, 430)
+        Me.chkSetToVl.Name = "chkSetToVl"
+        Me.chkSetToVl.Size = New System.Drawing.Size(15, 14)
+        Me.chkSetToVl.TabIndex = 7
+        Me.chkSetToVl.UseVisualStyleBackColor = False
+        '
+        'lblSetToVl
+        '
+        Me.lblSetToVl.BackColor = System.Drawing.SystemColors.Control
+        Me.lblSetToVl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblSetToVl.ForeColor = System.Drawing.Color.Black
+        Me.lblSetToVl.Location = New System.Drawing.Point(11, 425)
+        Me.lblSetToVl.Name = "lblSetToVl"
+        Me.lblSetToVl.Size = New System.Drawing.Size(253, 24)
+        Me.lblSetToVl.TabIndex = 533
+        Me.lblSetToVl.Text = "      Set to Vacation Leave            (F12)"
+        Me.lblSetToVl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'btnDelete
+        '
+        Me.btnDelete.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.btnDelete.DefaultScheme = False
+        Me.btnDelete.DialogResult = System.Windows.Forms.DialogResult.None
+        Me.btnDelete.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.btnDelete.Hint = "Save Record"
+        Me.btnDelete.Image = Global.SickLeaveScreening.My.Resources.Resources.Delete_16_x_16
+        Me.btnDelete.Location = New System.Drawing.Point(124, 463)
+        Me.btnDelete.Name = "btnDelete"
+        Me.btnDelete.Scheme = PinkieControls.ButtonXP.Schemes.Blue
+        Me.btnDelete.Size = New System.Drawing.Size(110, 36)
+        Me.btnDelete.TabIndex = 540
+        Me.btnDelete.TabStop = False
+        Me.btnDelete.Text = "Delete (F4)"
+        '
+        'btnClear
+        '
+        Me.btnClear.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.btnClear.DefaultScheme = False
+        Me.btnClear.DialogResult = System.Windows.Forms.DialogResult.None
+        Me.btnClear.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.btnClear.Hint = "Clear Form"
+        Me.btnClear.Location = New System.Drawing.Point(237, 463)
+        Me.btnClear.Name = "btnClear"
+        Me.btnClear.Scheme = PinkieControls.ButtonXP.Schemes.Blue
+        Me.btnClear.Size = New System.Drawing.Size(105, 36)
+        Me.btnClear.TabIndex = 538
+        Me.btnClear.TabStop = False
+        Me.btnClear.Text = "Clear (ESC)"
+        '
+        'btnClose
+        '
+        Me.btnClose.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.btnClose.DefaultScheme = False
+        Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.None
+        Me.btnClose.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.btnClose.Hint = "Close Data Entry"
+        Me.btnClose.Location = New System.Drawing.Point(345, 463)
+        Me.btnClose.Name = "btnClose"
+        Me.btnClose.Scheme = PinkieControls.ButtonXP.Schemes.Blue
+        Me.btnClose.Size = New System.Drawing.Size(105, 36)
+        Me.btnClose.TabIndex = 539
+        Me.btnClose.TabStop = False
+        Me.btnClose.Text = "Close"
+        '
+        'btnSave
+        '
+        Me.btnSave.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.btnSave.DefaultScheme = False
+        Me.btnSave.DialogResult = System.Windows.Forms.DialogResult.None
+        Me.btnSave.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.btnSave.Hint = "Save Record"
+        Me.btnSave.Image = Global.SickLeaveScreening.My.Resources.Resources.Save_16_x_16
+        Me.btnSave.Location = New System.Drawing.Point(11, 463)
+        Me.btnSave.Name = "btnSave"
+        Me.btnSave.Scheme = PinkieControls.ButtonXP.Schemes.Blue
+        Me.btnSave.Size = New System.Drawing.Size(110, 36)
+        Me.btnSave.TabIndex = 537
+        Me.btnSave.TabStop = False
+        Me.btnSave.Text = "Save (F10)"
+        '
+        'lblDiagnosis
+        '
+        Me.lblDiagnosis.BackColor = System.Drawing.SystemColors.Control
+        Me.lblDiagnosis.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblDiagnosis.ForeColor = System.Drawing.Color.Black
+        Me.lblDiagnosis.Location = New System.Drawing.Point(11, 324)
+        Me.lblDiagnosis.Name = "lblDiagnosis"
+        Me.lblDiagnosis.Size = New System.Drawing.Size(439, 24)
+        Me.lblDiagnosis.TabIndex = 542
+        Me.lblDiagnosis.Text = " Diagnosis"
+        Me.lblDiagnosis.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'txtDiagnosis
+        '
+        Me.txtDiagnosis.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtDiagnosis.Font = New System.Drawing.Font("Verdana", 10.0!)
+        Me.txtDiagnosis.Location = New System.Drawing.Point(11, 347)
+        Me.txtDiagnosis.Multiline = True
+        Me.txtDiagnosis.Name = "txtDiagnosis"
+        Me.txtDiagnosis.Size = New System.Drawing.Size(439, 50)
+        Me.txtDiagnosis.TabIndex = 5
+        '
+        'txtEmployeeName
+        '
+        Me.txtEmployeeName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtEmployeeName.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
+        Me.txtEmployeeName.Font = New System.Drawing.Font("Verdana", 10.0!)
+        Me.txtEmployeeName.Location = New System.Drawing.Point(110, 171)
+        Me.txtEmployeeName.Name = "txtEmployeeName"
+        Me.txtEmployeeName.Size = New System.Drawing.Size(340, 24)
+        Me.txtEmployeeName.TabIndex = 1
         '
         'lblClinicClearance
         '
         Me.lblClinicClearance.AutoSize = True
         Me.lblClinicClearance.Font = New System.Drawing.Font("Verdana", 20.0!, System.Drawing.FontStyle.Bold)
-        Me.lblClinicClearance.Location = New System.Drawing.Point(101, 22)
+        Me.lblClinicClearance.Location = New System.Drawing.Point(104, 18)
         Me.lblClinicClearance.Name = "lblClinicClearance"
         Me.lblClinicClearance.Size = New System.Drawing.Size(273, 32)
-        Me.lblClinicClearance.TabIndex = 527
+        Me.lblClinicClearance.TabIndex = 544
         Me.lblClinicClearance.Text = "Health Screening"
         '
         'frmScreenEntry
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(474, 386)
+        Me.ClientSize = New System.Drawing.Size(462, 507)
         Me.Controls.Add(Me.lblClinicClearance)
-        Me.Controls.Add(Me.txtEmployeeScanId)
-        Me.Controls.Add(Me.txtEmployeeId)
-        Me.Controls.Add(Me.lblEmployeeId)
-        Me.Controls.Add(Me.txtDate)
         Me.Controls.Add(Me.txtEmployeeName)
-        Me.Controls.Add(Me.lblDate)
-        Me.Controls.Add(Me.lblEmployeeName)
-        Me.Controls.Add(Me.lblRemarks)
-        Me.Controls.Add(Me.lblEmployeeScanId)
-        Me.Controls.Add(Me.txtRemarks)
+        Me.Controls.Add(Me.lblDiagnosis)
+        Me.Controls.Add(Me.txtDiagnosis)
+        Me.Controls.Add(Me.chkNotFtw)
+        Me.Controls.Add(Me.chkSetToVl)
+        Me.Controls.Add(Me.btnDelete)
         Me.Controls.Add(Me.btnClear)
         Me.Controls.Add(Me.btnClose)
         Me.Controls.Add(Me.btnSave)
+        Me.Controls.Add(Me.lblSetToVl)
+        Me.Controls.Add(Me.lblNotFtw)
+        Me.Controls.Add(Me.txtAbsentTo)
+        Me.Controls.Add(Me.lblAbsentFrom)
+        Me.Controls.Add(Me.txtAbsentFrom)
+        Me.Controls.Add(Me.lblAbsentTo)
+        Me.Controls.Add(Me.txtEmployeeScanId)
+        Me.Controls.Add(Me.txtEmployeeCode)
+        Me.Controls.Add(Me.lblEmployeeCode)
+        Me.Controls.Add(Me.txtDate)
+        Me.Controls.Add(Me.lblDate)
+        Me.Controls.Add(Me.lblEmployeeName)
+        Me.Controls.Add(Me.lblReason)
+        Me.Controls.Add(Me.lblEmployeeScanId)
+        Me.Controls.Add(Me.txtReason)
         Me.DoubleBuffered = True
         Me.Font = New System.Drawing.Font("Verdana", 8.5!)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -255,19 +405,30 @@ Partial Class frmScreenEntry
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents btnSave As PinkieControls.ButtonXP
-    Friend WithEvents btnClose As PinkieControls.ButtonXP
-    Friend WithEvents btnClear As PinkieControls.ButtonXP
     Friend WithEvents txtEmployeeScanId As System.Windows.Forms.TextBox
-    Friend WithEvents txtEmployeeId As System.Windows.Forms.Label
-    Friend WithEvents lblEmployeeId As System.Windows.Forms.Label
+    Friend WithEvents txtEmployeeCode As System.Windows.Forms.Label
+    Friend WithEvents lblEmployeeCode As System.Windows.Forms.Label
     Friend WithEvents txtDate As System.Windows.Forms.Label
-    Friend WithEvents txtEmployeeName As System.Windows.Forms.Label
     Friend WithEvents lblDate As System.Windows.Forms.Label
     Friend WithEvents lblEmployeeName As System.Windows.Forms.Label
-    Friend WithEvents lblRemarks As System.Windows.Forms.Label
+    Friend WithEvents lblReason As System.Windows.Forms.Label
     Friend WithEvents lblEmployeeScanId As System.Windows.Forms.Label
-    Friend WithEvents txtRemarks As System.Windows.Forms.TextBox
+    Friend WithEvents txtReason As System.Windows.Forms.TextBox
+    Friend WithEvents lblAbsentFrom As System.Windows.Forms.Label
+    Friend WithEvents lblAbsentTo As System.Windows.Forms.Label
+    Friend WithEvents txtAbsentFrom As System.Windows.Forms.MaskedTextBox
+    Friend WithEvents txtAbsentTo As System.Windows.Forms.MaskedTextBox
+    Friend WithEvents lblNotFtw As System.Windows.Forms.Label
+    Friend WithEvents chkNotFtw As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSetToVl As System.Windows.Forms.CheckBox
+    Friend WithEvents lblSetToVl As System.Windows.Forms.Label
+    Friend WithEvents btnDelete As PinkieControls.ButtonXP
+    Friend WithEvents btnClear As PinkieControls.ButtonXP
+    Friend WithEvents btnClose As PinkieControls.ButtonXP
+    Friend WithEvents btnSave As PinkieControls.ButtonXP
+    Friend WithEvents lblDiagnosis As System.Windows.Forms.Label
+    Friend WithEvents txtDiagnosis As System.Windows.Forms.TextBox
+    Friend WithEvents txtEmployeeName As System.Windows.Forms.TextBox
     Friend WithEvents lblClinicClearance As System.Windows.Forms.Label
 
 End Class

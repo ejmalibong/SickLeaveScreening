@@ -13,19 +13,23 @@
     <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>X:\EJ\Leave Filing System\Published\HealthScreening\</PublishUrl>
+    <PublishUrl>\\192.168.20.11\it\Leave Application System\Health Screening\</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
+    <InstallFrom>Unc</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>3</ApplicationRevision>
+    <UpdateUrl>\\192.168.20.11\it\Leave Application System\Health Screening\</UpdateUrl>
+    <ProductName>Health Screening</ProductName>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -71,21 +75,26 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>SlsSysIcon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BlackCoffeeLibrary">
       <HintPath>..\..\..\..\Frameworks\BlackCoffeeLibrary.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
     <Reference Include="PinkieControls">
       <HintPath>..\..\..\..\Frameworks\PinkieControls.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -94,6 +103,13 @@
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
+    <Import Include="Microsoft.VisualBasic.ApplicationServices" />
+    <Import Include="Microsoft.VisualBasic.CompilerServices" />
+    <Import Include="Microsoft.VisualBasic.Devices" />
+    <Import Include="Microsoft.VisualBasic.FileIO" />
+    <Import Include="Microsoft.VisualBasic.Logging" />
+    <Import Include="Microsoft.VisualBasic.MyServices" />
+    <Import Include="Microsoft.VisualBasic.MyServices.Internal" />
     <Import Include="System" />
     <Import Include="System.Collections" />
     <Import Include="System.Collections.Generic" />
@@ -107,17 +123,33 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class\clsConnection.vb" />
-    <Compile Include="Form\frmScreenEntry.vb">
+    <Compile Include="Dataset\dsScreeningReport.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsScreeningReport.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Form\frmLogin.Designer.vb">
+      <DependentUpon>frmLogin.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\frmLogin.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form\frmScreenEntry.Designer.vb">
       <DependentUpon>frmScreenEntry.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\frmScreenEntry.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form\frmScreenList.Designer.vb">
       <DependentUpon>frmScreenList.vb</DependentUpon>
     </Compile>
     <Compile Include="Form\frmScreenList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Report Form\frmScreenReport.Designer.vb">
+      <DependentUpon>frmScreenReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\Report Form\frmScreenReport.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -137,11 +169,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Form\frmLogin.resx">
+      <DependentUpon>frmLogin.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\frmScreenEntry.resx">
       <DependentUpon>frmScreenEntry.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\frmScreenList.resx">
       <DependentUpon>frmScreenList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\Report Form\frmScreenReport.resx">
+      <DependentUpon>frmScreenReport.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -149,10 +187,23 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Content Include="ReportFile\Screening.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include=".gitattributes" />
-    <None Include=".gitignore" />
+    <None Include="Dataset\dsScreeningReport.xsc">
+      <DependentUpon>dsScreeningReport.xsd</DependentUpon>
+    </None>
+    <None Include="Dataset\dsScreeningReport.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsScreeningReport.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Dataset\dsScreeningReport.xss">
+      <DependentUpon>dsScreeningReport.xsd</DependentUpon>
+    </None>
+    <None Include="My Project\app.manifest" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -1295,6 +1346,11 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SlsSysIcon.png" />
+    <Content Include="SlsSysIcon.ico" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

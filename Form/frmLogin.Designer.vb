@@ -28,6 +28,7 @@ Partial Class frmLogin
         Me.btnClose = New PinkieControls.ButtonXP()
         Me.lblCaption = New System.Windows.Forms.Label()
         Me.picLogo = New System.Windows.Forms.PictureBox()
+        Me.lblVersion = New System.Windows.Forms.Label()
         CType(Me.picLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -73,7 +74,7 @@ Partial Class frmLogin
         'lblCaption
         '
         Me.lblCaption.AutoSize = True
-        Me.lblCaption.Location = New System.Drawing.Point(226, 32)
+        Me.lblCaption.Location = New System.Drawing.Point(226, 31)
         Me.lblCaption.Name = "lblCaption"
         Me.lblCaption.Size = New System.Drawing.Size(86, 19)
         Me.lblCaption.TabIndex = 93
@@ -91,6 +92,18 @@ Partial Class frmLogin
         Me.picLogo.TabIndex = 95
         Me.picLogo.TabStop = False
         '
+        'lblVersion
+        '
+        Me.lblVersion.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblVersion.AutoSize = True
+        Me.lblVersion.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblVersion.ForeColor = System.Drawing.SystemColors.ActiveCaption
+        Me.lblVersion.Location = New System.Drawing.Point(451, 189)
+        Me.lblVersion.Name = "lblVersion"
+        Me.lblVersion.Size = New System.Drawing.Size(45, 15)
+        Me.lblVersion.TabIndex = 96
+        Me.lblVersion.Text = "version"
+        '
         'frmLogin
         '
         Me.AcceptButton = Me.btnLogin
@@ -98,6 +111,7 @@ Partial Class frmLogin
         Me.BackColor = System.Drawing.Color.White
         Me.CancelButton = Me.btnClose
         Me.ClientSize = New System.Drawing.Size(504, 211)
+        Me.Controls.Add(Me.lblVersion)
         Me.Controls.Add(Me.picLogo)
         Me.Controls.Add(Me.lblCaption)
         Me.Controls.Add(Me.btnClose)
@@ -111,7 +125,7 @@ Partial Class frmLogin
         Me.Name = "frmLogin"
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Leave Application - Health Screening"
+        Me.Text = "Health Screening"
         CType(Me.picLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -122,4 +136,5 @@ Partial Class frmLogin
     Friend WithEvents btnClose As PinkieControls.ButtonXP
     Friend WithEvents lblCaption As System.Windows.Forms.Label
     Friend WithEvents picLogo As System.Windows.Forms.PictureBox
+    Friend WithEvents lblVersion As System.Windows.Forms.Label
 End Class

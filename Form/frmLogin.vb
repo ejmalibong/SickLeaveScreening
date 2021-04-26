@@ -1,21 +1,26 @@
 ﻿Imports System.Data.SqlClient
 Imports BlackCoffeeLibrary.BlackCoffee
+Imports System.Deployment.Application
 
 Public Class frmLogin
     Private connection As New clsConnection
     Private dbLeaveFiling As New SqlDbMethod(connection.LeaveFiling)
     Private main As New Main
 
-    'form
     Private employeeId As Integer = 0
-
     Private employeeCode As String = String.Empty
     Private employeeName As String = String.Empty
     Private positionName As String = String.Empty
 
     Private Sub Login_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        txtEmployeeId.Text = "1710-003" 'mam irene
+        'txtEmployeeId.Text = "1710-003" 'mam irene
         'txtEmployeeId.Text = "FMB-0451" 'doc omman
+
+        If ApplicationDeployment.IsNetworkDeployed Then
+            lblVersion.Text = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
+        Else
+            lblVersion.Text = Application.ProductVersion.ToString
+        End If
 
         Application.EnableVisualStyles()
         Me.ActiveControl = txtEmployeeId

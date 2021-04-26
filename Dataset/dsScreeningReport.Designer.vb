@@ -313,6 +313,10 @@ Partial Public Class dsScreeningReport
 
         Private columnIsUsed As Global.System.Data.DataColumn
 
+        Private columnModifiedBy As Global.System.Data.DataColumn
+
+        Private columnModifiedDate As Global.System.Data.DataColumn
+
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")> _
         Public Sub New()
@@ -469,6 +473,22 @@ Partial Public Class dsScreeningReport
         End Property
 
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")> _
+        Public ReadOnly Property ModifiedByColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnModifiedBy
+            End Get
+        End Property
+
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")> _
+        Public ReadOnly Property ModifiedDateColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnModifiedDate
+            End Get
+        End Property
+
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"), _
          Global.System.ComponentModel.Browsable(False)> _
         Public ReadOnly Property Count() As Integer
@@ -505,9 +525,26 @@ Partial Public Class dsScreeningReport
 
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")> _
-        Public Overloads Function AddVwScreeningRow(ByVal ScreenId As Integer, ByVal ScreenDate As Date, ByVal ScreenBy As String, ByVal EmployeeId As Integer, ByVal EmployeeCode As String, ByVal EmployeeName As String, ByVal AbsentFrom As Date, ByVal AbsentTo As Date, ByVal Quantity As Integer, ByVal LeaveTypeId As Integer, ByVal LeaveTypeName As String, ByVal Reason As String, ByVal Diagnosis As String, ByVal IsFitToWork As Boolean, ByVal IsUsed As Boolean) As VwScreeningRow
+        Public Overloads Function AddVwScreeningRow( _
+                    ByVal ScreenId As Integer, _
+                    ByVal ScreenDate As Date, _
+                    ByVal ScreenBy As String, _
+                    ByVal EmployeeId As Integer, _
+                    ByVal EmployeeCode As String, _
+                    ByVal EmployeeName As String, _
+                    ByVal AbsentFrom As Date, _
+                    ByVal AbsentTo As Date, _
+                    ByVal Quantity As Integer, _
+                    ByVal LeaveTypeId As Integer, _
+                    ByVal LeaveTypeName As String, _
+                    ByVal Reason As String, _
+                    ByVal Diagnosis As String, _
+                    ByVal IsFitToWork As Boolean, _
+                    ByVal IsUsed As Boolean, _
+                    ByVal ModifiedBy As String, _
+                    ByVal ModifiedDate As Date) As VwScreeningRow
             Dim rowVwScreeningRow As VwScreeningRow = CType(Me.NewRow, VwScreeningRow)
-            Dim columnValuesArray() As Object = New Object() {ScreenId, ScreenDate, ScreenBy, EmployeeId, EmployeeCode, EmployeeName, AbsentFrom, AbsentTo, Quantity, LeaveTypeId, LeaveTypeName, Reason, Diagnosis, IsFitToWork, IsUsed}
+            Dim columnValuesArray() As Object = New Object() {ScreenId, ScreenDate, ScreenBy, EmployeeId, EmployeeCode, EmployeeName, AbsentFrom, AbsentTo, Quantity, LeaveTypeId, LeaveTypeName, Reason, Diagnosis, IsFitToWork, IsUsed, ModifiedBy, ModifiedDate}
             rowVwScreeningRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowVwScreeningRow)
             Return rowVwScreeningRow
@@ -551,6 +588,8 @@ Partial Public Class dsScreeningReport
             Me.columnDiagnosis = MyBase.Columns("Diagnosis")
             Me.columnIsFitToWork = MyBase.Columns("IsFitToWork")
             Me.columnIsUsed = MyBase.Columns("IsUsed")
+            Me.columnModifiedBy = MyBase.Columns("ModifiedBy")
+            Me.columnModifiedDate = MyBase.Columns("ModifiedDate")
         End Sub
 
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
@@ -586,6 +625,10 @@ Partial Public Class dsScreeningReport
             MyBase.Columns.Add(Me.columnIsFitToWork)
             Me.columnIsUsed = New Global.System.Data.DataColumn("IsUsed", GetType(Boolean), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnIsUsed)
+            Me.columnModifiedBy = New Global.System.Data.DataColumn("ModifiedBy", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnModifiedBy)
+            Me.columnModifiedDate = New Global.System.Data.DataColumn("ModifiedDate", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnModifiedDate)
             Me.Constraints.Add(New Global.System.Data.UniqueConstraint("Constraint1", New Global.System.Data.DataColumn() {Me.columnScreenId}, True))
             Me.columnScreenId.AllowDBNull = False
             Me.columnScreenId.Unique = True
@@ -603,11 +646,14 @@ Partial Public Class dsScreeningReport
             Me.columnLeaveTypeName.ReadOnly = True
             Me.columnLeaveTypeName.MaxLength = 30
             Me.columnReason.ReadOnly = True
-            Me.columnReason.MaxLength = 100
+            Me.columnReason.MaxLength = 500
             Me.columnDiagnosis.ReadOnly = True
-            Me.columnDiagnosis.MaxLength = 100
+            Me.columnDiagnosis.MaxLength = 500
             Me.columnIsFitToWork.AllowDBNull = False
             Me.columnIsUsed.AllowDBNull = False
+            Me.columnModifiedBy.AllowDBNull = False
+            Me.columnModifiedBy.MaxLength = 8
+            Me.columnModifiedDate.AllowDBNull = False
         End Sub
 
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
@@ -943,6 +989,28 @@ Partial Public Class dsScreeningReport
 
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")> _
+        Public Property ModifiedBy() As String
+            Get
+                Return CType(Me(Me.tableVwScreening.ModifiedByColumn), String)
+            End Get
+            Set(value As String)
+                Me(Me.tableVwScreening.ModifiedByColumn) = value
+            End Set
+        End Property
+
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")> _
+        Public Property ModifiedDate() As Date
+            Get
+                Return CType(Me(Me.tableVwScreening.ModifiedDateColumn), Date)
+            End Get
+            Set(value As Date)
+                Me(Me.tableVwScreening.ModifiedDateColumn) = value
+            End Set
+        End Property
+
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")> _
         Public Function IsEmployeeIdNull() As Boolean
             Return Me.IsNull(Me.tableVwScreening.EmployeeIdColumn)
         End Function
@@ -1195,6 +1263,8 @@ Namespace dsScreeningReportTableAdapters
             tableMapping.ColumnMappings.Add("Diagnosis", "Diagnosis")
             tableMapping.ColumnMappings.Add("IsFitToWork", "IsFitToWork")
             tableMapping.ColumnMappings.Add("IsUsed", "IsUsed")
+            tableMapping.ColumnMappings.Add("ModifiedBy", "ModifiedBy")
+            tableMapping.ColumnMappings.Add("ModifiedDate", "ModifiedDate")
             Me._adapter.TableMappings.Add(tableMapping)
         End Sub
 
@@ -1213,7 +1283,7 @@ Namespace dsScreeningReportTableAdapters
             Me._commandCollection(0).Connection = Me.Connection
             Me._commandCollection(0).CommandText = "SELECT ScreenId, ScreenDate, ScreenBy, EmployeeId, EmployeeCode, EmployeeName, Ab" & _
                 "sentFrom, AbsentTo, Quantity, LeaveTypeId, LeaveTypeName, Reason, Diagnosis, IsF" & _
-                "itToWork, IsUsed FROM dbo.VwScreening"
+                "itToWork, IsUsed, ModifiedBy, ModifiedDate FROM dbo.VwScreening"
             Me._commandCollection(0).CommandType = Global.System.Data.CommandType.Text
         End Sub
 

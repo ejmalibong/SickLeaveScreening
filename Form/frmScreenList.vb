@@ -11,40 +11,30 @@ Public Class frmScreenList
     Private dbLeaveFiling As New SqlDbMethod(connection.LeaveFiling)
     Private dbJeonsoft As New SqlDbMethod(connection.Jeonsoft)
     Private main As New Main
-
     'server datetime
     Private serverDate As DateTime = dbLeaveFiling.GetServerDate
-
-    'dataset
+    'database access
     Private dsLeaveFiling As New dsLeaveFiling
-
     Private adpScreening As New ScreeningTableAdapter
     Private dtScreening As New ScreeningDataTable
     Private bsScreening As New BindingSource
-
-    'paging
+    'pagination
     Private pageSize As Integer
-
     Private pageIndex As Integer
     Private totalCount As Integer
     Private pageCount As Integer
     Private indexScroll As Integer = 0
     Private indexPosition As Integer = 0
-
     'search criteria
     Private dictionary As New Dictionary(Of String, Integer)
-
-    'filters
+    'flag filters
     Private isFilterByScreenDate As Boolean = False
-
     Private isFilterByEmployeeName As Boolean = False
     Private isFilterByAbsentFrom As Boolean = False
     Private isFilterByReason As Boolean = False
     Private isFilterByDiagnosis As Boolean = False
 
-    'constructor
     Private employeeId As Integer = 0
-
     Private employeeCode As String = String.Empty
     Private employeeName As String = String.Empty
     Private positionName As String = String.Empty

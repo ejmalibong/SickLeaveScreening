@@ -11,32 +11,25 @@ Public Class frmScreenEntry
     Private dbLeaveFiling As New SqlDbMethod(connection.LeaveFiling)
     Private dbJeonsoft As New SqlDbMethod(connection.Jeonsoft)
     Private main As New Main
-
-    'server datetime
-    Private serverDate As DateTime = dbLeaveFiling.GetServerDate
-
-    'dataset
+    'data objects
     Private dsLeaveFiling As New dsLeaveFiling
-
     Private adpScreening As New ScreeningTableAdapter
+    Private adpLeaveFiling As New LeaveFilingTableAdapter
     Private dtScreening As New ScreeningDataTable
+    Private dtLeaveFiling As New LeaveFilingDataTable
     Private bsScreening As New BindingSource
-
+    Private bsLeaveFiling As New BindingSource
     'custom bindings
     Private WithEvents screenDate As Binding
-
     Private WithEvents absentFrom As Binding
     Private WithEvents absentTo As Binding
-
-    'constructor
-    Private screenBy As String = String.Empty 'doctor/nurse
+    '
+    Private screenBy As Integer = 0 'doctor, nurse
     Private screenId As Integer = 0
+    Private employeeId As Integer = 0 'patient, employee
+    Private arrSplitted() As String 'value from scanner
 
-    'others
-    Private employeeId As Integer = 0 'employee to be screen
-    Private arrSplitted() As String
-
-    Public Sub New(ByVal _screenBy As String, Optional ByVal _screenId As Integer = 0)
+    Public Sub New(ByVal _screenBy As Integer, Optional ByVal _screenId As Integer = 0)
 
         ' This call is required by the designer.
         InitializeComponent()
@@ -47,6 +40,8 @@ Public Class frmScreenEntry
     End Sub
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles Me.Load
+        dbLeaveFiling.FillCmbWithCaption("SELECT LeaveTypeId, TRIM(LeaveTypeName) AS LeaveTypeName FROM dbo.LeaveType WHERE LeaveTypeId IN (1, 2, 9, 11)", CommandType.Text, "LeaveTypeId", "LeaveTypeName", cmbLeaveType, "< Select Leave Type >")
+
         If Not screenId = 0 Then
             Me.adpScreening.FillByScreenId(Me.dsLeaveFiling.Screening, screenId)
             Me.bsScreening.DataSource = Me.dsLeaveFiling
@@ -59,6 +54,7 @@ Public Class frmScreenEntry
             Else
                 employeeId = CType(Me.bsScreening.Current, DataRowView).Item("EmployeeId")
             End If
+
             txtEmployeeCode.DataBindings.Add(New Binding("Text", Me.bsScreening.Current, "EmployeeCode"))
             txtEmployeeName.DataBindings.Add(New Binding("Text", Me.bsScreening.Current, "EmployeeName"))
             screenDate = New Binding("Text", Me.bsScreening.Current, "ScreenDate")
@@ -69,21 +65,21 @@ Public Class frmScreenEntry
             txtAbsentTo.DataBindings.Add(absentTo)
             txtReason.DataBindings.Add(New Binding("Text", Me.bsScreening.Current, "Reason"))
             txtDiagnosis.DataBindings.Add(New Binding("Text", Me.bsScreening.Current, "Diagnosis"))
+
+            cmbLeaveType.DataBindings.Add(New Binding("SelectedValue", Me.bsScreening.Current, "LeaveTypeId"))
+
             If CType(Me.bsScreening.Current, DataRowView).Item("IsFitToWork") = True Then
                 chkNotFtw.Checked = False
             Else
                 chkNotFtw.Checked = True
             End If
-            If CType(Me.bsScreening.Current, DataRowView).Item("LeaveTypeId") = 1 Then
-                chkSetToVl.Checked = False
-            Else
-                chkSetToVl.Checked = True
-            End If
+
             If txtEmployeeCode.Text.Trim.Substring(0, 3).ToUpper.Trim.Equals("FMB") Then
                 txtEmployeeName.ReadOnly = False
             Else
                 txtEmployeeName.ReadOnly = True
             End If
+
             Me.ActiveControl = txtDiagnosis
             txtDiagnosis.Select(txtDiagnosis.Text.Trim.Length, 0)
         Else
@@ -102,10 +98,10 @@ Public Class frmScreenEntry
                 txtEmployeeCode.Text = ""
                 txtEmployeeName.Clear()
                 txtDate.Text = ""
-                txtAbsentFrom.Text = String.Format("{0:MM/dd/yyyy}", CheckDate(serverDate))
+                txtAbsentFrom.Text = String.Format("{0:MM/dd/yyyy}", GetLastWorkingDay(dbLeaveFiling.GetServerDate))
                 txtAbsentFrom.ValidatingType = GetType(System.DateTime)
                 txtAbsentTo.ReadOnly = True
-                txtAbsentTo.Text = String.Format("{0:MM/dd/yyyy}", CheckDate(serverDate))
+                txtAbsentTo.Text = String.Format("{0:MM/dd/yyyy}", GetLastWorkingDay(dbLeaveFiling.GetServerDate))
                 txtAbsentTo.ValidatingType = GetType(System.DateTime)
                 txtReason.Clear()
             Case Keys.F10
@@ -116,7 +112,6 @@ Public Class frmScreenEntry
                 NotFitToWork()
             Case Keys.F12
                 e.Handled = True
-                SetToVl()
             Case Keys.Enter
                 Me.SelectNextControl(Me.ActiveControl, True, True, True, True)
         End Select
@@ -127,7 +122,7 @@ Public Class frmScreenEntry
             e.Handled = True
             If String.IsNullOrEmpty(txtEmployeeScanId.Text.Trim) Then
                 Me.ActiveControl = txtEmployeeScanId
-                MessageBox.Show("Please scan your ID.", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                MessageBox.Show("Please enter employee ID.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 Return
             End If
 
@@ -138,20 +133,28 @@ Public Class frmScreenEntry
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         Try
+            Dim _frmScreenList As frmScreenList = TryCast(Me.Owner, frmScreenList)
+
             If String.IsNullOrEmpty(txtEmployeeScanId.Text.Trim) AndAlso String.IsNullOrEmpty(txtEmployeeCode.Text.Trim) Then
                 Me.ActiveControl = txtEmployeeScanId
-                MessageBox.Show("Please scan your ID.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show("Please enter employee ID.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
+            End If
+
+            If cmbLeaveType.SelectedValue = 0 Then
+                MessageBox.Show("Please select leave type.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Me.ActiveControl = cmbLeaveType
                 Return
             End If
 
             If String.IsNullOrEmpty(txtReason.Text.Trim) Then
-                MessageBox.Show("Remarks cannot be empty.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show("Reason is required.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 Me.ActiveControl = txtReason
                 Return
             End If
 
             If String.IsNullOrEmpty(txtDiagnosis.Text.Trim) Then
-                MessageBox.Show("Diagnosis cannot be empty.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show("Diagnosis is required.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 Me.ActiveControl = txtDiagnosis
                 Return
             End If
@@ -162,82 +165,168 @@ Public Class frmScreenEntry
                 Return
             End If
 
-            If screenId = 0 Then
+            If screenId = 0 Then 'new record
                 Dim _newScreeningRow As ScreeningRow = Me.dsLeaveFiling.Screening.NewScreeningRow
 
                 With _newScreeningRow
-                    .ScreenDate = serverDate
+                    .ScreenDate = dbLeaveFiling.GetServerDate
                     .ScreenBy = screenBy
+
                     If employeeId = 0 Then
                         .SetEmployeeIdNull()
                     Else
                         .EmployeeId = employeeId
                     End If
+
                     .EmployeeCode = txtEmployeeCode.Text.Trim
                     .EmployeeName = txtEmployeeName.Text.Trim
+                    .LeaveTypeId = cmbLeaveType.SelectedValue
                     .AbsentFrom = CDate(txtAbsentFrom.Text)
                     .AbsentTo = CDate(txtAbsentTo.Text)
-                    .Quantity = GetTotalDays(CDate(txtAbsentFrom.Text), CDate(txtAbsentTo.Text))
-                    If chkSetToVl.CheckState = CheckState.Checked Then
-                        .LeaveTypeId = 2
+
+                    If cmbLeaveType.SelectedValue = 11 Then 'half-day leave
+                        .Quantity = 0.5
                     Else
-                        .LeaveTypeId = 1
+                        .Quantity = GetTotalDays(CDate(txtAbsentFrom.Text), CDate(txtAbsentTo.Text))
                     End If
+
                     .Reason = txtReason.Text.Trim
                     .Diagnosis = txtDiagnosis.Text.Trim
+                    .IsUsed = False
+                    .ModifiedBy = screenBy
+                    .ModifiedDate = dbLeaveFiling.GetServerDate
+
                     If chkNotFtw.CheckState = CheckState.Checked Then
                         .IsFitToWork = False
                     Else
                         .IsFitToWork = True
                     End If
-                    .IsUsed = False
-                    .ModifiedBy = screenBy
-                    .ModifiedDate = serverDate
                 End With
                 Me.dsLeaveFiling.Screening.AddScreeningRow(_newScreeningRow)
 
                 If Me.dsLeaveFiling.HasChanges Then
                     Me.adpScreening.Update(Me.dsLeaveFiling.Screening)
                     Me.dsLeaveFiling.AcceptChanges()
-                    Dim _frmScreenList As frmScreenList = TryCast(Me.Owner, frmScreenList)
                     _frmScreenList.RefreshValues()
                     ResetForm()
                 End If
-            Else
-                Dim _rowScreening As ScreeningRow = Me.dsLeaveFiling.Screening.FindByScreenId(screenId)
 
-                With _rowScreening
-                    .ScreenBy = screenBy
-                    If employeeId = 0 Then
-                        .SetEmployeeIdNull()
-                    Else
-                        .EmployeeId = employeeId
-                    End If
-                    .EmployeeCode = txtEmployeeCode.Text.Trim
-                    .EmployeeName = txtEmployeeName.Text.Trim
-                    .AbsentFrom = CDate(txtAbsentFrom.Text)
-                    .AbsentTo = CDate(txtAbsentTo.Text)
-                    .Quantity = GetTotalDays(CDate(txtAbsentFrom.Text), CDate(txtAbsentTo.Text))
-                    If chkSetToVl.CheckState = CheckState.Checked Then
-                        .LeaveTypeId = 2
-                    Else
-                        .LeaveTypeId = 1
-                    End If
-                    .Reason = txtReason.Text.Trim
-                    .Diagnosis = txtDiagnosis.Text.Trim
-                    If chkNotFtw.CheckState = CheckState.Checked Then
-                        .IsFitToWork = False
-                    Else
-                        .IsFitToWork = True
-                    End If
-                    .ModifiedBy = screenBy
-                    .ModifiedDate = serverDate
-                End With
+            Else 'old record
+                Dim _rowScreening As ScreeningRow = Me.dsLeaveFiling.Screening.FindByScreenId(screenId)
+                Dim _count As Integer = 0
+                Dim _leaveFileId As Integer = 0
+
+                Dim _prmCount(0) As SqlParameter
+                _prmCount(0) = New SqlParameter("@ScreenId", SqlDbType.Int)
+                _prmCount(0).Value = screenId
+
+                _count = dbLeaveFiling.ExecuteScalar("SELECT Count(LeaveFileId) FROM dbo.LeaveFiling WHERE ScreenId = @ScreenId", CommandType.Text, _prmCount)
+
+                If _count > 0 Then 'screening record already used
+                    Dim _prmReader(0) As SqlParameter
+                    _prmReader(0) = New SqlParameter("@ScreenId", SqlDbType.Int)
+                    _prmReader(0).Value = screenId
+
+                    Dim _reader As IDataReader = dbLeaveFiling.ExecuteReader("SELECT LeaveFileId FROM dbo.LeaveFiling WHERE ScreenId = @ScreenId", CommandType.Text, _prmReader)
+
+                    While _reader.Read
+                        _leaveFileId = _reader.Item("LeaveFileId")
+                    End While
+                    _reader.Close()
+
+                    Me.adpLeaveFiling.FillByLeaveFileId(Me.dsLeaveFiling.LeaveFiling, _leaveFileId)
+                    Dim _rowLeaveFiling As LeaveFilingRow = Me.dsLeaveFiling.LeaveFiling.FindByLeaveFileId(_leaveFileId)
+
+                    With _rowLeaveFiling 'leave already encoded and approved
+                        If (_rowLeaveFiling.IsSuperiorId1Null = False AndAlso _rowLeaveFiling.IsSuperiorApprovalDate1Null = False) Or _
+                            (_rowLeaveFiling.IsSuperiorId2Null = False AndAlso _rowLeaveFiling.IsSuperiorApprovalDate2Null = False) Or _
+                            (_rowLeaveFiling.IsManagerApprovalDateNull = False) Then 'leave already encoded and approved/disapproved
+                            MessageBox.Show("Screening record already approved/disapproved.", "Not Allowed", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                            Return
+                        Else 'leave already encoded but not yet contains approval
+                            .StartDate = CDate(txtAbsentFrom.Text)
+                            .EndDate = CDate(txtAbsentTo.Text)
+                            .Quantity = GetTotalDays(CDate(txtAbsentFrom.Text), CDate(txtAbsentTo.Text))
+                            .Reason = txtReason.Text.Trim
+                            .ClinicRemarks = txtDiagnosis.Text.Trim
+
+                            Dim _prmEmpCode(0) As SqlParameter
+                            _prmEmpCode(0) = New SqlParameter("@EmployeeCode", SqlDbType.VarChar)
+                            _prmEmpCode(0).Value = screenBy
+
+                            Dim _reader2 As IDataReader = dbLeaveFiling.ExecuteReader("RdClinic", CommandType.StoredProcedure, _prmEmpCode)
+
+                            While _reader2.Read
+                                .ClinicId = _reader2.Item("Id")
+                                .ModifiedBy = _reader2.Item("Id")
+                                .ModifiedDate = dbLeaveFiling.GetServerDate
+                            End While
+                            _reader2.Close()
+
+                            With _rowScreening
+                                .ScreenBy = screenBy
+
+                                If employeeId = 0 Then
+                                    .SetEmployeeIdNull()
+                                Else
+                                    .EmployeeId = employeeId
+                                End If
+
+                                .EmployeeCode = txtEmployeeCode.Text.Trim
+                                .EmployeeName = txtEmployeeName.Text.Trim
+                                .AbsentFrom = CDate(txtAbsentFrom.Text)
+                                .AbsentTo = CDate(txtAbsentTo.Text)
+                                .Quantity = GetTotalDays(CDate(txtAbsentFrom.Text), CDate(txtAbsentTo.Text))
+                                .LeaveTypeId = cmbLeaveType.SelectedValue
+                                .Reason = txtReason.Text.Trim
+                                .Diagnosis = txtDiagnosis.Text.Trim
+                                .ModifiedBy = screenBy
+                                .ModifiedDate = dbLeaveFiling.GetServerDate
+
+                                If chkNotFtw.CheckState = CheckState.Checked Then
+                                    .IsFitToWork = False
+                                Else
+                                    .IsFitToWork = True
+                                End If
+                            End With
+                        End If
+                    End With
+                Else 'screening record still not use
+                    With _rowScreening
+                        .ScreenBy = screenBy
+
+                        If employeeId = 0 Then
+                            .SetEmployeeIdNull()
+                        Else
+                            .EmployeeId = employeeId
+                        End If
+
+                        .EmployeeCode = txtEmployeeCode.Text.Trim
+                        .EmployeeName = txtEmployeeName.Text.Trim
+                        .AbsentFrom = CDate(txtAbsentFrom.Text)
+                        .AbsentTo = CDate(txtAbsentTo.Text)
+                        .Quantity = GetTotalDays(CDate(txtAbsentFrom.Text), CDate(txtAbsentTo.Text))
+                        .LeaveTypeId = cmbLeaveType.SelectedValue
+                        .Reason = txtReason.Text.Trim
+                        .Diagnosis = txtDiagnosis.Text.Trim
+                        .ModifiedBy = screenBy
+                        .ModifiedDate = dbLeaveFiling.GetServerDate
+
+                        If chkNotFtw.CheckState = CheckState.Checked Then
+                            .IsFitToWork = False
+                        Else
+                            .IsFitToWork = True
+                        End If
+                    End With
+                End If
+
                 Me.Validate()
                 Me.bsScreening.EndEdit()
+                Me.bsLeaveFiling.EndEdit()
 
                 If Me.dsLeaveFiling.HasChanges Then
                     Me.adpScreening.Update(Me.dsLeaveFiling.Screening)
+                    Me.adpLeaveFiling.Update(Me.dsLeaveFiling.LeaveFiling)
                     Me.dsLeaveFiling.AcceptChanges()
                     Me.DialogResult = Windows.Forms.DialogResult.OK
                 End If
@@ -250,14 +339,32 @@ Public Class frmScreenEntry
     Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
         Try
             If Not screenId = 0 Then
-                If MessageBox.Show("Delete this record?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = Windows.Forms.DialogResult.Yes Then
-                    Me.bsScreening.RemoveCurrent()
+                Dim _rowScreening As ScreeningRow = Me.dsLeaveFiling.Screening.FindByScreenId(screenId)
+                Dim _count As Integer = 0
+                Dim _leaveFileId As Integer = 0
+
+                Dim _prmCount(0) As SqlParameter
+                _prmCount(0) = New SqlParameter("@ScreenId", SqlDbType.Int)
+                _prmCount(0).Value = screenId
+
+                _count = dbLeaveFiling.ExecuteScalar("SELECT Count(LeaveFileId) FROM dbo.LeaveFiling WHERE ScreenId = @ScreenId", CommandType.Text, _prmCount)
+
+                If _count > 0 Then
+                    MessageBox.Show("Screening record already used.", "Not Allowed", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    Return
+                Else
+                    If MessageBox.Show("Delete this record?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = Windows.Forms.DialogResult.Yes Then
+                        Me.bsScreening.RemoveCurrent()
+                    End If
                 End If
+
                 If Me.dsLeaveFiling.HasChanges Then
                     Me.adpScreening.Update(Me.dsLeaveFiling.Screening)
                     Me.dsLeaveFiling.AcceptChanges()
                     Me.DialogResult = Windows.Forms.DialogResult.OK
                 End If
+            Else
+                Me.ActiveControl = txtEmployeeScanId
             End If
         Catch ex As Exception
             MessageBox.Show(ex.Message, main.SetExcpTitle(ex), MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -295,7 +402,34 @@ Public Class frmScreenEntry
         End If
     End Sub
 
-    'validate input from scanner or manual type
+    'validates input from masked textbox - it should be in MM/dd/yyyy format
+    Private Sub txtAbsentFrom_TypeValidationCompleted(sender As Object, e As TypeValidationEventArgs) Handles txtAbsentFrom.TypeValidationCompleted
+        If (Not e.IsValidInput) Then
+            SendKeys.Send("{End}")
+            MessageBox.Show("Please input date in Month/Day/Year format.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            e.Cancel = True
+        End If
+    End Sub
+
+    Private Sub txtAbsentTo_TypeValidationCompleted(sender As Object, e As TypeValidationEventArgs) Handles txtAbsentTo.TypeValidationCompleted
+        If (Not e.IsValidInput) Then
+            SendKeys.Send("{End}")
+            MessageBox.Show("Please input date in Month/Day/Year format.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            e.Cancel = True
+        End If
+    End Sub
+
+    Private Sub lblNotFtw_Click(sender As Object, e As EventArgs) Handles lblNotFtw.Click
+        If chkNotFtw.Enabled = True Then
+            If chkNotFtw.CheckState = CheckState.Checked Then
+                chkNotFtw.Checked = False
+            Else
+                chkNotFtw.Checked = True
+            End If
+        End If
+    End Sub
+
+#Region "Subs & Functions"
     Private Sub ValidateId(ByVal _employeeCode As String)
         Try
             Dim _count As Integer = 0
@@ -304,14 +438,18 @@ Public Class frmScreenEntry
             _prmCount(0).Value = _employeeCode
             _count = dbJeonsoft.ExecuteScalar("SELECT Count(Id) FROM viwGroupEmployees WHERE EmployeeCode = @EmployeeCode AND Active = 1", CommandType.Text, _prmCount)
 
-            If _count > 0 Then
+            cmbLeaveType.SelectedValue = 1
+            cmbLeaveType.Enabled = True
+
+            If _count > 0 Then 'direct employee
                 Dim _prmReader(0) As SqlParameter
                 _prmReader(0) = New SqlParameter("@EmployeeCode", SqlDbType.VarChar)
                 _prmReader(0).Value = _employeeCode
+
                 Dim _reader As IDataReader = dbLeaveFiling.ExecuteReader("RdEmployee", CommandType.StoredProcedure, _prmReader)
 
                 While _reader.Read
-                    employeeId = _reader.Item("Id").ToString
+                    employeeId = _reader.Item("Id")
                     txtEmployeeCode.Text = _reader.Item("EmployeeCode").ToString.Trim
                     txtEmployeeName.Text = _reader("EmployeeName").ToString.Trim
                 End While
@@ -321,7 +459,7 @@ Public Class frmScreenEntry
                 txtEmployeeScanId.Enabled = False
                 txtEmployeeName.Enabled = True
                 txtEmployeeName.ReadOnly = True
-                txtDate.Text = Format(serverDate, "MMMM dd, yyyy HH:mm")
+                txtDate.Text = Format(dbLeaveFiling.GetServerDate, "MMMM dd, yyyy HH:mm")
                 txtAbsentFrom.Enabled = True
                 txtAbsentFrom.ReadOnly = False
                 txtAbsentTo.Enabled = True
@@ -331,9 +469,9 @@ Public Class frmScreenEntry
                 txtDiagnosis.Enabled = True
                 txtDiagnosis.ReadOnly = False
                 chkNotFtw.Enabled = True
-                chkSetToVl.Enabled = True
                 txtReason.Focus()
-            Else
+
+            Else 'agency employee (fmb)
                 If _employeeCode.Substring(0, 3).ToUpper.Trim.Equals("FMB") Then
                     employeeId = 0
                     txtEmployeeScanId.Clear()
@@ -342,7 +480,7 @@ Public Class frmScreenEntry
                     txtEmployeeCode.Text = StrConv(txtEmployeeCode.Text.Trim, VbStrConv.Uppercase)
                     txtEmployeeName.Enabled = True
                     txtEmployeeName.ReadOnly = False
-                    txtDate.Text = Format(serverDate, "MMMM dd, yyyy HH:mm")
+                    txtDate.Text = Format(dbLeaveFiling.GetServerDate, "MMMM dd, yyyy HH:mm")
                     txtAbsentFrom.Enabled = True
                     txtAbsentFrom.ReadOnly = False
                     txtAbsentTo.Enabled = True
@@ -352,7 +490,6 @@ Public Class frmScreenEntry
                     txtDiagnosis.Enabled = True
                     txtDiagnosis.ReadOnly = False
                     chkNotFtw.Enabled = True
-                    chkSetToVl.Enabled = True
                     txtEmployeeName.Focus()
                 Else
                     MessageBox.Show("Employee not found.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -360,6 +497,7 @@ Public Class frmScreenEntry
                     Return
                 End If
             End If
+
         Catch ex As Exception
             MessageBox.Show(ex.Message, main.SetExcpTitle(ex), MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
@@ -374,11 +512,13 @@ Public Class frmScreenEntry
         txtEmployeeName.Clear()
         txtEmployeeName.Enabled = False
         txtDate.Text = ""
+        cmbLeaveType.Enabled = False
+        cmbLeaveType.SelectedValue = 0
         txtAbsentFrom.Enabled = False
-        txtAbsentFrom.Text = String.Format("{0:MM/dd/yyyy}", CheckDate(serverDate))
+        txtAbsentFrom.Text = String.Format("{0:MM/dd/yyyy}", GetLastWorkingDay(dbLeaveFiling.GetServerDate))
         txtAbsentFrom.ValidatingType = GetType(System.DateTime)
         txtAbsentTo.Enabled = False
-        txtAbsentTo.Text = String.Format("{0:MM/dd/yyyy}", CheckDate(serverDate))
+        txtAbsentTo.Text = String.Format("{0:MM/dd/yyyy}", GetLastWorkingDay(dbLeaveFiling.GetServerDate))
         txtAbsentTo.ValidatingType = GetType(System.DateTime)
         txtReason.Clear()
         txtReason.Enabled = False
@@ -386,13 +526,11 @@ Public Class frmScreenEntry
         txtDiagnosis.Enabled = False
         chkNotFtw.Enabled = False
         chkNotFtw.CheckState = CheckState.Unchecked
-        chkSetToVl.Enabled = False
-        chkSetToVl.CheckState = CheckState.Unchecked
         txtEmployeeScanId.Focus()
     End Sub
 
-    'set the default value of absent date to last working day - excluding sunday, company holidays and legal holidays
-    Private Function CheckDate(ByVal _date As DateTime) As Date
+    'set the absent date to last working date - excluding sunday, company holidays and legal holidays
+    Private Function GetLastWorkingDay(ByVal _date As DateTime) As Date
         Try
             _date = _date.AddDays(-1)
             While IsHoliday(_date) Or IsWeekend(_date)
@@ -457,51 +595,62 @@ Public Class frmScreenEntry
         Return _count
     End Function
 
-    'save and close data entry form with not fit to work as true
     Private Sub NotFitToWork()
         If String.IsNullOrEmpty(txtEmployeeScanId.Text.Trim) AndAlso String.IsNullOrEmpty(txtEmployeeCode.Text.Trim) Then
-            txtEmployeeScanId.Select()
-            MessageBox.Show("Please scan your ID.", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            Me.ActiveControl = txtEmployeeScanId
+            MessageBox.Show("Please enter employee ID.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return
+        End If
+
+        If cmbLeaveType.SelectedValue = 0 Then
+            MessageBox.Show("Please select leave type.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Me.ActiveControl = cmbLeaveType
             Return
         End If
 
         If String.IsNullOrEmpty(txtReason.Text.Trim) Then
-            MessageBox.Show("Remarks cannot be empty.", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            MessageBox.Show("Reason is required.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Me.ActiveControl = txtReason
+            Return
+        End If
+
+        If String.IsNullOrEmpty(txtDiagnosis.Text.Trim) Then
+            MessageBox.Show("Diagnosis is required.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Me.ActiveControl = txtDiagnosis
             Return
         End If
 
         If CDate(txtAbsentFrom.Text).Date > CDate(txtAbsentTo.Text).Date Then
             MessageBox.Show("Start date is later than end date.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Me.ActiveControl = txtAbsentFrom
             Return
         End If
 
-        If screenId = 0 Then
+        If screenId = 0 Then 'new record
             Dim _newScreeningRow As ScreeningRow = Me.dsLeaveFiling.Screening.NewScreeningRow
 
             With _newScreeningRow
-                .ScreenDate = serverDate
+                .ScreenDate = dbLeaveFiling.GetServerDate
                 .ScreenBy = screenBy
+
                 If employeeId = 0 Then
                     .SetEmployeeIdNull()
                 Else
                     .EmployeeId = employeeId
                 End If
+
                 .EmployeeCode = txtEmployeeCode.Text.Trim
                 .EmployeeName = txtEmployeeName.Text.Trim
+                .LeaveTypeId = cmbLeaveType.SelectedValue
                 .AbsentFrom = CDate(txtAbsentFrom.Text)
                 .AbsentTo = CDate(txtAbsentTo.Text)
                 .Quantity = GetTotalDays(CDate(txtAbsentFrom.Text), CDate(txtAbsentTo.Text))
-                If chkSetToVl.CheckState = CheckState.Checked Then
-                    .LeaveTypeId = 2
-                Else
-                    .LeaveTypeId = 1
-                End If
                 .Reason = txtReason.Text.Trim
                 .Diagnosis = txtDiagnosis.Text.Trim
-                .IsFitToWork = False
                 .IsUsed = False
+                .IsFitToWork = False
                 .ModifiedBy = screenBy
-                .ModifiedDate = serverDate
+                .ModifiedDate = dbLeaveFiling.GetServerDate
             End With
             Me.dsLeaveFiling.Screening.AddScreeningRow(_newScreeningRow)
 
@@ -512,172 +661,116 @@ Public Class frmScreenEntry
                 _frmScreenList.RefreshValues()
                 ResetForm()
             End If
-        Else
-            Dim _rowScreening As ScreeningRow = Me.dsLeaveFiling.Screening.FindByScreenId(screenId)
 
-            With _rowScreening
-                .ScreenBy = screenBy
-                If employeeId = 0 Then
-                    .SetEmployeeIdNull()
-                Else
-                    .EmployeeId = employeeId
-                End If
-                .EmployeeCode = txtEmployeeCode.Text.Trim
-                .EmployeeName = txtEmployeeName.Text.Trim
-                .AbsentFrom = CDate(txtAbsentFrom.Text)
-                .AbsentTo = CDate(txtAbsentTo.Text)
-                .Quantity = GetTotalDays(CDate(txtAbsentFrom.Text), CDate(txtAbsentTo.Text))
-                If chkSetToVl.CheckState = CheckState.Checked Then
-                    .LeaveTypeId = 2
-                Else
-                    .LeaveTypeId = 1
-                End If
-                .Reason = txtReason.Text.Trim
-                .Diagnosis = txtDiagnosis.Text.Trim
-                .IsFitToWork = False
-                .ModifiedBy = screenBy
-                .ModifiedDate = serverDate
-            End With
+        Else 'old record
+            Dim _rowScreening As ScreeningRow = Me.dsLeaveFiling.Screening.FindByScreenId(screenId)
+            Dim _leaveFileId As Integer = 0
+
+            Dim _prm(0) As SqlParameter
+            _prm(0) = New SqlParameter("@ScreenId", SqlDbType.Int)
+            _prm(0).Value = screenId
+
+            Dim _reader As IDataReader = dbLeaveFiling.ExecuteReader("SELECT LeaveFileId FROM dbo.LeaveFiling WHERE ScreenId = @ScreenId", CommandType.Text, _prm)
+
+            While _reader.Read
+                _leaveFileId = _reader.Item("LeaveFileId")
+            End While
+            _reader.Close()
+
+            If _leaveFileId = 0 Then
+                With _rowScreening
+                    .ScreenBy = screenBy
+
+                    If employeeId = 0 Then
+                        .SetEmployeeIdNull()
+                    Else
+                        .EmployeeId = employeeId
+                    End If
+
+                    .EmployeeCode = txtEmployeeCode.Text.Trim
+                    .EmployeeName = txtEmployeeName.Text.Trim
+                    .AbsentFrom = CDate(txtAbsentFrom.Text)
+                    .AbsentTo = CDate(txtAbsentTo.Text)
+                    .Quantity = GetTotalDays(CDate(txtAbsentFrom.Text), CDate(txtAbsentTo.Text))
+                    .LeaveTypeId = cmbLeaveType.SelectedValue
+                    .Reason = txtReason.Text.Trim
+                    .Diagnosis = txtDiagnosis.Text.Trim
+                    .IsFitToWork = False
+                    .ModifiedBy = screenBy
+                    .ModifiedDate = dbLeaveFiling.GetServerDate
+                End With
+
+            Else
+                Me.adpLeaveFiling.FillByLeaveFileId(Me.dsLeaveFiling.LeaveFiling, _leaveFileId)
+                Dim _rowLeaveFiling As LeaveFilingRow = Me.dsLeaveFiling.LeaveFiling.FindByLeaveFileId(_leaveFileId)
+
+                'disable editing if already approved/disapproved by the approvers
+                With _rowLeaveFiling
+                    If (_rowLeaveFiling.IsSuperiorId1Null = False AndAlso _rowLeaveFiling.IsSuperiorApprovalDate1Null = False) Or _
+                        (_rowLeaveFiling.IsSuperiorId2Null = False AndAlso _rowLeaveFiling.IsSuperiorApprovalDate2Null = False) Or _
+                        (_rowLeaveFiling.IsManagerApprovalDateNull = False) Then
+                        MessageBox.Show("Screening record already approved/disapproved.", "Not Allowed", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        Return
+                    Else
+                        .StartDate = CDate(txtAbsentFrom.Text)
+                        .EndDate = CDate(txtAbsentTo.Text)
+                        .Quantity = GetTotalDays(CDate(txtAbsentFrom.Text), CDate(txtAbsentTo.Text))
+                        .Reason = txtReason.Text.Trim
+                        .ClinicRemarks = txtDiagnosis.Text.Trim
+
+                        Dim _prmEmployeeCode(0) As SqlParameter
+                        _prmEmployeeCode(0) = New SqlParameter("@EmployeeCode", SqlDbType.VarChar)
+                        _prmEmployeeCode(0).Value = screenBy
+
+                        Dim _reader2 As IDataReader = dbLeaveFiling.ExecuteReader("RdClinic", CommandType.StoredProcedure, _prmEmployeeCode)
+
+                        While _reader2.Read
+                            .ClinicId = _reader2.Item("Id")
+                            .ModifiedBy = _reader2.Item("Id")
+                            .ModifiedDate = dbLeaveFiling.GetServerDate
+                        End While
+                        _reader2.Close()
+
+                        With _rowScreening
+                            .ScreenBy = screenBy
+
+                            If employeeId = 0 Then
+                                .SetEmployeeIdNull()
+                            Else
+                                .EmployeeId = employeeId
+                            End If
+
+                            .EmployeeCode = txtEmployeeCode.Text.Trim
+                            .EmployeeName = txtEmployeeName.Text.Trim
+                            .AbsentFrom = CDate(txtAbsentFrom.Text)
+                            .AbsentTo = CDate(txtAbsentTo.Text)
+                            .Quantity = GetTotalDays(CDate(txtAbsentFrom.Text), CDate(txtAbsentTo.Text))
+                            .LeaveTypeId = cmbLeaveType.SelectedValue
+                            .Reason = txtReason.Text.Trim
+                            .Diagnosis = txtDiagnosis.Text.Trim
+                            .IsFitToWork = False
+                            .ModifiedBy = screenBy
+                            .ModifiedDate = dbLeaveFiling.GetServerDate
+                        End With
+                    End If
+                End With
+            End If
+
             Me.Validate()
             Me.bsScreening.EndEdit()
+            Me.bsLeaveFiling.EndEdit()
 
             If Me.dsLeaveFiling.HasChanges Then
                 Me.adpScreening.Update(Me.dsLeaveFiling.Screening)
+                Me.adpLeaveFiling.Update(Me.dsLeaveFiling.LeaveFiling)
                 Me.dsLeaveFiling.AcceptChanges()
                 Me.DialogResult = Windows.Forms.DialogResult.OK
             End If
         End If
     End Sub
+#End Region
 
-    'save and close data entry form with leave type as vacation leave
-    Private Sub SetToVl()
-        If String.IsNullOrEmpty(txtEmployeeScanId.Text.Trim) AndAlso String.IsNullOrEmpty(txtEmployeeCode.Text.Trim) Then
-            txtEmployeeScanId.Select()
-            MessageBox.Show("Please scan your ID.", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            Return
-        End If
-
-        If String.IsNullOrEmpty(txtReason.Text.Trim) Then
-            MessageBox.Show("Remarks cannot be empty.", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            Return
-        End If
-
-        If CDate(txtAbsentFrom.Text).Date > CDate(txtAbsentTo.Text).Date Then
-            MessageBox.Show("Start date is later than end date.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Return
-        End If
-
-        If screenId = 0 Then
-            Dim _newScreeningRow As ScreeningRow = Me.dsLeaveFiling.Screening.NewScreeningRow
-
-            With _newScreeningRow
-                .ScreenDate = serverDate
-                .ScreenBy = screenBy
-                If employeeId = 0 Then
-                    .SetEmployeeIdNull()
-                Else
-                    .EmployeeId = employeeId
-                End If
-                .EmployeeCode = txtEmployeeCode.Text.Trim
-                .EmployeeName = txtEmployeeName.Text.Trim
-                .AbsentFrom = CDate(txtAbsentFrom.Text)
-                .AbsentTo = CDate(txtAbsentTo.Text)
-                .Quantity = GetTotalDays(CDate(txtAbsentFrom.Text), CDate(txtAbsentTo.Text))
-                .LeaveTypeId = 2
-                .Reason = txtReason.Text.Trim
-                .Diagnosis = txtDiagnosis.Text.Trim
-                If chkNotFtw.CheckState = CheckState.Checked Then
-                    .IsFitToWork = False
-                Else
-                    .IsFitToWork = True
-                End If
-                .IsUsed = False
-                .ModifiedBy = screenBy
-                .ModifiedDate = serverDate
-            End With
-            Me.dsLeaveFiling.Screening.AddScreeningRow(_newScreeningRow)
-
-            If Me.dsLeaveFiling.HasChanges Then
-                Me.adpScreening.Update(Me.dsLeaveFiling.Screening)
-                Me.dsLeaveFiling.AcceptChanges()
-                Dim _frmScreenList As frmScreenList = TryCast(Me.Owner, frmScreenList)
-                _frmScreenList.RefreshValues()
-                ResetForm()
-            End If
-        Else
-            Dim _rowScreening As ScreeningRow = Me.dsLeaveFiling.Screening.FindByScreenId(screenId)
-
-            With _rowScreening
-                .ScreenBy = screenBy
-                If employeeId = 0 Then
-                    .SetEmployeeIdNull()
-                Else
-                    .EmployeeId = employeeId
-                End If
-                .EmployeeCode = txtEmployeeCode.Text.Trim
-                .EmployeeName = txtEmployeeName.Text.Trim
-                .AbsentFrom = CDate(txtAbsentFrom.Text)
-                .AbsentTo = CDate(txtAbsentTo.Text)
-                .Quantity = GetTotalDays(CDate(txtAbsentFrom.Text), CDate(txtAbsentTo.Text))
-                .LeaveTypeId = 2
-                .Reason = txtReason.Text.Trim
-                .Diagnosis = txtDiagnosis.Text.Trim
-                If chkNotFtw.CheckState = CheckState.Checked Then
-                    .IsFitToWork = False
-                Else
-                    .IsFitToWork = True
-                End If
-                .ModifiedBy = screenBy
-                .ModifiedDate = serverDate
-            End With
-            Me.Validate()
-            Me.bsScreening.EndEdit()
-
-            If Me.dsLeaveFiling.HasChanges Then
-                Me.adpScreening.Update(Me.dsLeaveFiling.Screening)
-                Me.dsLeaveFiling.AcceptChanges()
-                Me.DialogResult = Windows.Forms.DialogResult.OK
-            End If
-        End If
-    End Sub
-
-    'validates input from masked textbox - it should be in MM/dd/yyyy format
-    Private Sub txtAbsentFrom_TypeValidationCompleted(sender As Object, e As TypeValidationEventArgs) Handles txtAbsentFrom.TypeValidationCompleted
-        If (Not e.IsValidInput) Then
-            SendKeys.Send("{End}")
-            MessageBox.Show("Please input date in Month/Day/Year format.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            e.Cancel = True
-        End If
-    End Sub
-
-    Private Sub txtAbsentTo_TypeValidationCompleted(sender As Object, e As TypeValidationEventArgs) Handles txtAbsentTo.TypeValidationCompleted
-        If (Not e.IsValidInput) Then
-            SendKeys.Send("{End}")
-            MessageBox.Show("Please input date in Month/Day/Year format.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            e.Cancel = True
-        End If
-    End Sub
-
-    Private Sub lblNotFtw_Click(sender As Object, e As EventArgs) Handles lblNotFtw.Click
-        If chkNotFtw.Enabled = True Then
-            If chkNotFtw.CheckState = CheckState.Checked Then
-                chkNotFtw.Checked = False
-            Else
-                chkNotFtw.Checked = True
-            End If
-        End If
-    End Sub
-
-    Private Sub lblSetToVl_Click(sender As Object, e As EventArgs) Handles lblSetToVl.Click
-        If chkSetToVl.Enabled = True Then
-            If chkSetToVl.CheckState = CheckState.Checked Then
-                chkSetToVl.Checked = False
-            Else
-                chkSetToVl.Checked = True
-            End If
-        End If
-    End Sub
-
+#Region "UI"
     Private Sub txtEmployeeScanId_Enter(sender As Object, e As EventArgs) Handles txtEmployeeScanId.Enter
         lblEmployeeScanId.ForeColor = Color.White
         lblEmployeeScanId.BackColor = Color.DarkSlateGray
@@ -696,6 +789,16 @@ Public Class frmScreenEntry
     Private Sub txtEmployeeName_Leave(sender As Object, e As EventArgs) Handles txtEmployeeName.Leave
         lblEmployeeName.ForeColor = Color.Black
         lblEmployeeName.BackColor = SystemColors.Control
+    End Sub
+
+    Private Sub cmbLeaveType_Enter(sender As Object, e As EventArgs) Handles cmbLeaveType.Enter
+        lblLeaveType.ForeColor = Color.White
+        lblLeaveType.BackColor = Color.DarkSlateGray
+    End Sub
+
+    Private Sub cmbLeaveType_Leave(sender As Object, e As EventArgs) Handles cmbLeaveType.Leave
+        lblLeaveType.ForeColor = Color.Black
+        lblLeaveType.BackColor = SystemColors.Control
     End Sub
 
     Private Sub txtAbsentFrom_Enter(sender As Object, e As EventArgs) Handles txtAbsentFrom.Enter
@@ -777,45 +880,6 @@ Public Class frmScreenEntry
         lblNotFtw.ForeColor = Color.Black
         lblNotFtw.BackColor = SystemColors.Control
     End Sub
-
-    Private Sub chkSetToVl_Enter(sender As Object, e As EventArgs) Handles chkSetToVl.Enter
-        lblSetToVl.ForeColor = Color.White
-        lblSetToVl.BackColor = Color.DarkSlateGray
-    End Sub
-
-    Private Sub chkSetToVl_Leave(sender As Object, e As EventArgs) Handles chkSetToVl.Leave
-        lblSetToVl.ForeColor = Color.Black
-        lblSetToVl.BackColor = SystemColors.Control
-    End Sub
-
-    Private Sub lblSetToVl_Enter(sender As Object, e As EventArgs) Handles lblSetToVl.Enter
-        lblSetToVl.ForeColor = Color.White
-        lblSetToVl.BackColor = Color.DarkSlateGray
-    End Sub
-
-    Private Sub lblSetToVl_Leave(sender As Object, e As EventArgs) Handles lblSetToVl.Leave
-        lblSetToVl.ForeColor = Color.Black
-        lblSetToVl.BackColor = SystemColors.Control
-    End Sub
-
-    Private Sub lblSetToVl_MouseEnter(sender As Object, e As EventArgs) Handles lblSetToVl.MouseEnter
-        lblSetToVl.ForeColor = Color.White
-        lblSetToVl.BackColor = Color.DarkSlateGray
-    End Sub
-
-    Private Sub lblSetToVl_MouseLeave(sender As Object, e As EventArgs) Handles lblSetToVl.MouseLeave
-        lblSetToVl.ForeColor = Color.Black
-        lblSetToVl.BackColor = SystemColors.Control
-    End Sub
-
-    Private Sub chkSetToVl_MouseEnter(sender As Object, e As EventArgs) Handles chkSetToVl.MouseEnter
-        lblSetToVl.ForeColor = Color.White
-        lblSetToVl.BackColor = Color.DarkSlateGray
-    End Sub
-
-    Private Sub chkSetToVl_MouseLeave(sender As Object, e As EventArgs) Handles chkSetToVl.MouseLeave
-        lblSetToVl.ForeColor = Color.Black
-        lblSetToVl.BackColor = SystemColors.Control
-    End Sub
+#End Region
 
 End Class

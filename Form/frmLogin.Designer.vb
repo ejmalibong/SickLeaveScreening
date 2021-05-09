@@ -55,7 +55,7 @@ Partial Class frmLogin
         Me.btnLogin.Scheme = PinkieControls.ButtonXP.Schemes.Blue
         Me.btnLogin.Size = New System.Drawing.Size(110, 36)
         Me.btnLogin.TabIndex = 91
-        Me.btnLogin.Text = "  Login"
+        Me.btnLogin.Text = "Login"
         '
         'btnClose
         '

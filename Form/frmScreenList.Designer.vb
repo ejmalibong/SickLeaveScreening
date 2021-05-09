@@ -28,6 +28,7 @@ Partial Class frmScreenList
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.pnlTop = New System.Windows.Forms.Panel()
+        Me.txtUsername = New System.Windows.Forms.Label()
         Me.btnSearch = New PinkieControls.ButtonXP()
         Me.lblSearchCriteria = New System.Windows.Forms.Label()
         Me.btnReset = New PinkieControls.ButtonXP()
@@ -49,15 +50,13 @@ Partial Class frmScreenList
         Me.tssGo = New System.Windows.Forms.ToolStripSeparator()
         Me.btnGo = New System.Windows.Forms.ToolStripButton()
         Me.pnlBottom = New System.Windows.Forms.Panel()
-        Me.btnLogout = New PinkieControls.ButtonXP()
-        Me.lblUser = New System.Windows.Forms.Label()
+        Me.btnUser = New PinkieControls.ButtonXP()
         Me.btnReport = New PinkieControls.ButtonXP()
         Me.btnRefresh = New PinkieControls.ButtonXP()
         Me.btnClose = New PinkieControls.ButtonXP()
+        Me.btnAdd = New PinkieControls.ButtonXP()
         Me.btnDelete = New PinkieControls.ButtonXP()
         Me.btnEdit = New PinkieControls.ButtonXP()
-        Me.btnAdd = New PinkieControls.ButtonXP()
-        Me.txtEmpName = New System.Windows.Forms.Label()
         Me.dgvList = New System.Windows.Forms.DataGridView()
         Me.ColScreenId = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ColScreenDate = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -94,6 +93,7 @@ Partial Class frmScreenList
         'pnlTop
         '
         Me.pnlTop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlTop.Controls.Add(Me.txtUsername)
         Me.pnlTop.Controls.Add(Me.btnSearch)
         Me.pnlTop.Controls.Add(Me.lblSearchCriteria)
         Me.pnlTop.Controls.Add(Me.btnReset)
@@ -103,8 +103,21 @@ Partial Class frmScreenList
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(1284, 36)
+        Me.pnlTop.Size = New System.Drawing.Size(1300, 36)
         Me.pnlTop.TabIndex = 0
+        '
+        'txtUsername
+        '
+        Me.txtUsername.BackColor = System.Drawing.SystemColors.GradientActiveCaption
+        Me.txtUsername.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtUsername.Font = New System.Drawing.Font("Verdana", 9.5!)
+        Me.txtUsername.ForeColor = System.Drawing.Color.Black
+        Me.txtUsername.Location = New System.Drawing.Point(778, 5)
+        Me.txtUsername.Name = "txtUsername"
+        Me.txtUsername.Size = New System.Drawing.Size(270, 24)
+        Me.txtUsername.TabIndex = 527
+        Me.txtUsername.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.txtUsername.UseCompatibleTextRendering = True
         '
         'btnSearch
         '
@@ -223,7 +236,7 @@ Partial Class frmScreenList
         Me.bindingNavigator.Dock = System.Windows.Forms.DockStyle.None
         Me.bindingNavigator.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.bindingNavigator.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BindingNavigatorMoveFirstItem, Me.BindingNavigatorMovePreviousItem, Me.BindingNavigatorSeparator, Me.txtPageNumber, Me.txtTotalPageNumber, Me.BindingNavigatorSeparator1, Me.BindingNavigatorMoveNextItem, Me.BindingNavigatorMoveLastItem, Me.tssGo, Me.btnGo})
-        Me.bindingNavigator.Location = New System.Drawing.Point(1077, 4)
+        Me.bindingNavigator.Location = New System.Drawing.Point(1093, 4)
         Me.bindingNavigator.MoveFirstItem = Me.BindingNavigatorMoveFirstItem
         Me.bindingNavigator.MoveLastItem = Me.BindingNavigatorMoveLastItem
         Me.bindingNavigator.MoveNextItem = Me.BindingNavigatorMoveNextItem
@@ -317,47 +330,34 @@ Partial Class frmScreenList
         'pnlBottom
         '
         Me.pnlBottom.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlBottom.Controls.Add(Me.btnLogout)
-        Me.pnlBottom.Controls.Add(Me.lblUser)
+        Me.pnlBottom.Controls.Add(Me.btnUser)
         Me.pnlBottom.Controls.Add(Me.btnReport)
         Me.pnlBottom.Controls.Add(Me.btnRefresh)
         Me.pnlBottom.Controls.Add(Me.btnClose)
+        Me.pnlBottom.Controls.Add(Me.btnAdd)
         Me.pnlBottom.Controls.Add(Me.btnDelete)
         Me.pnlBottom.Controls.Add(Me.btnEdit)
-        Me.pnlBottom.Controls.Add(Me.btnAdd)
-        Me.pnlBottom.Controls.Add(Me.txtEmpName)
         Me.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlBottom.Location = New System.Drawing.Point(0, 615)
+        Me.pnlBottom.Location = New System.Drawing.Point(0, 654)
         Me.pnlBottom.Name = "pnlBottom"
-        Me.pnlBottom.Size = New System.Drawing.Size(1284, 46)
+        Me.pnlBottom.Size = New System.Drawing.Size(1300, 46)
         Me.pnlBottom.TabIndex = 1
         '
-        'btnLogout
+        'btnUser
         '
-        Me.btnLogout.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
-        Me.btnLogout.DefaultScheme = False
-        Me.btnLogout.DialogResult = System.Windows.Forms.DialogResult.None
-        Me.btnLogout.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.btnLogout.Hint = "Log out your account"
-        Me.btnLogout.Location = New System.Drawing.Point(664, 14)
-        Me.btnLogout.Name = "btnLogout"
-        Me.btnLogout.Scheme = PinkieControls.ButtonXP.Schemes.Blue
-        Me.btnLogout.Size = New System.Drawing.Size(92, 26)
-        Me.btnLogout.TabIndex = 521
-        Me.btnLogout.TabStop = False
-        Me.btnLogout.Text = "Log Out"
-        '
-        'lblUser
-        '
-        Me.lblUser.BackColor = System.Drawing.SystemColors.Control
-        Me.lblUser.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblUser.ForeColor = System.Drawing.Color.Black
-        Me.lblUser.Location = New System.Drawing.Point(284, 15)
-        Me.lblUser.Name = "lblUser"
-        Me.lblUser.Size = New System.Drawing.Size(100, 24)
-        Me.lblUser.TabIndex = 315
-        Me.lblUser.Text = " Logged in as"
-        Me.lblUser.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnUser.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.btnUser.DefaultScheme = False
+        Me.btnUser.DialogResult = System.Windows.Forms.DialogResult.None
+        Me.btnUser.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.btnUser.Hint = "Refresh"
+        Me.btnUser.Image = Global.SickLeaveScreening.My.Resources.Resources.People_24_x_24
+        Me.btnUser.Location = New System.Drawing.Point(252, 4)
+        Me.btnUser.Name = "btnUser"
+        Me.btnUser.Scheme = PinkieControls.ButtonXP.Schemes.Blue
+        Me.btnUser.Size = New System.Drawing.Size(110, 36)
+        Me.btnUser.TabIndex = 162
+        Me.btnUser.TabStop = False
+        Me.btnUser.Text = "Users"
         '
         'btnReport
         '
@@ -365,15 +365,15 @@ Partial Class frmScreenList
         Me.btnReport.DefaultScheme = False
         Me.btnReport.DialogResult = System.Windows.Forms.DialogResult.None
         Me.btnReport.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.btnReport.Hint = "Report"
-        Me.btnReport.Image = Global.SickLeaveScreening.My.Resources.Resources.Report_16_x_16
+        Me.btnReport.Hint = "Refresh"
+        Me.btnReport.Image = Global.SickLeaveScreening.My.Resources.Resources.Report_24_x_24
         Me.btnReport.Location = New System.Drawing.Point(138, 4)
         Me.btnReport.Name = "btnReport"
         Me.btnReport.Scheme = PinkieControls.ButtonXP.Schemes.Blue
-        Me.btnReport.Size = New System.Drawing.Size(130, 36)
+        Me.btnReport.Size = New System.Drawing.Size(110, 36)
         Me.btnReport.TabIndex = 161
         Me.btnReport.TabStop = False
-        Me.btnReport.Text = "    Report"
+        Me.btnReport.Text = " Report"
         '
         'btnRefresh
         '
@@ -399,13 +399,30 @@ Partial Class frmScreenList
         Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnClose.Font = New System.Drawing.Font("Verdana", 9.0!)
         Me.btnClose.Hint = "Exit application"
-        Me.btnClose.Location = New System.Drawing.Point(1167, 4)
+        Me.btnClose.Location = New System.Drawing.Point(1183, 4)
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Scheme = PinkieControls.ButtonXP.Schemes.Blue
         Me.btnClose.Size = New System.Drawing.Size(110, 36)
         Me.btnClose.TabIndex = 159
         Me.btnClose.TabStop = False
         Me.btnClose.Text = "Close"
+        '
+        'btnAdd
+        '
+        Me.btnAdd.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnAdd.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.btnAdd.DefaultScheme = False
+        Me.btnAdd.DialogResult = System.Windows.Forms.DialogResult.None
+        Me.btnAdd.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.btnAdd.Hint = "Add new record"
+        Me.btnAdd.Image = Global.SickLeaveScreening.My.Resources.Resources.Create_16_x_16
+        Me.btnAdd.Location = New System.Drawing.Point(841, 4)
+        Me.btnAdd.Name = "btnAdd"
+        Me.btnAdd.Scheme = PinkieControls.ButtonXP.Schemes.Blue
+        Me.btnAdd.Size = New System.Drawing.Size(110, 36)
+        Me.btnAdd.TabIndex = 156
+        Me.btnAdd.TabStop = False
+        Me.btnAdd.Text = "Add (F2)"
         '
         'btnDelete
         '
@@ -416,7 +433,7 @@ Partial Class frmScreenList
         Me.btnDelete.Font = New System.Drawing.Font("Verdana", 9.0!)
         Me.btnDelete.Hint = "Delete record"
         Me.btnDelete.Image = Global.SickLeaveScreening.My.Resources.Resources.Erase_16_x_16
-        Me.btnDelete.Location = New System.Drawing.Point(1053, 4)
+        Me.btnDelete.Location = New System.Drawing.Point(1069, 4)
         Me.btnDelete.Name = "btnDelete"
         Me.btnDelete.Scheme = PinkieControls.ButtonXP.Schemes.Blue
         Me.btnDelete.Size = New System.Drawing.Size(110, 36)
@@ -433,52 +450,19 @@ Partial Class frmScreenList
         Me.btnEdit.Font = New System.Drawing.Font("Verdana", 9.0!)
         Me.btnEdit.Hint = "Modify record"
         Me.btnEdit.Image = Global.SickLeaveScreening.My.Resources.Resources.Modify_16_x_16
-        Me.btnEdit.Location = New System.Drawing.Point(939, 4)
+        Me.btnEdit.Location = New System.Drawing.Point(955, 4)
         Me.btnEdit.Name = "btnEdit"
         Me.btnEdit.Scheme = PinkieControls.ButtonXP.Schemes.Blue
         Me.btnEdit.Size = New System.Drawing.Size(110, 36)
         Me.btnEdit.TabIndex = 157
         Me.btnEdit.TabStop = False
-        Me.btnEdit.Text = "Edit [F3]"
-        '
-        'btnAdd
-        '
-        Me.btnAdd.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnAdd.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
-        Me.btnAdd.DefaultScheme = False
-        Me.btnAdd.DialogResult = System.Windows.Forms.DialogResult.None
-        Me.btnAdd.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.btnAdd.Hint = "Add new record"
-        Me.btnAdd.Image = Global.SickLeaveScreening.My.Resources.Resources.Create_16_x_16
-        Me.btnAdd.Location = New System.Drawing.Point(825, 4)
-        Me.btnAdd.Name = "btnAdd"
-        Me.btnAdd.Scheme = PinkieControls.ButtonXP.Schemes.Blue
-        Me.btnAdd.Size = New System.Drawing.Size(110, 36)
-        Me.btnAdd.TabIndex = 156
-        Me.btnAdd.TabStop = False
-        Me.btnAdd.Text = "Add (F2)"
-        '
-        'txtEmpName
-        '
-        Me.txtEmpName.BackColor = System.Drawing.SystemColors.GradientActiveCaption
-        Me.txtEmpName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtEmpName.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.txtEmpName.ForeColor = System.Drawing.Color.Black
-        Me.txtEmpName.Location = New System.Drawing.Point(383, 15)
-        Me.txtEmpName.Name = "txtEmpName"
-        Me.txtEmpName.Size = New System.Drawing.Size(280, 24)
-        Me.txtEmpName.TabIndex = 520
-        Me.txtEmpName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.txtEmpName.UseCompatibleTextRendering = True
+        Me.btnEdit.Text = "Edit (F3)"
         '
         'dgvList
         '
         Me.dgvList.AllowUserToAddRows = False
         Me.dgvList.AllowUserToDeleteRows = False
         Me.dgvList.AllowUserToResizeRows = False
-        Me.dgvList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.dgvList.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvList.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
         DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
@@ -491,6 +475,7 @@ Partial Class frmScreenList
         Me.dgvList.ColumnHeadersHeight = 25
         Me.dgvList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         Me.dgvList.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ColScreenId, Me.ColScreenDate, Me.ColEmployeeName, Me.ColReason, Me.ColDiagnosis, Me.ColLeaveTypeId, Me.ColLeaveTypeName, Me.ColsFitToWork, Me.ColScreenByName})
+        Me.dgvList.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvList.Location = New System.Drawing.Point(0, 36)
         Me.dgvList.MultiSelect = False
         Me.dgvList.Name = "dgvList"
@@ -499,9 +484,8 @@ Partial Class frmScreenList
         Me.dgvList.RowHeadersWidth = 40
         Me.dgvList.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgvList.RowTemplate.DefaultCellStyle.Font = New System.Drawing.Font("Verdana", 8.5!)
-        Me.dgvList.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.dgvList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvList.Size = New System.Drawing.Size(1284, 579)
+        Me.dgvList.Size = New System.Drawing.Size(1300, 618)
         Me.dgvList.TabIndex = 2
         '
         'ColScreenId
@@ -526,7 +510,7 @@ Partial Class frmScreenList
         Me.ColEmployeeName.HeaderText = "Employee Name"
         Me.ColEmployeeName.Name = "ColEmployeeName"
         Me.ColEmployeeName.ReadOnly = True
-        Me.ColEmployeeName.Width = 275
+        Me.ColEmployeeName.Width = 250
         '
         'ColReason
         '
@@ -556,6 +540,7 @@ Partial Class frmScreenList
         '
         'ColLeaveTypeName
         '
+        Me.ColLeaveTypeName.DataPropertyName = "LeaveTypeCode"
         DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
         Me.ColLeaveTypeName.DefaultCellStyle = DataGridViewCellStyle3
         Me.ColLeaveTypeName.HeaderText = "Leave Type"
@@ -577,7 +562,7 @@ Partial Class frmScreenList
         Me.ColScreenByName.HeaderText = "Encoded By"
         Me.ColScreenByName.Name = "ColScreenByName"
         Me.ColScreenByName.ReadOnly = True
-        Me.ColScreenByName.Width = 200
+        Me.ColScreenByName.Width = 180
         '
         'pnlEmployeeName
         '
@@ -689,7 +674,7 @@ Partial Class frmScreenList
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(1284, 661)
+        Me.ClientSize = New System.Drawing.Size(1300, 700)
         Me.Controls.Add(Me.pnlDiagnosis)
         Me.Controls.Add(Me.pnlReason)
         Me.Controls.Add(Me.pnlAbsentDate)
@@ -699,13 +684,15 @@ Partial Class frmScreenList
         Me.Controls.Add(Me.pnlTop)
         Me.DoubleBuffered = True
         Me.Font = New System.Drawing.Font("Verdana", 8.5!)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.KeyPreview = True
         Me.MaximizeBox = False
         Me.MinimumSize = New System.Drawing.Size(1300, 700)
         Me.Name = "frmScreenList"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Health Screening List"
+        Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
         Me.pnlScreenDate.ResumeLayout(False)
@@ -746,7 +733,6 @@ Partial Class frmScreenList
     Friend WithEvents btnAdd As PinkieControls.ButtonXP
     Friend WithEvents btnRefresh As PinkieControls.ButtonXP
     Friend WithEvents btnSearch As PinkieControls.ButtonXP
-    Friend WithEvents btnReport As PinkieControls.ButtonXP
     Friend WithEvents pnlScreenDate As System.Windows.Forms.Panel
     Friend WithEvents lblScreenDateTo As System.Windows.Forms.Label
     Friend WithEvents dtpScreenDateTo As System.Windows.Forms.DateTimePicker
@@ -764,9 +750,8 @@ Partial Class frmScreenList
     Friend WithEvents dtpAbsentFrom As System.Windows.Forms.DateTimePicker
     Friend WithEvents pnlReason As System.Windows.Forms.Panel
     Friend WithEvents txtReason As System.Windows.Forms.TextBox
-    Friend WithEvents lblUser As System.Windows.Forms.Label
-    Friend WithEvents txtEmpName As System.Windows.Forms.Label
-    Friend WithEvents btnLogout As PinkieControls.ButtonXP
+    Friend WithEvents pnlDiagnosis As System.Windows.Forms.Panel
+    Friend WithEvents txtDiagnosis As System.Windows.Forms.TextBox
     Friend WithEvents ColScreenId As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents ColScreenDate As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents ColEmployeeName As System.Windows.Forms.DataGridViewTextBoxColumn
@@ -776,6 +761,7 @@ Partial Class frmScreenList
     Friend WithEvents ColLeaveTypeName As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents ColsFitToWork As System.Windows.Forms.DataGridViewCheckBoxColumn
     Friend WithEvents ColScreenByName As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents pnlDiagnosis As System.Windows.Forms.Panel
-    Friend WithEvents txtDiagnosis As System.Windows.Forms.TextBox
+    Friend WithEvents txtUsername As System.Windows.Forms.Label
+    Friend WithEvents btnUser As PinkieControls.ButtonXP
+    Friend WithEvents btnReport As PinkieControls.ButtonXP
 End Class

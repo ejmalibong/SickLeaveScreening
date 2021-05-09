@@ -13,9 +13,10 @@ Public Class frmScreenList
     Private main As New Main
     'server datetime
     Private serverDate As DateTime = dbLeaveFiling.GetServerDate
-    'database access
+    'data objects
     Private dsLeaveFiling As New dsLeaveFiling
     Private adpScreening As New ScreeningTableAdapter
+    Private adpLeaveFiling As New LeaveFilingTableAdapter
     Private dtScreening As New ScreeningDataTable
     Private bsScreening As New BindingSource
     'pagination
@@ -33,7 +34,7 @@ Public Class frmScreenList
     Private isFilterByAbsentFrom As Boolean = False
     Private isFilterByReason As Boolean = False
     Private isFilterByDiagnosis As Boolean = False
-
+    'doctor, nurse
     Private employeeId As Integer = 0
     Private employeeCode As String = String.Empty
     Private employeeName As String = String.Empty
@@ -49,18 +50,15 @@ Public Class frmScreenList
         employeeCode = _employeeCode
         employeeName = _employeeName
         positionName = _positionName
-
-        txtEmpName.Text = StrConv(_employeeName, VbStrConv.ProperCase) & " / " & _positionName
     End Sub
 
     Private Sub frmScreenList_Load(sender As Object, e As EventArgs) Handles Me.Load
-        Application.EnableVisualStyles()
+        main.EnableDoubleBuffered(dgvList)
 
         pageIndex = 0
         pageSize = 100
         BindPage()
-
-        main.EnableDoubleBuffered(dgvList)
+        SearchCriteria()
 
         'disable the resize/maximize button of the form if maximize, enable if the form is minimize
         AddHandler Me.SizeChanged, AddressOf ThisForm_SizeEventHandler
@@ -68,7 +66,11 @@ Public Class frmScreenList
         'disable resize/maximize button of the form
         Me.MaximizeBox = False
 
-        SearchCriteria()
+        Me.dgvList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+        Me.dgvList.Columns(4).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+
+        txtUsername.Text = StrConv(employeeName, VbStrConv.ProperCase) & " / " & positionName
+
         Me.ActiveControl = dgvList
     End Sub
 
@@ -91,20 +93,6 @@ Public Class frmScreenList
 
     Private Sub frmScreenList_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         dgvList.Dispose()
-    End Sub
-
-    Private Sub dgvList_DataBindingComplete(sender As Object, e As DataGridViewBindingCompleteEventArgs) Handles dgvList.DataBindingComplete
-        Try
-            For _i As Integer = 0 To dgvList.Rows.Count - 1
-                If dgvList.Rows(_i).Cells("ColLeaveTypeId").Value = 1 Then
-                    dgvList.Rows(_i).Cells("ColLeaveTypeName").Value = "SL"
-                ElseIf dgvList.Rows(_i).Cells("ColLeaveTypeId").Value = 2 Then
-                    dgvList.Rows(_i).Cells("ColLeaveTypeName").Value = "VL"
-                End If
-            Next
-        Catch ex As Exception
-            MessageBox.Show(ex.Message, main.SetExcpTitle(ex), MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
     End Sub
 
     Private Sub dgvList_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvList.CellDoubleClick
@@ -159,9 +147,13 @@ Public Class frmScreenList
         End Using
     End Sub
 
+    Private Sub btnUser_Click(sender As Object, e As EventArgs) Handles btnUser.Click
+
+    End Sub
+
     Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
         Try
-            Using frmScreenEntry As New frmScreenEntry(employeeCode)
+            Using frmScreenEntry As New frmScreenEntry(employeeId)
                 frmScreenEntry.ShowDialog(Me)
             End Using
         Catch ex As Exception
@@ -173,7 +165,7 @@ Public Class frmScreenList
         Try
             If dgvList.Rows.Count > 0 Then
                 Dim _screenId As Integer = CType(Me.bsScreening.Current, DataRowView).Item("ScreenId")
-                Using frmScreenEntry As New frmScreenEntry(employeeCode, _screenId)
+                Using frmScreenEntry As New frmScreenEntry(employeeId, _screenId)
                     frmScreenEntry.ShowDialog(Me)
                     If frmScreenEntry.DialogResult = Windows.Forms.DialogResult.OK Then
                         RefreshValues()
@@ -188,30 +180,29 @@ Public Class frmScreenList
     Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
         Try
             If dgvList.Rows.Count > 0 Then
-                Dim _currentRow = CType(Me.bsScreening.Current, DataRowView).Row
-                Dim _rowState = _currentRow.RowState
+                Dim _screenId As Integer = CType(Me.bsScreening.Current, DataRowView).Item("ScreenId")
+                Dim _count As Integer = 0
+                Dim _leaveFileId As Integer = 0
 
-                Select Case _rowState
-                    Case DataRowState.Added
+                Dim _prmCount(0) As SqlParameter
+                _prmCount(0) = New SqlParameter("@ScreenId", SqlDbType.Int)
+                _prmCount(0).Value = _screenId
+
+                _count = dbLeaveFiling.ExecuteScalar("SELECT Count(LeaveFileId) FROM dbo.LeaveFiling WHERE ScreenId = @ScreenId", CommandType.Text, _prmCount)
+
+                If _count > 0 Then
+                    MessageBox.Show("Screening record already used.", "Not Allowed", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    Return
+                Else
+                    If MessageBox.Show("Delete this record?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = Windows.Forms.DialogResult.Yes Then
                         Me.bsScreening.RemoveCurrent()
-                    Case DataRowState.Detached
-                        Me.bsScreening.CancelEdit()
-                    Case DataRowState.Modified, DataRowState.Unchanged
-                        If dgvList.SelectedCells.Count > 0 AndAlso dgvList.SelectedCells(0).RowIndex = dgvList.NewRowIndex Then
-                            Me.bsScreening.CancelEdit()
-                            Exit Sub
-                        End If
+                    End If
+                End If
 
-                        If MessageBox.Show("Delete this record?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = Windows.Forms.DialogResult.Yes Then
-                            Me.bsScreening.RemoveCurrent()
-                        End If
-                    Case Else
-                End Select
+                Me.adpScreening.Update(Me.dsLeaveFiling.Screening)
+                Me.dsLeaveFiling.AcceptChanges()
+                RefreshValues()
             End If
-
-            Me.adpScreening.Update(Me.dsLeaveFiling.Screening)
-            Me.dsLeaveFiling.AcceptChanges()
-            RefreshValues()
         Catch ex As Exception
             MessageBox.Show(ex.Message, main.SetExcpTitle(ex), MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
@@ -225,7 +216,7 @@ Public Class frmScreenList
         End Try
     End Sub
 
-    Private Sub btnLogout_Click(sender As Object, e As EventArgs) Handles btnLogout.Click
+    Private Sub btnLogout_Click(sender As Object, e As EventArgs)
         Me.Hide()
         frmLogin.Show()
     End Sub
@@ -385,7 +376,7 @@ Public Class frmScreenList
 
             'current and total pages
             txtPageNumber.Text = pageIndex + 1
-            txtTotalPageNumber.Text = "of " & CInt(pageCount) & " Page(s)"
+            txtTotalPageNumber.Text = " of " & CInt(pageCount) & " Page(s)"
 
             'enables pager
             txtPageNumber.Enabled = True
@@ -426,6 +417,10 @@ Public Class frmScreenList
         End Try
     End Sub
 
+    Public Sub ShowMsg()
+        MessageBox.Show("Yeah")
+    End Sub
+
     Public Sub RefreshValues()
         If dgvList IsNot Nothing AndAlso dgvList.CurrentRow IsNot Nothing Then Me.Invoke(New Action(AddressOf GetScrollingIndex))
         pageSize = 100
@@ -456,6 +451,30 @@ Public Class frmScreenList
         cmbSearchCriteria.DataSource = New BindingSource(dictionary, Nothing)
     End Sub
 
+#Region "Sub"
+    'prevent form resizing when double clicked the titlebar or dragged
+    Protected Overloads Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
+        Const WM_NCLBUTTONDBLCLK As Integer = 163 'define doubleclick event
+        Const WM_NCLBUTTONDOWN As Integer = 161 'define leftbuttondown event
+        Const WM_SYSCOMMAND As Integer = 274 'define move action
+        Const HTCAPTION As Integer = 2 'define that the WM_NCLBUTTONDOWN is at titlebar
+        Const SC_MOVE As Integer = 61456 'trap move action
+        'disable moving titleBar
+        If (m.Msg = WM_SYSCOMMAND) AndAlso (m.WParam.ToInt32() = SC_MOVE) Then
+            Exit Sub
+        End If
+        'track whether clicked on title bar
+        If (m.Msg = WM_NCLBUTTONDOWN) AndAlso (m.WParam.ToInt32() = HTCAPTION) Then
+            Exit Sub
+        End If
+        'disable double click on title bar
+        If (m.Msg = WM_NCLBUTTONDBLCLK) Then
+            Exit Sub
+        End If
+
+        MyBase.WndProc(m)
+    End Sub
+
     Private Sub ThisForm_SizeEventHandler(ByVal sender As Object, ByVal e As EventArgs)
         If Me.WindowState = FormWindowState.Minimized Then
             Me.MaximizeBox = False
@@ -464,5 +483,7 @@ Public Class frmScreenList
             Me.MaximizeBox = False
         End If
     End Sub
+#End Region
 
+  
 End Class

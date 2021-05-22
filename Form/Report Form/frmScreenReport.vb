@@ -33,7 +33,7 @@ Public Class frmScreenReport
             'disable resize/maximize button of the form
             Me.MaximizeBox = False
 
-            dbLeaveFiling.FillCmbWithCaption("RdLeaveType", CommandType.StoredProcedure, "Id", "LeaveTypeName", cmbLeaveType, "< Select Leave Type >")
+            dbLeaveFiling.FillCmbWithCaption("RdLeaveType", CommandType.StoredProcedure, "LeaveTypeId", "LeaveTypeName", cmbLeaveType, "< Select Leave Type >")
 
             dictionary.Add("< Select Employment > ", 0)
             dictionary.Add("Direct", 1)
@@ -127,7 +127,7 @@ ShowReport:
         End Try
     End Sub
 
-    Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
+    Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnRemoveFilters.Click
         main.ClearForm(Me)
         chkNotFtw.CheckState = CheckState.Unchecked
     End Sub

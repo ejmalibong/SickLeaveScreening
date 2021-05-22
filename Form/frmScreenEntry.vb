@@ -40,7 +40,10 @@ Public Class frmScreenEntry
     End Sub
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles Me.Load
-        dbLeaveFiling.FillCmbWithCaption("SELECT LeaveTypeId, TRIM(LeaveTypeName) AS LeaveTypeName FROM dbo.LeaveType WHERE LeaveTypeId IN (1, 2, 9, 11)", CommandType.Text, "LeaveTypeId", "LeaveTypeName", cmbLeaveType, "< Select Leave Type >")
+        dbLeaveFiling.FillCmbWithCaption("SELECT LeaveTypeId, TRIM(LeaveTypeName) AS LeaveTypeName " & _
+                                         "FROM dbo.LeaveType WHERE LeaveTypeId IN (1, 2, 9, 12, 13)", _
+                                         CommandType.Text, "LeaveTypeId", "LeaveTypeName", _
+                                         cmbLeaveType, "< Select Leave Type >") 'sick leave, vl, ecq leave, half day leave, undertime
 
         If Not screenId = 0 Then
             Me.adpScreening.FillByScreenId(Me.dsLeaveFiling.Screening, screenId)
@@ -237,12 +240,13 @@ Public Class frmScreenEntry
                     Me.adpLeaveFiling.FillByLeaveFileId(Me.dsLeaveFiling.LeaveFiling, _leaveFileId)
                     Dim _rowLeaveFiling As LeaveFilingRow = Me.dsLeaveFiling.LeaveFiling.FindByLeaveFileId(_leaveFileId)
 
-                    With _rowLeaveFiling 'leave already encoded and approved
+                    With _rowLeaveFiling
                         If (_rowLeaveFiling.IsSuperiorId1Null = False AndAlso _rowLeaveFiling.IsSuperiorApprovalDate1Null = False) Or _
                             (_rowLeaveFiling.IsSuperiorId2Null = False AndAlso _rowLeaveFiling.IsSuperiorApprovalDate2Null = False) Or _
-                            (_rowLeaveFiling.IsManagerApprovalDateNull = False) Then 'leave already encoded and approved/disapproved
-                            MessageBox.Show("Screening record already approved/disapproved.", "Not Allowed", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                            (_rowLeaveFiling.IsManagerApprovalDateNull = False) Then 'leave is already encoded and approved
+                            MessageBox.Show("Not allowed to modify approved/disapproved leave.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
                             Return
+
                         Else 'leave already encoded but not yet contains approval
                             .StartDate = CDate(txtAbsentFrom.Text)
                             .EndDate = CDate(txtAbsentTo.Text)
@@ -291,7 +295,8 @@ Public Class frmScreenEntry
                             End With
                         End If
                     End With
-                Else 'screening record still not use
+
+                Else 'screening record not yet used
                     With _rowScreening
                         .ScreenBy = screenBy
 
@@ -350,7 +355,7 @@ Public Class frmScreenEntry
                 _count = dbLeaveFiling.ExecuteScalar("SELECT Count(LeaveFileId) FROM dbo.LeaveFiling WHERE ScreenId = @ScreenId", CommandType.Text, _prmCount)
 
                 If _count > 0 Then
-                    MessageBox.Show("Screening record already used.", "Not Allowed", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    MessageBox.Show("Screening record already used by the employee.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
                     Return
                 Else
                     If MessageBox.Show("Delete this record?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = Windows.Forms.DialogResult.Yes Then
@@ -429,7 +434,7 @@ Public Class frmScreenEntry
         End If
     End Sub
 
-#Region "Subs & Functions"
+#Region "Subs"
     Private Sub ValidateId(ByVal _employeeCode As String)
         Try
             Dim _count As Integer = 0
@@ -595,6 +600,7 @@ Public Class frmScreenEntry
         Return _count
     End Function
 
+    'tag employee as `not fit to work` using shortcut key (F11)
     Private Sub NotFitToWork()
         If String.IsNullOrEmpty(txtEmployeeScanId.Text.Trim) AndAlso String.IsNullOrEmpty(txtEmployeeCode.Text.Trim) Then
             Me.ActiveControl = txtEmployeeScanId
@@ -704,12 +710,11 @@ Public Class frmScreenEntry
                 Me.adpLeaveFiling.FillByLeaveFileId(Me.dsLeaveFiling.LeaveFiling, _leaveFileId)
                 Dim _rowLeaveFiling As LeaveFilingRow = Me.dsLeaveFiling.LeaveFiling.FindByLeaveFileId(_leaveFileId)
 
-                'disable editing if already approved/disapproved by the approvers
                 With _rowLeaveFiling
                     If (_rowLeaveFiling.IsSuperiorId1Null = False AndAlso _rowLeaveFiling.IsSuperiorApprovalDate1Null = False) Or _
                         (_rowLeaveFiling.IsSuperiorId2Null = False AndAlso _rowLeaveFiling.IsSuperiorApprovalDate2Null = False) Or _
                         (_rowLeaveFiling.IsManagerApprovalDateNull = False) Then
-                        MessageBox.Show("Screening record already approved/disapproved.", "Not Allowed", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        MessageBox.Show("Not allowed to modify approved/disapproved leave.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
                         Return
                     Else
                         .StartDate = CDate(txtAbsentFrom.Text)

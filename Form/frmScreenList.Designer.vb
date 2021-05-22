@@ -358,6 +358,7 @@ Partial Class frmScreenList
         Me.btnUser.TabIndex = 162
         Me.btnUser.TabStop = False
         Me.btnUser.Text = "Users"
+        Me.btnUser.Visible = False
         '
         'btnReport
         '

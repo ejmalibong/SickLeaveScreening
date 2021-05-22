@@ -272,32 +272,50 @@ Public Class frmScreenList
         Try
             If cmbSearchCriteria.SelectedValue = 1 Then
                 If dtpScreenDateFrom.Value.Date > dtpScreenDateTo.Value.Date Then
-                    MessageBox.Show("Start date is later than end date.", "Invalid date range", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    MessageBox.Show("Start date is later than end date.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
                     Return
                 End If
+
                 isFilterByScreenDate = True
+                isFilterByEmployeeName = False
+                isFilterByAbsentFrom = False
+                isFilterByReason = False
+                isFilterByDiagnosis = False
+
             ElseIf cmbSearchCriteria.SelectedValue = 2 Then
-                If String.IsNullOrEmpty(txtEmployeeName.Text.Trim) Then
-                    Return
-                End If
+                isFilterByScreenDate = False
                 isFilterByEmployeeName = True
+                isFilterByAbsentFrom = False
+                isFilterByReason = False
+                isFilterByDiagnosis = False
+
             ElseIf cmbSearchCriteria.SelectedValue = 3 Then
                 If dtpAbsentFrom.Value.Date > dtpAbsentTo.Value.Date Then
-                    MessageBox.Show("Start date is later than end date.", "Invalid date range", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    MessageBox.Show("Start date is later than end date.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
                     Return
                 End If
+
+                isFilterByScreenDate = False
+                isFilterByEmployeeName = False
                 isFilterByAbsentFrom = True
+                isFilterByReason = False
+                isFilterByDiagnosis = False
+
             ElseIf cmbSearchCriteria.SelectedValue = 4 Then
-                If String.IsNullOrEmpty(txtReason.Text.Trim) Then
-                    Return
-                End If
+                isFilterByScreenDate = False
+                isFilterByEmployeeName = False
+                isFilterByAbsentFrom = False
                 isFilterByReason = True
+                isFilterByDiagnosis = False
+
             ElseIf cmbSearchCriteria.SelectedValue = 5 Then
-                If String.IsNullOrEmpty(txtDiagnosis.Text.Trim) Then
-                    Return
-                End If
+                isFilterByScreenDate = False
+                isFilterByEmployeeName = False
+                isFilterByAbsentFrom = False
+                isFilterByReason = False
                 isFilterByDiagnosis = True
             End If
+
             pageIndex = 0
             BindPage()
         Catch ex As Exception
@@ -309,29 +327,61 @@ Public Class frmScreenList
         Try
             If cmbSearchCriteria.SelectedValue = 1 Then
                 isFilterByScreenDate = False
+                isFilterByEmployeeName = False
+                isFilterByAbsentFrom = False
+                isFilterByReason = False
+                isFilterByDiagnosis = False
+
                 dtpScreenDateFrom.Value = Date.Now
                 dtpScreenDateTo.Value = Date.Now
                 pageIndex = 0
                 BindPage()
+
             ElseIf cmbSearchCriteria.SelectedValue = 2 Then
-                isFilterByEmployeeName = False
                 txtEmployeeName.Clear()
+
+                isFilterByScreenDate = False
+                isFilterByEmployeeName = True
+                isFilterByAbsentFrom = False
+                isFilterByReason = False
+                isFilterByDiagnosis = False
+
                 pageIndex = 0
                 BindPage()
+
             ElseIf cmbSearchCriteria.SelectedValue = 3 Then
+                isFilterByScreenDate = False
+                isFilterByEmployeeName = False
                 isFilterByAbsentFrom = False
+                isFilterByReason = False
+                isFilterByDiagnosis = False
+
                 dtpAbsentFrom.Value = Date.Now
                 dtpAbsentTo.Value = Date.Now
                 pageIndex = 0
                 BindPage()
+
             ElseIf cmbSearchCriteria.SelectedValue = 4 Then
-                isFilterByReason = False
                 txtReason.Clear()
+
+                isFilterByScreenDate = False
+                isFilterByEmployeeName = False
+                isFilterByAbsentFrom = False
+                isFilterByReason = True
+                isFilterByDiagnosis = False
+
                 pageIndex = 0
                 BindPage()
+
             ElseIf cmbSearchCriteria.SelectedValue = 5 Then
-                isFilterByDiagnosis = False
                 txtDiagnosis.Clear()
+
+                isFilterByScreenDate = False
+                isFilterByEmployeeName = False
+                isFilterByAbsentFrom = False
+                isFilterByReason = False
+                isFilterByDiagnosis = True
+
                 pageIndex = 0
                 BindPage()
             End If
@@ -436,7 +486,11 @@ Public Class frmScreenList
 
     Private Sub SetScrollingIndex()
         dgvList.FirstDisplayedScrollingRowIndex = indexScroll
-        dgvList.Rows(indexPosition).Selected = True
+        If dgvList.Rows.Count > indexPosition Then
+            dgvList.Rows(indexPosition).Selected = True
+        Else
+            dgvList.Rows(indexPosition - 1).Selected = True
+        End If
         Me.bsScreening.Position = dgvList.SelectedCells(0).RowIndex
     End Sub
 
@@ -484,6 +538,5 @@ Public Class frmScreenList
         End If
     End Sub
 #End Region
-
   
 End Class

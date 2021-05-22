@@ -26,7 +26,7 @@ Partial Class frmScreenReport
         Me.cmbEmployment = New System.Windows.Forms.ComboBox()
         Me.chkNotFtw = New System.Windows.Forms.CheckBox()
         Me.lblEmployment = New System.Windows.Forms.Label()
-        Me.btnClear = New PinkieControls.ButtonXP()
+        Me.btnRemoveFilters = New PinkieControls.ButtonXP()
         Me.btnClose = New PinkieControls.ButtonXP()
         Me.btnGenerate = New PinkieControls.ButtonXP()
         Me.cmbLeaveType = New System.Windows.Forms.ComboBox()
@@ -46,7 +46,7 @@ Partial Class frmScreenReport
         Me.pnlLeft.Controls.Add(Me.cmbEmployment)
         Me.pnlLeft.Controls.Add(Me.chkNotFtw)
         Me.pnlLeft.Controls.Add(Me.lblEmployment)
-        Me.pnlLeft.Controls.Add(Me.btnClear)
+        Me.pnlLeft.Controls.Add(Me.btnRemoveFilters)
         Me.pnlLeft.Controls.Add(Me.btnClose)
         Me.pnlLeft.Controls.Add(Me.btnGenerate)
         Me.pnlLeft.Controls.Add(Me.cmbLeaveType)
@@ -94,20 +94,20 @@ Partial Class frmScreenReport
         Me.lblEmployment.TabIndex = 157
         Me.lblEmployment.Text = "Employment"
         '
-        'btnClear
+        'btnRemoveFilters
         '
-        Me.btnClear.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
-        Me.btnClear.DefaultScheme = False
-        Me.btnClear.DialogResult = System.Windows.Forms.DialogResult.None
-        Me.btnClear.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.btnClear.Hint = "Remove Filter"
-        Me.btnClear.Location = New System.Drawing.Point(12, 344)
-        Me.btnClear.Name = "btnClear"
-        Me.btnClear.Scheme = PinkieControls.ButtonXP.Schemes.Blue
-        Me.btnClear.Size = New System.Drawing.Size(205, 40)
-        Me.btnClear.TabIndex = 155
-        Me.btnClear.TabStop = False
-        Me.btnClear.Text = "Clear Filter"
+        Me.btnRemoveFilters.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.btnRemoveFilters.DefaultScheme = False
+        Me.btnRemoveFilters.DialogResult = System.Windows.Forms.DialogResult.None
+        Me.btnRemoveFilters.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.btnRemoveFilters.Hint = "Remove Filter"
+        Me.btnRemoveFilters.Location = New System.Drawing.Point(12, 344)
+        Me.btnRemoveFilters.Name = "btnRemoveFilters"
+        Me.btnRemoveFilters.Scheme = PinkieControls.ButtonXP.Schemes.Blue
+        Me.btnRemoveFilters.Size = New System.Drawing.Size(205, 40)
+        Me.btnRemoveFilters.TabIndex = 155
+        Me.btnRemoveFilters.TabStop = False
+        Me.btnRemoveFilters.Text = "Clear Filter"
         '
         'btnClose
         '
@@ -241,7 +241,7 @@ Partial Class frmScreenReport
 
     End Sub
     Friend WithEvents pnlLeft As System.Windows.Forms.Panel
-    Friend WithEvents btnClear As PinkieControls.ButtonXP
+    Friend WithEvents btnRemoveFilters As PinkieControls.ButtonXP
     Friend WithEvents btnClose As PinkieControls.ButtonXP
     Friend WithEvents btnGenerate As PinkieControls.ButtonXP
     Friend WithEvents cmbLeaveType As System.Windows.Forms.ComboBox

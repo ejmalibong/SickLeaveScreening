@@ -26,7 +26,7 @@
     <UpdateUrl>\\192.168.20.11\common\Leave Application System\Health Screening\</UpdateUrl>
     <ProductName>Health Screening</ProductName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>10</ApplicationRevision>
+    <ApplicationRevision>13</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>

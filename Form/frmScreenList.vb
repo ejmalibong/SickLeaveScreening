@@ -8,8 +8,8 @@ Imports LeaveFilingSystem.dsLeaveFilingTableAdapters
 
 Public Class frmScreenList
     Private connection As New clsConnection
-    Private dbLeaveFiling As New SqlDbMethod(connection.LeaveFiling)
-    Private dbJeonsoft As New SqlDbMethod(connection.Jeonsoft)
+    Private dbLeaveFiling As New SqlDbMethod(connection.LocalConnection)
+    Private dbJeonsoft As New SqlDbMethod(connection.JeonsoftConnection)
     Private main As New Main
     'server datetime
     Private serverDate As DateTime = dbLeaveFiling.GetServerDate
@@ -58,6 +58,7 @@ Public Class frmScreenList
         pageIndex = 0
         pageSize = 100
         BindPage()
+
         SearchCriteria()
 
         'disable the resize/maximize button of the form if maximize, enable if the form is minimize
@@ -142,13 +143,23 @@ Public Class frmScreenList
     End Sub
 
     Private Sub btnReport_Click(sender As Object, e As EventArgs) Handles btnReport.Click
-        Using frmHealthScreeningReport As New frmScreenReport()
-            frmHealthScreeningReport.ShowDialog(Me)
-        End Using
+        Try
+            Using frmHealthScreeningReport As New frmScreenReport()
+                frmHealthScreeningReport.ShowDialog(Me)
+            End Using
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, main.SetExcpTitle(ex), MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
-    Private Sub btnUser_Click(sender As Object, e As EventArgs) Handles btnUser.Click
-
+    Private Sub btnDoctor_Click(sender As Object, e As EventArgs) Handles btnDoctor.Click
+        Try
+            Using frmDoctor As New frmDoctor()
+                frmDoctor.ShowDialog(Me)
+            End Using
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, main.SetExcpTitle(ex), MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
@@ -209,14 +220,10 @@ Public Class frmScreenList
     End Sub
 
     Private Sub btnClose_Click(sender As Object, e As EventArgs) Handles btnClose.Click
-        Try
-            Application.Exit()
-        Catch ex As Exception
-            MessageBox.Show(ex.Message, main.SetExcpTitle(ex), MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
+       Application.Exit()
     End Sub
 
-    Private Sub btnLogout_Click(sender As Object, e As EventArgs)
+    Private Sub btnLogOut_Click(sender As Object, e As EventArgs) Handles btnLogOut.Click
         Me.Hide()
         frmLogin.Show()
     End Sub
@@ -467,10 +474,6 @@ Public Class frmScreenList
         End Try
     End Sub
 
-    Public Sub ShowMsg()
-        MessageBox.Show("Yeah")
-    End Sub
-
     Public Sub RefreshValues()
         If dgvList IsNot Nothing AndAlso dgvList.CurrentRow IsNot Nothing Then Me.Invoke(New Action(AddressOf GetScrollingIndex))
         pageSize = 100
@@ -538,5 +541,5 @@ Public Class frmScreenList
         End If
     End Sub
 #End Region
-  
+
 End Class

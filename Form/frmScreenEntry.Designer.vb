@@ -217,8 +217,8 @@ Partial Class frmScreenEntry
         Me.lblNotFtw.Name = "lblNotFtw"
         Me.lblNotFtw.Size = New System.Drawing.Size(223, 24)
         Me.lblNotFtw.TabIndex = 531
-        Me.lblNotFtw.Text = "      Not Fit To Work               (F11)"
-        Me.lblNotFtw.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblNotFtw.Text = "    Unfit To Work                (F11)"
+        Me.lblNotFtw.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'chkNotFtw
         '
@@ -270,7 +270,7 @@ Partial Class frmScreenEntry
         Me.btnClose.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.btnClose.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
         Me.btnClose.DefaultScheme = False
-        Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.None
+        Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnClose.Font = New System.Drawing.Font("Verdana", 9.0!)
         Me.btnClose.Hint = "Close Data Entry"
         Me.btnClose.Location = New System.Drawing.Point(345, 467)
@@ -366,6 +366,7 @@ Partial Class frmScreenEntry
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.White
+        Me.CancelButton = Me.btnClose
         Me.ClientSize = New System.Drawing.Size(462, 511)
         Me.Controls.Add(Me.lblLeaveType)
         Me.Controls.Add(Me.cmbLeaveType)

@@ -8,8 +8,8 @@ Imports LeaveFilingSystem.dsLeaveFilingTableAdapters
 
 Public Class frmScreenEntry
     Private connection As New clsConnection
-    Private dbLeaveFiling As New SqlDbMethod(connection.LeaveFiling)
-    Private dbJeonsoft As New SqlDbMethod(connection.Jeonsoft)
+    Private dbLeaveFiling As New SqlDbMethod(connection.LocalConnection)
+    Private dbJeonsoft As New SqlDbMethod(connection.JeonsoftConnection)
     Private main As New Main
     'data objects
     Private dsLeaveFiling As New dsLeaveFiling
@@ -23,7 +23,7 @@ Public Class frmScreenEntry
     Private WithEvents screenDate As Binding
     Private WithEvents absentFrom As Binding
     Private WithEvents absentTo As Binding
-    '
+
     Private screenBy As Integer = 0 'doctor, nurse
     Private screenId As Integer = 0
     Private employeeId As Integer = 0 'patient, employee
@@ -41,9 +41,10 @@ Public Class frmScreenEntry
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles Me.Load
         dbLeaveFiling.FillCmbWithCaption("SELECT LeaveTypeId, TRIM(LeaveTypeName) AS LeaveTypeName " & _
-                                         "FROM dbo.LeaveType WHERE LeaveTypeId IN (1, 2, 9, 12, 13)", _
+                                         "FROM LeaveType WHERE IsClinic = 1 " & _
+                                         "ORDER BY TRIM(LeaveTypeName) ", _
                                          CommandType.Text, "LeaveTypeId", "LeaveTypeName", _
-                                         cmbLeaveType, "< Select Leave Type >") 'sick leave, vl, ecq leave, half day leave, undertime
+                                         cmbLeaveType, "< Select Leave Type >") 'sl, vl, eqcl, ecqq
 
         If Not screenId = 0 Then
             Me.adpScreening.FillByScreenId(Me.dsLeaveFiling.Screening, screenId)
@@ -134,6 +135,16 @@ Public Class frmScreenEntry
         End If
     End Sub
 
+    Private Sub cmbLeaveType_SelectedValueChanged(sender As Object, e As EventArgs) Handles cmbLeaveType.SelectedValueChanged
+        If cmbLeaveType.SelectedValue = 14 Then
+            chkNotFtw.Enabled = False
+            chkNotFtw.CheckState = CheckState.Checked
+        Else
+            chkNotFtw.Enabled = True
+            chkNotFtw.CheckState = CheckState.Unchecked
+        End If
+    End Sub
+
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         Try
             Dim _frmScreenList As frmScreenList = TryCast(Me.Owner, frmScreenList)
@@ -203,6 +214,10 @@ Public Class frmScreenEntry
                         .IsFitToWork = False
                     Else
                         .IsFitToWork = True
+                    End If
+
+                    If cmbLeaveType.SelectedValue = 14 Then
+                        .IsFitToWork = False
                     End If
                 End With
                 Me.dsLeaveFiling.Screening.AddScreeningRow(_newScreeningRow)
@@ -321,6 +336,10 @@ Public Class frmScreenEntry
                             .IsFitToWork = False
                         Else
                             .IsFitToWork = True
+                        End If
+
+                        If cmbLeaveType.SelectedValue = 14 Then
+                            .IsFitToWork = False
                         End If
                     End With
                 End If
@@ -441,6 +460,7 @@ Public Class frmScreenEntry
             Dim _prmCount(0) As SqlParameter
             _prmCount(0) = New SqlParameter("@EmployeeCode", SqlDbType.VarChar)
             _prmCount(0).Value = _employeeCode
+
             _count = dbJeonsoft.ExecuteScalar("SELECT Count(Id) FROM viwGroupEmployees WHERE EmployeeCode = @EmployeeCode AND Active = 1", CommandType.Text, _prmCount)
 
             cmbLeaveType.SelectedValue = 1

@@ -8,7 +8,7 @@ Imports SickLeaveScreening.dsScreeningReportTableAdapters
 
 Public Class frmScreenReport
     Private connection As New clsConnection
-    Private dbLeaveFiling As New SqlDbMethod(connection.LeaveFiling)
+    Private dbLeaveFiling As New SqlDbMethod(connection.LocalConnection)
     Private main As New Main
     'server datetime
     Private serverDate As DateTime = dbLeaveFiling.GetServerDate
@@ -17,23 +17,19 @@ Public Class frmScreenReport
     Private adpScreeningReport As New VwScreeningTableAdapter
     Private dtScreeningReport As New VwScreeningDataTable
     Private bsScreeningReport As New BindingSource
-    'report
+    'report params
     Private query As String = String.Empty
     Private periodCovered As String = String.Empty
     Private leaveType As String = String.Empty
-    Private empType As String = String.Empty
-    'employment type
+    Private employeeType As String = String.Empty
+    'dictionary for employment type
     Private dictionary As New Dictionary(Of String, Integer)
 
     Private Sub frmHealthScreeningReport_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
-            'disable the resize/maximize button of the form if maximize, enable if the form is minimize
-            AddHandler Me.SizeChanged, AddressOf frmMain_SizeEventHandler
-
-            'disable resize/maximize button of the form
-            Me.MaximizeBox = False
-
-            dbLeaveFiling.FillCmbWithCaption("RdLeaveType", CommandType.StoredProcedure, "LeaveTypeId", "LeaveTypeName", cmbLeaveType, "< Select Leave Type >")
+            dbLeaveFiling.FillCmbWithCaption("RdLeaveType", CommandType.StoredProcedure, _
+                                             "LeaveTypeId", "LeaveTypeName", cmbLeaveType, _
+                                             "< Select Leave Type >")
 
             dictionary.Add("< Select Employment > ", 0)
             dictionary.Add("Direct", 1)
@@ -64,11 +60,11 @@ Public Class frmScreenReport
     Private Sub btnGenerate_Click(sender As Object, e As EventArgs) Handles btnGenerate.Click
         Try
             If dtpStartDate.Value.Date > dtpEndDate.Value.Date Then
-                MessageBox.Show("Invalid date range.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show("Start date is later than end date.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
             ElseIf dtpStartDate.Value.Date = dtpEndDate.Value.Date Then
-                GoTo ShowReport
+                GoTo GenerateReport
             Else
-ShowReport:
+GenerateReport:
                 query = "ScreenDate >= '" + main.FormatDate(dtpStartDate.Value.Date, True) + "' AND ScreenDate < '" + main.FormatDate(dtpEndDate.Value.Date, False) + "'"
 
                 If dtpStartDate.Value.Date.Equals(dtpEndDate.Value.Date) Then
@@ -87,13 +83,13 @@ ShowReport:
                 If Not cmbEmployment.SelectedValue = 0 Then
                     If cmbEmployment.SelectedValue = 1 Then
                         query += " AND EmployeeId IS NOT NULL"
-                        empType = "Direct"
+                        employeeType = "Direct"
                     ElseIf cmbEmployment.SelectedValue = 2 Then
                         query += " AND EmployeeId IS NULL"
-                        empType = "Agency"
+                        employeeType = "Agency"
                     End If
                 Else
-                    empType = " "
+                    employeeType = " "
                 End If
 
                 If chkNotFtw.CheckState = CheckState.Checked Then
@@ -111,7 +107,7 @@ ShowReport:
                     Dim _rptParam As New ReportParameterCollection
                     _rptParam.Add(New Microsoft.Reporting.WinForms.ReportParameter("PeriodCovered", periodCovered))
                     _rptParam.Add(New Microsoft.Reporting.WinForms.ReportParameter("LeaveType", leaveType))
-                    _rptParam.Add(New Microsoft.Reporting.WinForms.ReportParameter("EmploymentType", empType))
+                    _rptParam.Add(New Microsoft.Reporting.WinForms.ReportParameter("EmploymentType", employeeType))
                     rptViewer.LocalReport.SetParameters(_rptParam)
 
                     rptViewer.SetDisplayMode(DisplayMode.PrintLayout)
@@ -135,39 +131,5 @@ ShowReport:
     Private Sub btnClose_Click(sender As Object, e As EventArgs) Handles btnClose.Click
         Me.Close()
     End Sub
-
-#Region "Sub"
-    'prevent form resizing when double clicked the titlebar or dragged
-    Protected Overloads Overrides Sub WndProc(ByRef m As Message)
-        Const WM_NCLBUTTONDBLCLK As Integer = 163 'define doubleclick event
-        Const WM_NCLBUTTONDOWN As Integer = 161 'define leftbuttondown event
-        Const WM_SYSCOMMAND As Integer = 274 'define move action
-        Const HTCAPTION As Integer = 2 'define that the WM_NCLBUTTONDOWN is at titlebar
-        Const SC_MOVE As Integer = 61456 'trap move action
-        'disable moving titleBar
-        If (m.Msg = WM_SYSCOMMAND) AndAlso (m.WParam.ToInt32() = SC_MOVE) Then
-            Exit Sub
-        End If
-        'track whether clicked on title bar
-        If (m.Msg = WM_NCLBUTTONDOWN) AndAlso (m.WParam.ToInt32() = HTCAPTION) Then
-            Exit Sub
-        End If
-        'disable double click on title bar
-        If (m.Msg = WM_NCLBUTTONDBLCLK) Then
-            Exit Sub
-        End If
-
-        MyBase.WndProc(m)
-    End Sub
-
-    Private Sub frmMain_SizeEventHandler(ByVal sender As Object, ByVal e As EventArgs)
-        If Me.WindowState = FormWindowState.Minimized Then
-            Me.MaximizeBox = True
-
-        ElseIf Me.WindowState = FormWindowState.Maximized Then
-            Me.MaximizeBox = False
-        End If
-    End Sub
-#End Region
 
 End Class

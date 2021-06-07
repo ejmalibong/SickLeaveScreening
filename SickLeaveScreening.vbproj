@@ -26,8 +26,8 @@
     <UpdateUrl>\\192.168.20.11\common\Leave Application System\Health Screening\</UpdateUrl>
     <ProductName>Health Screening</ProductName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>13</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -75,7 +75,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>false</SignManifests>
+    <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>SlsSysIcon.ico</ApplicationIcon>
@@ -147,6 +147,12 @@
     <Compile Include="Form\frmScreenList.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Form\frmDoctor.Designer.vb">
+      <DependentUpon>frmDoctor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\frmDoctor.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Form\Report Form\frmScreenReport.Designer.vb">
       <DependentUpon>frmScreenReport.vb</DependentUpon>
     </Compile>
@@ -178,6 +184,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\frmScreenList.resx">
       <DependentUpon>frmScreenList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\frmDoctor.resx">
+      <DependentUpon>frmDoctor.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\Report Form\frmScreenReport.resx">
       <DependentUpon>frmScreenReport.vb</DependentUpon>

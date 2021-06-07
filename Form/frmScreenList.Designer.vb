@@ -50,7 +50,8 @@ Partial Class frmScreenList
         Me.tssGo = New System.Windows.Forms.ToolStripSeparator()
         Me.btnGo = New System.Windows.Forms.ToolStripButton()
         Me.pnlBottom = New System.Windows.Forms.Panel()
-        Me.btnUser = New PinkieControls.ButtonXP()
+        Me.btnLogOut = New PinkieControls.ButtonXP()
+        Me.btnDoctor = New PinkieControls.ButtonXP()
         Me.btnReport = New PinkieControls.ButtonXP()
         Me.btnRefresh = New PinkieControls.ButtonXP()
         Me.btnClose = New PinkieControls.ButtonXP()
@@ -329,8 +330,10 @@ Partial Class frmScreenList
         '
         'pnlBottom
         '
+        Me.pnlBottom.BackColor = System.Drawing.Color.Gainsboro
         Me.pnlBottom.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlBottom.Controls.Add(Me.btnUser)
+        Me.pnlBottom.Controls.Add(Me.btnLogOut)
+        Me.pnlBottom.Controls.Add(Me.btnDoctor)
         Me.pnlBottom.Controls.Add(Me.btnReport)
         Me.pnlBottom.Controls.Add(Me.btnRefresh)
         Me.pnlBottom.Controls.Add(Me.btnClose)
@@ -343,22 +346,36 @@ Partial Class frmScreenList
         Me.pnlBottom.Size = New System.Drawing.Size(1300, 46)
         Me.pnlBottom.TabIndex = 1
         '
-        'btnUser
+        'btnLogOut
         '
-        Me.btnUser.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
-        Me.btnUser.DefaultScheme = False
-        Me.btnUser.DialogResult = System.Windows.Forms.DialogResult.None
-        Me.btnUser.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.btnUser.Hint = "Refresh"
-        Me.btnUser.Image = Global.SickLeaveScreening.My.Resources.Resources.People_24_x_24
-        Me.btnUser.Location = New System.Drawing.Point(252, 4)
-        Me.btnUser.Name = "btnUser"
-        Me.btnUser.Scheme = PinkieControls.ButtonXP.Schemes.Blue
-        Me.btnUser.Size = New System.Drawing.Size(110, 36)
-        Me.btnUser.TabIndex = 162
-        Me.btnUser.TabStop = False
-        Me.btnUser.Text = "Users"
-        Me.btnUser.Visible = False
+        Me.btnLogOut.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.btnLogOut.DefaultScheme = False
+        Me.btnLogOut.DialogResult = System.Windows.Forms.DialogResult.None
+        Me.btnLogOut.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.btnLogOut.Hint = "Log out"
+        Me.btnLogOut.Location = New System.Drawing.Point(366, 4)
+        Me.btnLogOut.Name = "btnLogOut"
+        Me.btnLogOut.Scheme = PinkieControls.ButtonXP.Schemes.Blue
+        Me.btnLogOut.Size = New System.Drawing.Size(110, 36)
+        Me.btnLogOut.TabIndex = 163
+        Me.btnLogOut.TabStop = False
+        Me.btnLogOut.Text = "Log Out"
+        '
+        'btnDoctor
+        '
+        Me.btnDoctor.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.btnDoctor.DefaultScheme = False
+        Me.btnDoctor.DialogResult = System.Windows.Forms.DialogResult.None
+        Me.btnDoctor.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.btnDoctor.Hint = "Users"
+        Me.btnDoctor.Image = Global.SickLeaveScreening.My.Resources.Resources.People_24_x_24
+        Me.btnDoctor.Location = New System.Drawing.Point(252, 4)
+        Me.btnDoctor.Name = "btnDoctor"
+        Me.btnDoctor.Scheme = PinkieControls.ButtonXP.Schemes.Blue
+        Me.btnDoctor.Size = New System.Drawing.Size(110, 36)
+        Me.btnDoctor.TabIndex = 162
+        Me.btnDoctor.TabStop = False
+        Me.btnDoctor.Text = "Doctors"
         '
         'btnReport
         '
@@ -366,7 +383,7 @@ Partial Class frmScreenList
         Me.btnReport.DefaultScheme = False
         Me.btnReport.DialogResult = System.Windows.Forms.DialogResult.None
         Me.btnReport.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.btnReport.Hint = "Refresh"
+        Me.btnReport.Hint = "Report"
         Me.btnReport.Image = Global.SickLeaveScreening.My.Resources.Resources.Report_24_x_24
         Me.btnReport.Location = New System.Drawing.Point(138, 4)
         Me.btnReport.Name = "btnReport"
@@ -681,8 +698,8 @@ Partial Class frmScreenList
         Me.Controls.Add(Me.pnlAbsentDate)
         Me.Controls.Add(Me.pnlEmployeeName)
         Me.Controls.Add(Me.dgvList)
-        Me.Controls.Add(Me.pnlBottom)
         Me.Controls.Add(Me.pnlTop)
+        Me.Controls.Add(Me.pnlBottom)
         Me.DoubleBuffered = True
         Me.Font = New System.Drawing.Font("Verdana", 8.5!)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -763,6 +780,7 @@ Partial Class frmScreenList
     Friend WithEvents ColsFitToWork As System.Windows.Forms.DataGridViewCheckBoxColumn
     Friend WithEvents ColScreenByName As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents txtUsername As System.Windows.Forms.Label
-    Friend WithEvents btnUser As PinkieControls.ButtonXP
+    Friend WithEvents btnDoctor As PinkieControls.ButtonXP
     Friend WithEvents btnReport As PinkieControls.ButtonXP
+    Friend WithEvents btnLogOut As PinkieControls.ButtonXP
 End Class

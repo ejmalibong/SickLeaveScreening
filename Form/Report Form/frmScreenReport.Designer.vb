@@ -78,9 +78,9 @@ Partial Class frmScreenReport
         Me.chkNotFtw.AutoSize = True
         Me.chkNotFtw.Location = New System.Drawing.Point(12, 259)
         Me.chkNotFtw.Name = "chkNotFtw"
-        Me.chkNotFtw.Size = New System.Drawing.Size(153, 18)
+        Me.chkNotFtw.Size = New System.Drawing.Size(141, 18)
         Me.chkNotFtw.TabIndex = 158
-        Me.chkNotFtw.Text = "Not Fit To Work Only"
+        Me.chkNotFtw.Text = "Unfit To Work Only"
         Me.chkNotFtw.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.chkNotFtw.UseVisualStyleBackColor = True
         '
@@ -223,18 +223,19 @@ Partial Class frmScreenReport
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.White
+        Me.CancelButton = Me.btnClose
         Me.ClientSize = New System.Drawing.Size(1314, 601)
         Me.Controls.Add(Me.rptViewer)
         Me.Controls.Add(Me.pnlLeft)
         Me.Font = New System.Drawing.Font("Verdana", 8.5!)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.KeyPreview = True
+        Me.MaximizeBox = False
         Me.Name = "frmScreenReport"
         Me.ShowIcon = False
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Monitoring Report"
-        Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         Me.pnlLeft.ResumeLayout(False)
         Me.pnlLeft.PerformLayout()
         Me.ResumeLayout(False)
